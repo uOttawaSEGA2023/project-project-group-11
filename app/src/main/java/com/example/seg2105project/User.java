@@ -31,7 +31,7 @@ public abstract class User {
         return this.phoneNumber;
     }
     public String getAddress(){
-        return this.accountPassword;
+        return this.address;
     }
 
 
