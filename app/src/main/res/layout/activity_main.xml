@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Hello World!"
@@ -17,19 +18,33 @@
         app:layout_constraintVertical_bias="0.154" />
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="300px"
-        android:layout_height="120px"
-        android:text="Log In"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="310dp" />
+        android:id="@+id/button2"
+        android:layout_width="152dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="121dp"
+        android:layout_marginBottom="300dp"
+        android:text="Sign Up"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="300px"
-        android:layout_height="120px"
-        android:text="Sign Up"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="389dp" />
+        android:id="@+id/button"
+        android:layout_width="152dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="121dp"
+        android:text="Log In"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
