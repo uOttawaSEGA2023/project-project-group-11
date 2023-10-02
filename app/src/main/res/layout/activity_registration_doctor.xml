@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegistrationActivity">
+    tools:context=".RegistrationActivityDoctor">
 
     <TextView
         android:id="@+id/textView5"
@@ -14,7 +14,7 @@
         android:layout_marginTop="31dp"
         android:layout_marginEnd="124dp"
         android:layout_marginBottom="26dp"
-        android:text="Patient Registration Form"
+        android:text="Doctor Registration Form"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -174,7 +174,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/healthCardNumber"
+            android:id="@+id/employeeNumber"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:orientation="horizontal">
@@ -184,7 +184,7 @@
                 android:layout_width="25dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Health Card Number:"
+                android:text="Employee Number:"
                 android:textSize="21sp" />
 
             <EditText
@@ -196,6 +196,33 @@
                 android:inputType="number" />
 
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/specialties"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="25dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:text="Specialties:"
+                android:textSize="21sp" />
+
+            <EditText
+                android:id="@+id/editTextTextMultiLine"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <Button

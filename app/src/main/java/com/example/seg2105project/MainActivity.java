@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClickButton(View view) {
         int pressID = view.getId();
         if(pressID == R.id.signUpButton){
-            Intent i = new Intent(MainActivity.this,RegistrationActivity.class);
+            Intent i = new Intent(MainActivity.this, RegistrationActivityPatient.class);
             startActivity(i);
         }
     }

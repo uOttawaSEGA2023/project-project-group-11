@@ -13,7 +13,10 @@
         android:theme="@style/Theme.SEG2105Project"
         tools:targetApi="31">
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".RegistrationActivityDoctor"
+            android:exported="false" />
+        <activity
+            android:name=".RegistrationActivityPatient"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
