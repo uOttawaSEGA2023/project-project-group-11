@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/blue"
     tools:context=".RegistrationActivityPatient">
 
     <TextView
@@ -15,6 +16,7 @@
         android:layout_marginEnd="124dp"
         android:layout_marginBottom="26dp"
         android:text="Patient Registration Form"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -45,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="First Name:"
+                android:textColor="@color/white"
                 android:textSize="21sp" />
 
             <EditText
@@ -52,8 +55,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -68,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Last Name:"
+                android:textColor="@color/white"
                 android:textSize="21sp" />
 
             <EditText
@@ -75,8 +81,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="text" />
+                android:inputType="text"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -91,6 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Email:"
+                android:textColor="@color/white"
                 android:textSize="21sp" />
 
             <EditText
@@ -98,8 +107,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -114,6 +125,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Password:"
+                android:textColor="@color/white"
                 android:textSize="21sp" />
 
             <EditText
@@ -121,8 +133,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textColor="@color/white" />
         </LinearLayout>
 
         <LinearLayout
@@ -137,6 +151,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Phone:"
+                android:textColor="@color/white"
                 android:textSize="21sp" />
 
             <EditText
@@ -144,8 +159,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -161,6 +178,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Address:"
+                android:textColor="@color/white"
                 android:textSize="21sp" />
 
             <EditText
@@ -168,8 +186,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="textPostalAddress" />
+                android:inputType="textPostalAddress"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
@@ -185,6 +205,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Health Card Number:"
+                android:textColor="@color/white"
                 android:textSize="21sp" />
 
             <EditText
@@ -192,8 +213,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="@color/white"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:textColor="@color/white" />
 
         </LinearLayout>
     </LinearLayout>
@@ -206,6 +229,7 @@
         android:layout_marginTop="75dp"
         android:layout_marginEnd="160dp"
         android:layout_marginBottom="291dp"
+        android:backgroundTint="@color/red"
         android:onClick="submitInformation"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -21,5 +21,9 @@ public class MainActivity extends AppCompatActivity {
             Intent i = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(i);
         }
+        if(pressID == R.id.logInButton){
+            Intent i = new Intent(MainActivity.this, LoginActivity.class);
+            startActivity(i);
+        }
     }
 }
