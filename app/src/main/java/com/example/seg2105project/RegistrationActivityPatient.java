@@ -27,7 +27,7 @@ public class RegistrationActivityPatient extends AppCompatActivity {
         healthCardNumber = (EditText)findViewById(R.id.editTextNumber);
         try{
             Registration.createUserPatient(firstName.getText().toString(), lastName.getText().toString(),
-                    emailAddress.getText().toString(), password.getText().toString(), Integer.parseInt(phoneNumber.getText().toString()),
+                    emailAddress.getText().toString(), password.getText().toString(), phoneNumber.getText().toString(),
                     postalAddress.getText().toString(), healthCardNumber.getText().toString());
             // add toast to show that the form is submitted
             Toast.makeText(RegistrationActivityPatient.this, "Submitted!", Toast.LENGTH_SHORT).show();

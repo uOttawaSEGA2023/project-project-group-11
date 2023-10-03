@@ -5,9 +5,9 @@ public abstract class User {
     private String lastName;
     private String email;
     private String accountPassword;
-    private int phoneNumber;
+    private String phoneNumber;
     private String address;
-    public User(String firstName, String lastName, String email, String accountPassword, int phoneNumber, String address){
+    public User(String firstName, String lastName, String email, String accountPassword, String phoneNumber, String address){
         this.firstName=firstName;
         this.lastName=lastName;
         this.email=email;
@@ -27,7 +27,7 @@ public abstract class User {
     public String getAccountPassword(){
         return this.accountPassword;
     }
-    public int getPhoneNumber(){
+    public String getPhoneNumber(){
         return this.phoneNumber;
     }
     public String getAddress(){

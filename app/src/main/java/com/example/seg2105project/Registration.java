@@ -11,7 +11,7 @@ public class Registration {
     private static DatabaseReference databaseReference = database.getReference();
 
     public static void createUserPatient(String firstName, String lastName, String email, String accountPassword,
-                                         int phoneNumber, String address, String healthCardNumber) {
+                                         String phoneNumber, String address, String healthCardNumber) {
         // create patient object
         User patient = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
         // use email as unique identifier for database
