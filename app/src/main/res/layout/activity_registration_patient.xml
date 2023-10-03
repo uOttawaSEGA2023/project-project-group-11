@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="124dp"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="124dp"
         android:layout_marginBottom="26dp"
         android:text="Patient Registration Form"
@@ -176,7 +176,7 @@
         <LinearLayout
             android:id="@+id/healthCardNumber"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="81dp"
             android:orientation="horizontal">
 
             <TextView
@@ -190,7 +190,7 @@
             <EditText
                 android:id="@+id/editTextNumber"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="number" />
@@ -206,7 +206,6 @@
         android:layout_marginTop="75dp"
         android:layout_marginEnd="160dp"
         android:layout_marginBottom="291dp"
-        android:onClick="createUser"
         android:text="Submit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

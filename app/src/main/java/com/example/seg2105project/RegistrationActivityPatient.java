@@ -11,12 +11,4 @@ public class RegistrationActivityPatient extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_patient);
     }
-
-    private String typeOfUser;
-
-    private User user;
-
-    public void createUser() {
-
-    }
 }
