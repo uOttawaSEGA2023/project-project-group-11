@@ -12,8 +12,12 @@ public class Registration {
 
     public static void createUserPatient(String firstName, String lastName, String email, String accountPassword,
                                          int phoneNumber, String address, String healthCardNumber) {
+        // create patient object
         User patient = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
-        databaseReference.child("users").child("patients").setValue(patient);
+        // use email as unique identifier for database
+        String[] username = email.split("@");
+        // add sign-up information to database
+        databaseReference.child("users").child("patients").child(username[0]).setValue(patient);
     }
 
     public static void createUserDoctor(String firstName, String lastName, String email, String accountPassword,

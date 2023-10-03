@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class RegistrationActivityPatient extends AppCompatActivity {
 
@@ -24,8 +25,15 @@ public class RegistrationActivityPatient extends AppCompatActivity {
         phoneNumber = (EditText)findViewById(R.id.editTextPhone);
         postalAddress = (EditText)findViewById(R.id.editTextTextPostalAddress);
         healthCardNumber = (EditText)findViewById(R.id.editTextNumber);
-        Registration.createUserPatient(firstName.getText().toString(), lastName.getText().toString(),
-                emailAddress.getText().toString(), password.getText().toString(), Integer.parseInt(phoneNumber.getText().toString()),
-                postalAddress.getText().toString(), healthCardNumber.getText().toString());
+        try{
+            Registration.createUserPatient(firstName.getText().toString(), lastName.getText().toString(),
+                    emailAddress.getText().toString(), password.getText().toString(), Integer.parseInt(phoneNumber.getText().toString()),
+                    postalAddress.getText().toString(), healthCardNumber.getText().toString());
+            // add toast to show that the form is submitted
+            Toast.makeText(RegistrationActivityPatient.this, "Submitted!", Toast.LENGTH_SHORT).show();
+        }catch(Exception e) {
+            // if the information fails to be added to the database
+            Toast.makeText(RegistrationActivityPatient.this, "Failed to submit!", Toast.LENGTH_SHORT).show();
+        }
     }
 }
