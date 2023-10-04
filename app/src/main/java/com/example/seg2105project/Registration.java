@@ -21,12 +21,14 @@ public class Registration {
     }
 
     public static void createUserDoctor(String firstName, String lastName, String email, String accountPassword,
-                                        int phoneNumber, String address, int employeeNumber, String specialties) {
+                                        String phoneNumber, String address, String employeeNumber, String specialties) {
 
     }
 
     public static void createUserAdmin(String firstName, String lastName, String email, String accountPassword,
-                                       int phoneNumber, String address) {
-
+                                       String phoneNumber, String address) {
+        User admin = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
+        String[] username = email.split("@");
+        databaseReference.child("users").child("administrators").child(username[0]).setValue(admin);
     }
 }
