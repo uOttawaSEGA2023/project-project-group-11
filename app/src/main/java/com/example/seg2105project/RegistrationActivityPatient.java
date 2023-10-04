@@ -2,6 +2,7 @@ package com.example.seg2105project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -31,6 +32,8 @@ public class RegistrationActivityPatient extends AppCompatActivity {
                     postalAddress.getText().toString(), healthCardNumber.getText().toString());
             // add toast to show that the form is submitted
             Toast.makeText(RegistrationActivityPatient.this, "Submitted!", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(RegistrationActivityPatient.this, LoginActivity.class);
+            startActivity(i);
         }catch(Exception e) {
             // if the information fails to be added to the database
             Toast.makeText(RegistrationActivityPatient.this, "Failed to submit!", Toast.LENGTH_SHORT).show();

@@ -26,7 +26,7 @@ public class Registration {
     }
 
     public static void createUserDoctor(String firstName, String lastName, String email, String accountPassword,
-                                        String phoneNumber, String address, String employeeNumber, String specialties) {
+                                        String phoneNumber, String address, String employeeNumber, String[] specialties) {
 
     }
 
