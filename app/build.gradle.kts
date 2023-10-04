@@ -47,4 +47,6 @@ dependencies {
     // dependencies for Firebase products
     // Add the dependency for the Realtime Database library
     implementation("com.google.firebase:firebase-database")
+    // Add the dependency for the Firebase Authentication library
+    implementation("com.google.firebase:firebase-auth-ktx")
 }

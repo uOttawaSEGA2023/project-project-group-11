@@ -1,5 +1,6 @@
 package com.example.seg2105project;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -9,6 +10,8 @@ public class Registration {
 
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference databaseReference = database.getReference();
+    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
 
     public static void createUserPatient(String firstName, String lastName, String email, String accountPassword,
                                          String phoneNumber, String address, String healthCardNumber) throws Exception {
@@ -23,6 +26,8 @@ public class Registration {
         String[] username = email.split("@");
         // add sign-up information to database
         databaseReference.child("users").child("patients").child(username[0]).setValue(patient);
+        mAuth.createUserWithEmailAndPassword(email, accountPassword);
+        FirebaseAuth.getInstance().signOut();
     }
 
     public static void createUserDoctor(String firstName, String lastName, String email, String accountPassword,
