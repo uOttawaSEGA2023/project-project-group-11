@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class RegistrationActivityPatient extends AppCompatActivity {
 
-    EditText firstName, lastName, emailAddress, password, phoneNumber, postalAddress, healthCardNumber;
+    private EditText firstName, lastName, emailAddress, password, phoneNumber, postalAddress, healthCardNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

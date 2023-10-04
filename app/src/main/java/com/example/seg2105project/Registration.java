@@ -11,7 +11,12 @@ public class Registration {
     private static DatabaseReference databaseReference = database.getReference();
 
     public static void createUserPatient(String firstName, String lastName, String email, String accountPassword,
-                                         String phoneNumber, String address, String healthCardNumber) {
+                                         String phoneNumber, String address, String healthCardNumber) throws Exception {
+        // validating that email is not empty
+        // NOTE: remove when input validations are implemented
+        if(email.equals("")){
+            throw new Exception();
+        }
         // create patient object
         User patient = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
         // use email as unique identifier for database
