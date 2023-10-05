@@ -47,29 +47,38 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this, "Logged in!", Toast.LENGTH_SHORT).show();
                             DatabaseReference usersRef = databaseReference.child("users");
                             Query usernameQuery =usersRef.orderByChild("email").equalTo(username.getText().toString());
                             usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot snapshot) {
-                                    for(DataSnapshot ds : snapshot.getChildren()) {
-                                        String key = ds.getKey();
-                                        String firstName = ds.child("firstName").getValue(String.class);
-                                        String lastName = ds.child("lastName").getValue(String.class);
-                                        String email = ds.child("email").getValue(String.class);
-                                        String accountPassword = ds.child("accountPassword").getValue(String.class);
-                                        String phoneNumber = ds.child("phoneNumber").getValue(String.class);
-                                        String address = ds.child("address").getValue(String.class);
-                                        String type = ds.child("type").getValue(String.class);
-                                        if(type.equals("patient")){
-                                            String healthCardNumber = ds.child("healthCardNumber").getValue(String.class);
-                                            user = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
+                                    try{
+                                        for(DataSnapshot ds : snapshot.getChildren()) {
+                                            String key = ds.getKey();
+                                            String firstName = ds.child("firstName").getValue(String.class);
+                                            String lastName = ds.child("lastName").getValue(String.class);
+                                            String email = ds.child("email").getValue(String.class);
+                                            String accountPassword = ds.child("accountPassword").getValue(String.class);
+                                            String phoneNumber = ds.child("phoneNumber").getValue(String.class);
+                                            String address = ds.child("address").getValue(String.class);
+                                            String type = ds.child("type").getValue(String.class);
+                                            if(type.equals("patient")){
+                                                String healthCardNumber = ds.child("healthCardNumber").getValue(String.class);
+                                                user = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
+                                            } else if(type.equals("doctor")){
+                                                ///create new doctor object
+                                            } else if(type.equals("admin")){
+                                                user = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
+                                            }
+                                            Intent i = new Intent(LoginActivity.this, WelcomePageActivity.class);
+                                            i.putExtra("User", user);
+                                            i.putExtra("Type", type);
+                                            startActivity(i);
+                                            Toast.makeText(LoginActivity.this, "Logged in!", Toast.LENGTH_SHORT).show();
                                         }
-                                        Intent i = new Intent(LoginActivity.this, WelcomePageActivity.class);
-                                        i.putExtra("User", user);
-                                        i.putExtra("Type", type);
-                                        startActivity(i);
+                                    }catch(Exception e){
+                                        Toast.makeText(LoginActivity.this, "Failed to log in!", Toast.LENGTH_SHORT).show();
+                                        System.out.println(e);
                                     }
 
                                 }
