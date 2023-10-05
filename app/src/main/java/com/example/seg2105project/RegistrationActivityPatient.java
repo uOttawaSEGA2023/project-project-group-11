@@ -37,6 +37,7 @@ public class RegistrationActivityPatient extends AppCompatActivity {
         }catch(Exception e) {
             // if the information fails to be added to the database
             Toast.makeText(RegistrationActivityPatient.this, "Failed to submit!", Toast.LENGTH_SHORT).show();
+            System.out.println(e);
         }
     }
 }
