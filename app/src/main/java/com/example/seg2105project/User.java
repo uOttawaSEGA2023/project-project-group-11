@@ -1,12 +1,15 @@
 package com.example.seg2105project;
 
-public abstract class User {
+import java.io.Serializable;
+
+public abstract class User implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
     private String accountPassword;
     private String phoneNumber;
     private String address;
+
     public User(String firstName, String lastName, String email, String accountPassword, String phoneNumber, String address){
         this.firstName=firstName;
         this.lastName=lastName;

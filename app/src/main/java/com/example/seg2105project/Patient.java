@@ -1,5 +1,5 @@
 package com.example.seg2105project;
-public class Patient extends User{
+public class Patient extends User {
     private String healthCardNumber;
 
     public Patient(String firstName, String lastName, String email, String accountPass, String phoneNumber, String address, String healthCardNum){
