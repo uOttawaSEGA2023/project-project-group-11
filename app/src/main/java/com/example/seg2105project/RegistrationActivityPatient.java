@@ -10,7 +10,8 @@ import android.widget.Toast;
 
 public class RegistrationActivityPatient extends AppCompatActivity {
 
-    private EditText firstName, lastName, emailAddress, password, phoneNumber, postalAddress, healthCardNumber;
+    private EditText firstName, lastName, emailAddress, password, phoneNumber,
+            postalAddress, postalCode, city, province, country, healthCardNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,17 @@ public class RegistrationActivityPatient extends AppCompatActivity {
         emailAddress = (EditText)findViewById(R.id.editTextTextEmailAddress);
         password = (EditText)findViewById(R.id.editTextTextPassword);
         phoneNumber = (EditText)findViewById(R.id.editTextPhone);
+        //address elements
         postalAddress = (EditText)findViewById(R.id.editTextTextPostalAddress);
+        postalCode = (EditText)findViewById(R.id.editTextText);
+        city = (EditText)findViewById(R.id.editTextText4);
+        province = (EditText)findViewById(R.id.editTextText5);
+        country = (EditText)findViewById(R.id.editTextText11);
+
         healthCardNumber = (EditText)findViewById(R.id.editTextNumber);
+
+        // create Address object once it is created
+
         try{
             Registration.createUserPatient(firstName.getText().toString(), lastName.getText().toString(),
                     emailAddress.getText().toString(), password.getText().toString(), phoneNumber.getText().toString(),

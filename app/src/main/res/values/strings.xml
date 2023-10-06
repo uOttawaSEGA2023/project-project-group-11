@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SEG2105 Project</string>
+    <string name="address"><u>Postal Address:</u></string>
 </resources>
