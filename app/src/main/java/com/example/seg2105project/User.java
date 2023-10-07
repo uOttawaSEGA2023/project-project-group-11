@@ -8,9 +8,9 @@ public abstract class User implements Serializable {
     private String email;
     private String accountPassword;
     private String phoneNumber;
-    private String address;
+    private Address address;
 
-    public User(String firstName, String lastName, String email, String accountPassword, String phoneNumber, String address){
+    public User(String firstName, String lastName, String email, String accountPassword, String phoneNumber, Address address){
         this.firstName=firstName;
         this.lastName=lastName;
         this.email=email;
@@ -33,7 +33,7 @@ public abstract class User implements Serializable {
     public String getPhoneNumber(){
         return this.phoneNumber;
     }
-    public String getAddress(){
+    public Address getAddress(){
         return this.address;
     }
 

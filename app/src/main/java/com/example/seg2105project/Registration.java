@@ -19,7 +19,7 @@ public class Registration {
 
 
     public static void createUserPatient(String firstName, String lastName, String email, String accountPassword,
-                                         String phoneNumber, String address, String healthCardNumber) throws Exception {
+                                         String phoneNumber, Address address, String healthCardNumber) throws Exception {
         // validating that email is not empty
         // NOTE: remove when input validations are implemented
         if(email.equals("")){
@@ -46,7 +46,7 @@ public class Registration {
     }
 
     public static void createUserAdmin(String firstName, String lastName, String email, String accountPassword,
-                                       String phoneNumber, String address) {
+                                       String phoneNumber, Address address) {
         User admin = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
         mAuth.createUserWithEmailAndPassword(email, accountPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 

@@ -60,7 +60,8 @@ public class LoginActivity extends AppCompatActivity {
                                             String email = ds.child("email").getValue(String.class);
                                             String accountPassword = ds.child("accountPassword").getValue(String.class);
                                             String phoneNumber = ds.child("phoneNumber").getValue(String.class);
-                                            String address = ds.child("address").getValue(String.class);
+                                            // Changed type to address
+                                            Address address = ds.child("address").getValue(Address.class);
                                             String type = ds.child("type").getValue(String.class);
                                             if(type.equals("patient")){
                                                 String healthCardNumber = ds.child("healthCardNumber").getValue(String.class);
