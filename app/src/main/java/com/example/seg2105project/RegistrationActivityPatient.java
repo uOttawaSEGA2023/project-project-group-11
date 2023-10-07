@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 public class RegistrationActivityPatient extends AppCompatActivity {
 
+    // variables representing every input field
     private EditText firstName, lastName, emailAddress, password, phoneNumber,
             postalAddress, postalCode, city, province, country, healthCardNumber;
 
@@ -20,6 +21,7 @@ public class RegistrationActivityPatient extends AppCompatActivity {
     }
 
     public void submitInformation(View view) {
+        // initializing every input field variable
         firstName = (EditText)findViewById(R.id.editTextText2);
         lastName = (EditText)findViewById(R.id.editTextText3);
         emailAddress = (EditText)findViewById(R.id.editTextTextEmailAddress);
@@ -34,16 +36,19 @@ public class RegistrationActivityPatient extends AppCompatActivity {
 
         healthCardNumber = (EditText)findViewById(R.id.editTextNumber);
 
-        // create Address object once it is created
-        Address address = new Address(postalAddress.getText().toString(),postalAddress.getText().toString(),city.getText().toString(),
+        // create Address object
+        Address address = new Address(postalAddress.getText().toString(),postalCode.getText().toString(),city.getText().toString(),
                 province.getText().toString(),country.getText().toString());
 
+        // call method in Registration class to create patient user
+        // parameters are String objects of the variables
         try{
             Registration.createUserPatient(firstName.getText().toString(), lastName.getText().toString(),
                     emailAddress.getText().toString(), password.getText().toString(), phoneNumber.getText().toString(),
                     address, healthCardNumber.getText().toString());
-            // add toast to show that the form is submitted
+            // add toast to show user that an account has been created
             Toast.makeText(RegistrationActivityPatient.this, "Submitted!", Toast.LENGTH_SHORT).show();
+            // go to log in page
             Intent i = new Intent(RegistrationActivityPatient.this, LoginActivity.class);
             startActivity(i);
         }catch(Exception e) {

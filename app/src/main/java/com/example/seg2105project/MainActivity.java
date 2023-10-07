@@ -16,11 +16,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClickButton(View view) {
+        // id of button clicked
         int pressID = view.getId();
+
+        // go to sign up page
         if(pressID == R.id.signUpButton){
             Intent i = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(i);
         }
+        // go to log in page
         if(pressID == R.id.logInButton){
             Intent i = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(i);

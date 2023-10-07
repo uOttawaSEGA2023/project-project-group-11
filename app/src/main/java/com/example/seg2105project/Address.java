@@ -1,6 +1,8 @@
 package com.example.seg2105project;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
     private String postalAddress;
     private String postalCode;
     private String city;

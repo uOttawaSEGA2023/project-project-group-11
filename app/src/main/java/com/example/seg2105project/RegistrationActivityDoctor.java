@@ -11,4 +11,6 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_doctor);
     }
+
+    // can reuse code from RegistrationActivityPatient
 }

@@ -15,11 +15,16 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void onClickButton(View view) {
+        // id of button clicked
         int pressID = view.getId();
+
+        // go to patient sign up page
         if(pressID == R.id.patientButton){
             Intent i = new Intent(SignUpActivity.this, RegistrationActivityPatient.class);
             startActivity(i);
-        } else if(pressID == R.id.doctorButton){
+        }
+        // go to doctor sign up page
+        if(pressID == R.id.doctorButton){
             Intent i = new Intent(SignUpActivity.this, RegistrationActivityDoctor.class);
             startActivity(i);
         }

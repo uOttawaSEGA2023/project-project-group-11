@@ -22,6 +22,7 @@ public class Registration {
                                          String phoneNumber, Address address, String healthCardNumber) throws Exception {
         // validating that email is not empty
         // NOTE: remove when input validations are implemented
+        // NOTE: create a new method to check for input validation so that both patient and doctor is considered
         if(email.equals("")){
             throw new Exception();
         }
@@ -33,8 +34,11 @@ public class Registration {
 
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                // when the user is created, add patient object to database
                 databaseReference.child("users").child(mAuth.getUid()).setValue(patient);
+                // add new "type" key to represent the type of User in the database
                 databaseReference.child("users").child(mAuth.getUid()).child("type").setValue("patient");
+                // sign user out so that they can re-login on login page
                 FirebaseAuth.getInstance().signOut();
             }
         });
@@ -47,13 +51,19 @@ public class Registration {
 
     public static void createUserAdmin(String firstName, String lastName, String email, String accountPassword,
                                        String phoneNumber, Address address) {
+        // create admin object
         User admin = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
+        // use authentication ID as unique identifier for database
+        // add sign-up information to database
         mAuth.createUserWithEmailAndPassword(email, accountPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+                // when the user is created, add admin object to database
                 databaseReference.child("users").child(mAuth.getUid()).setValue(admin);
+                // add new "type" key to represent the type of User in the database
                 databaseReference.child("users").child(mAuth.getUid()).child("type").setValue("admin");
+                // sign user out so that they can re-login on login page
                 FirebaseAuth.getInstance().signOut();
             }
         });
