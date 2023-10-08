@@ -22,10 +22,11 @@ public class Registration {
                                          String phoneNumber, Address address, String healthCardNumber) throws Exception {
         // validating that email is not empty
         // NOTE: remove when input validations are implemented
-        // NOTE: create a new method to check for input validation so that both patient and doctor is considered
+        // NOTE: use method validateInput() below to check for input validation so that both patient and doctor is considered
         if(email.equals("")){
             throw new Exception();
         }
+        validateInput();
         // create patient object
         User patient = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
         // use authentication ID as unique identifier for database
@@ -51,6 +52,7 @@ public class Registration {
 
     public static void createUserAdmin(String firstName, String lastName, String email, String accountPassword,
                                        String phoneNumber, Address address) {
+        validateInput();
         // create admin object
         User admin = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
         // use authentication ID as unique identifier for database
@@ -67,5 +69,11 @@ public class Registration {
                 FirebaseAuth.getInstance().signOut();
             }
         });
+    }
+
+
+    // TO BE IMPLEMENTED
+    public static void validateInput() {
+
     }
 }
