@@ -73,6 +73,8 @@ public class LoginActivity extends AppCompatActivity {
                                             String email = ds.child("email").getValue(String.class);
                                             String accountPassword = ds.child("accountPassword").getValue(String.class);
                                             String phoneNumber = ds.child("phoneNumber").getValue(String.class);
+                                            String employeeNumber = ds.child("employeeNumber").getValue(String.class);
+                                            String specialies = ds.child("specialites").getValue(String.class);
 
                                             // receiving for address class
                                             String postalAddress = ds.child("address").child("postalAddress").getValue(String.class);
@@ -88,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 String healthCardNumber = ds.child("healthCardNumber").getValue(String.class);
                                                 user = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
                                             } else if(type.equals("doctor")){
-                                                ///create new doctor object
+                                                user = new Doctor(firstName, lastName, email, accountPassword, phoneNumber, address, employeeNumber, specialies);
                                             } else if(type.equals("admin")){
                                                 user = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
                                             }
