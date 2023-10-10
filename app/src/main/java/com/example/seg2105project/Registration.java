@@ -9,6 +9,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,7 +56,7 @@ public class Registration {
     public static void createUserDoctor(String firstName, String lastName, String email,
                                         String accountPassword, String phoneNumber,
                                         Address address, String employeeNumber,
-                                        String... specialties) throws Exception {
+                                        ArrayList<String> specialties) throws Exception {
         User doctor = new Doctor(firstName, lastName, email, accountPassword, phoneNumber, address,
                 employeeNumber, specialties);
 
@@ -140,7 +142,7 @@ public class Registration {
 
         // specialization length validation
         if (user instanceof Doctor) {
-            if (((Doctor) user).getSpecialities().length < 1) {
+            if (((Doctor) user).getSpecialties().size() < 1) {
                 return false;
             }
         }

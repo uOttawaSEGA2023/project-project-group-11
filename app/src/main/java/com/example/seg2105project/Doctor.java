@@ -1,22 +1,25 @@
 package com.example.seg2105project;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Doctor extends User {
     private String employeeNumber;
-    private String[] specialities;
+    private ArrayList<String> specialties;
 
     public Doctor(String firstName, String lastName, String email, String accountPass,
                   String phoneNumber, Address address, String employeeNumber,
-                  String... specialities) {
+                  ArrayList<String> specialties) {
         super(firstName, lastName, email, accountPass, phoneNumber, address);
         this.employeeNumber = employeeNumber;
-        this.specialities = specialities;
+        this.specialties = specialties;
     }
 
     public String getHealthCardNumber() {
         return this.employeeNumber;
     }
 
-    public String[] getSpecialities() {
-        return this.specialities;
+    public ArrayList<String> getSpecialties() {
+        return this.specialties;
     }
 }

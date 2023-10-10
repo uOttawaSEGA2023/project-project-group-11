@@ -8,13 +8,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class RegistrationActivityDoctor extends AppCompatActivity {
 
     private EditText firstName, lastName, emailAddress, password, phoneNumber,
-            postalAddress, postalCode, city, province, country, employeeNumber, specialities;
+            postalAddress, postalCode, city, province, country, employeeNumber, specialties;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
         country = findViewById(R.id.editTextText11);
 
         employeeNumber = findViewById(R.id.editTextNumber);
-        specialities = findViewById(R.id.editTextTextMultiLine);
+        specialties = findViewById(R.id.editTextTextMultiLine);
 
 
 
@@ -50,7 +53,7 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
         try{
             Registration.createUserDoctor(firstName.getText().toString(), lastName.getText().toString(),
                     emailAddress.getText().toString(), password.getText().toString(), phoneNumber.getText().toString(),
-                    address, employeeNumber.getText().toString(), splitSpecialities(specialities.getText().toString()));
+                    address, employeeNumber.getText().toString(), splitSpecialties(specialties.getText().toString()));
             // add toast to show user that an account has been created
             Toast.makeText(RegistrationActivityDoctor.this, "Submitted!", Toast.LENGTH_SHORT).show();
             // go to log in page
@@ -65,7 +68,7 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
         }
     }
 
-    public String[] splitSpecialities(String specialities) {
-        return specialities.split(" ");
+    public ArrayList<String> splitSpecialties(String specialties) {
+        return (ArrayList<String>) Arrays.asList(specialties.split(" "));
     }
 }
