@@ -70,6 +70,6 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
     }
 
     public ArrayList<String> splitSpecialties(String specialties) {
-        return new ArrayList<String>(Arrays.asList(specialties.split(" ")));
+        return new ArrayList<String>(Arrays.asList(specialties.split("\n")));
     }
 }
