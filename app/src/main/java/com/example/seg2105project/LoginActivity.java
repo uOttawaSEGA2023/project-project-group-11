@@ -20,6 +20,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {
@@ -92,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                                                 user = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
                                             } else if(type.equals("doctor")){
                                                 String employeeNumber = ds.child("employeeNumber").getValue(String.class);
-                                                ArrayList<String> specialties = ds.child("specialties").getValue(ArrayList.class);
+                                                ArrayList<String> specialties = (ArrayList<String>) ds.child("specialties").getValue();
                                                 user = new Doctor(firstName, lastName, email, accountPassword, phoneNumber, address, employeeNumber, specialties);
                                             } else if(type.equals("admin")){
                                                 user = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);

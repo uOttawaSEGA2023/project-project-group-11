@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,6 +70,6 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
     }
 
     public ArrayList<String> splitSpecialties(String specialties) {
-        return (ArrayList<String>) Arrays.asList(specialties.split(" "));
+        return new ArrayList<String>(Arrays.asList(specialties.split(" ")));
     }
 }
