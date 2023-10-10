@@ -19,6 +19,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
     // variables for input fields
@@ -73,8 +77,6 @@ public class LoginActivity extends AppCompatActivity {
                                             String email = ds.child("email").getValue(String.class);
                                             String accountPassword = ds.child("accountPassword").getValue(String.class);
                                             String phoneNumber = ds.child("phoneNumber").getValue(String.class);
-                                            String employeeNumber = ds.child("employeeNumber").getValue(String.class);
-                                            String specialies = ds.child("specialites").getValue(String.class);
 
                                             // receiving for address class
                                             String postalAddress = ds.child("address").child("postalAddress").getValue(String.class);
@@ -90,7 +92,9 @@ public class LoginActivity extends AppCompatActivity {
                                                 String healthCardNumber = ds.child("healthCardNumber").getValue(String.class);
                                                 user = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
                                             } else if(type.equals("doctor")){
-                                                user = new Doctor(firstName, lastName, email, accountPassword, phoneNumber, address, employeeNumber, specialies);
+                                                String employeeNumber = ds.child("employeeNumber").getValue(String.class);
+                                                ArrayList<String> specialties = (ArrayList<String>) ds.child("specialties").getValue();
+                                                user = new Doctor(firstName, lastName, email, accountPassword, phoneNumber, address, employeeNumber, specialties);
                                             } else if(type.equals("admin")){
                                                 user = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
                                             }
