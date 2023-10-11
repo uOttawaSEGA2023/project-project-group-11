@@ -106,7 +106,7 @@ public class LoginActivity extends AppCompatActivity {
                                         }
                                     }catch(Exception e){
                                         // catch exception if error occurs retrieving data
-                                        Toast.makeText(LoginActivity.this, "Failed to log in!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(LoginActivity.this, "Failed to retrieve user data!", Toast.LENGTH_SHORT).show();
                                         System.out.println(e);
                                     }
 
@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                             });
                         } else {
                             // user failed to log in based on wrong credentials
-                            Toast.makeText(LoginActivity.this, "Failed to Log In!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Username or password is incorrect!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

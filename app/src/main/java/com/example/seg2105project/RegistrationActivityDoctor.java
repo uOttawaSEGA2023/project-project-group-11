@@ -60,7 +60,7 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
             startActivity(i);
         }catch(Exception e) {
             // if the information fails to be added to the database
-            Toast.makeText(RegistrationActivityDoctor.this, "Failed to submit!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RegistrationActivityDoctor.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
             Logger logger = Logger.getLogger(RegistrationActivityDoctor.class.getName());
             logger.log(Level.SEVERE, "Failed to submit!", e);
