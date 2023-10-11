@@ -1,7 +1,6 @@
 package com.example.seg2105project;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Doctor extends User {
     private String employeeNumber;
