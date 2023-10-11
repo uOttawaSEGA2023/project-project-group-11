@@ -113,6 +113,16 @@ public class Registration {
     // TO BE IMPLEMENTED
     public static boolean validateInput(User user) {
 
+        // first name validation
+        if(user.getFirstName().length() < 1) {
+            return false;
+        }
+
+        // last name validation
+        if(user.getLastName().length() < 1) {
+            return false;
+        }
+
         // password validation
         if (user.getAccountPassword().length() < 5) {
             return false;
@@ -123,9 +133,11 @@ public class Registration {
             return false;
         }
 
-        // empty address validation
-        if (user.getAddress() == null) {
-            // zip code
+        // address validation
+        if (user.getAddress() != null) {
+
+            //postal code format - A1B 2C3
+//            // zip code
             String regex = "^[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$";
             Pattern pattern = Pattern.compile(regex);
             Matcher zipMatch = pattern.matcher(user.getAddress().getPostalCode());
@@ -135,14 +147,28 @@ public class Registration {
             Pattern pattern2 = Pattern.compile(regex2);
             Matcher postalMatch = pattern2.matcher(user.getAddress().getPostalCode());
 
-            if (!zipMatch.matches() || !postalMatch.matches()) {
+            // street address, city, province, country
+            if (user.getAddress().getPostalAddress().length() < 1
+                    ||!zipMatch.matches() || !postalMatch.matches()
+                    || user.getAddress().getCity().length() < 1
+                    || user.getAddress().getProvince().length() < 1
+                    || user.getAddress().getCountry().length() < 1) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        // patient health card number validation
+        if (user instanceof Patient) {
+            if(((Patient) user).getHealthCardNumber().length() < 1) {
                 return false;
             }
         }
-
         // specialization length validation
         if (user instanceof Doctor) {
-            if (((Doctor) user).getSpecialties().size() < 1) {
+            if (((Doctor) user).getSpecialties().size() < 1
+            || ((Doctor) user).getEmployeeNumber().length() < 1) {
                 return false;
             }
         }
@@ -151,6 +177,10 @@ public class Registration {
         String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher emailMatch = pattern.matcher(user.getEmail());
-        return emailMatch.matches();
+        if (!emailMatch.matches()) {
+            System.out.println("THIS FAILED");
+            return false;
+        }
+        return true;
     }
 }

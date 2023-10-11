@@ -15,7 +15,7 @@ public class Doctor extends User {
         this.specialties = specialties;
     }
 
-    public String getHealthCardNumber() {
+    public String getEmployeeNumber() {
         return this.employeeNumber;
     }
 
