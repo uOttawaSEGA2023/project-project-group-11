@@ -4,11 +4,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import com.google.firebase.auth.*;
+import android.view.View;
+import android.content.Intent;
+import android.widget.Toast;
 
 public class WelcomePageActivity extends AppCompatActivity {
 
     // variable to display message
     TextView welcomeText;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,5 +25,12 @@ public class WelcomePageActivity extends AppCompatActivity {
         welcomeText = (TextView)findViewById(R.id.welcomeText);
         welcomeText.setText("Welcome " + user.getFirstName() + " " + user.getLastName() +
                 "! You are logged in as " + type);
+    }
+    protected void onClickSignOut(View view){
+        mAuth.signOut();
+        Intent signOut = new Intent(WelcomePageActivity.this, MainActivity.class);
+        startActivity(signOut);
+        finish();
+        Toast.makeText(WelcomePageActivity.this, "Logging out...", Toast.LENGTH_SHORT).show();
     }
 }
