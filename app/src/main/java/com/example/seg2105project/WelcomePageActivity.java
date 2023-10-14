@@ -18,6 +18,7 @@ public class WelcomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
+        mAuth = FirebaseAuth.getInstance();
         // get User object from log in
         User user = (User) getIntent().getExtras().getSerializable("User");
         // get type of User
@@ -26,11 +27,15 @@ public class WelcomePageActivity extends AppCompatActivity {
         welcomeText.setText("Welcome " + user.getFirstName() + " " + user.getLastName() +
                 "! You are logged in as " + type);
     }
-    protected void onClickSignOut(View view){
-        mAuth.signOut();
-        Intent signOut = new Intent(WelcomePageActivity.this, MainActivity.class);
-        startActivity(signOut);
-        finish();
-        Toast.makeText(WelcomePageActivity.this, "Logging out...", Toast.LENGTH_SHORT).show();
+    public void onClickSignOut(View view){
+        try{
+            mAuth.signOut();
+            Intent signOut = new Intent(WelcomePageActivity.this, MainActivity.class);
+            startActivity(signOut);
+            Toast.makeText(WelcomePageActivity.this, "Logged out!", Toast.LENGTH_SHORT).show();
+        }catch(Exception e){
+            Toast.makeText(WelcomePageActivity.this, "Error logging out", Toast.LENGTH_SHORT).show();
+            System.out.println(e);
+        }
     }
 }
