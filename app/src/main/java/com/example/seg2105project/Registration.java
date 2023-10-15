@@ -148,7 +148,7 @@ public class Registration {
 
 
             // postal code
-            String postalForm = "\b[A-Y][0-9][A-Z] [0-9][A-Z][0-9]\b";
+            String postalForm = "^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$";
             Pattern postal = Pattern.compile(postalForm);
             Matcher postalMatch = postal.matcher(user.getAddress().getPostalCode());
 
