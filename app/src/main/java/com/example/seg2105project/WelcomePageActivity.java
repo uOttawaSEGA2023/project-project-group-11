@@ -23,7 +23,7 @@ public class WelcomePageActivity extends AppCompatActivity {
         User user = (User) getIntent().getExtras().getSerializable("User");
         // get type of User
         String type = getIntent().getExtras().getString("Type");
-        welcomeText = (TextView)findViewById(R.id.welcomeText);
+        welcomeText = findViewById(R.id.welcomeText);
         welcomeText.setText("Welcome " + user.getFirstName() + " " + user.getLastName() +
                 "! You are logged in as " + type);
     }

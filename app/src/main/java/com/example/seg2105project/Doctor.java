@@ -3,8 +3,8 @@ package com.example.seg2105project;
 import java.util.ArrayList;
 
 public class Doctor extends User {
-    private String employeeNumber;
-    private ArrayList<String> specialties;
+    private final String employeeNumber;
+    private final ArrayList<String> specialties;
 
     public Doctor(String firstName, String lastName, String email, String accountPass,
                   String phoneNumber, Address address, String employeeNumber,

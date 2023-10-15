@@ -1,23 +1,25 @@
 package com.example.seg2105project;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.*;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 
@@ -43,10 +45,10 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public void onClickLogin(View view){
+    public void onClickLogin(View view) {
         // initializing input field variables
-        username = (EditText)findViewById(R.id.username);
-        password = (EditText)findViewById(R.id.logInPassword);
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.logInPassword);
         // sign in the user using email and password
         // Note: code assisted by https://firebase.google.com/docs/auth/android/password-auth
         // and https://stackoverflow.com/questions/47296771/firebase-how-to-get-child-of-child#:~:text=To%20solve%20this%2C%20you%20need%20to%20query%20your,rootRef.child%20%28%22users%22%29%3B%20Query%20regnoQuery%20%3D%20usersRef.orderByChild%20%28%22regno%22%29.equalsTo%20%28regno%29%3B
@@ -64,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 // retrieving user data that matches the username input
                                 @Override
-                                public void onDataChange(DataSnapshot snapshot) {
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     try{
                                         // loop through snapshot data of user obtained from match above
                                         // NOTE: should only have to loop through 1 child since only one match
@@ -86,16 +88,25 @@ public class LoginActivity extends AppCompatActivity {
 
                                             String type = ds.child("type").getValue(String.class);
                                             // creating new objects based on above data
-                                            if(type.equals("patient")){
-                                                String healthCardNumber = ds.child("healthCardNumber").getValue(String.class);
-                                                user = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
-                                            } else if(type.equals("doctor")){
-                                                String employeeNumber = ds.child("employeeNumber").getValue(String.class);
-                                                ArrayList<String> specialties = (ArrayList<String>) ds.child("specialties").getValue();
-                                                user = new Doctor(firstName, lastName, email, accountPassword, phoneNumber, address, employeeNumber, specialties);
-                                            } else if(type.equals("admin")){
-                                                user = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
+                                            switch (type) {
+                                                case "patient":
+                                                    String healthCardNumber = ds.child("healthCardNumber").getValue(String.class);
+                                                    if (healthCardNumber != null) {
+                                                        user = new Patient(firstName, lastName, email, accountPassword, phoneNumber, address, healthCardNumber);
+                                                    }
+                                                    break;
+                                                case "doctor":
+                                                    String employeeNumber = ds.child("employeeNumber").getValue(String.class);
+                                                    ArrayList<String> specialties = (ArrayList<String>) ds.child("specialties").getValue();
+                                                    if (employeeNumber != null && specialties != null) {
+                                                        user = new Doctor(firstName, lastName, email, accountPassword, phoneNumber, address, employeeNumber, specialties);
+                                                    }
+                                                    break;
+                                                case "admin":
+                                                    user = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
+                                                    break;
                                             }
+
                                             // put user object into bundle and go to welcome page
                                             Intent i = new Intent(LoginActivity.this, WelcomePageActivity.class);
                                             i.putExtra("User", user);
@@ -114,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 // required method to implement (can ignore)
                                 @Override
-                                public void onCancelled(DatabaseError error) {
+                                public void onCancelled(@NonNull DatabaseError error) {
 
                                 }
                             });

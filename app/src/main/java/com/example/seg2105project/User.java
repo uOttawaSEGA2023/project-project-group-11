@@ -3,12 +3,12 @@ package com.example.seg2105project;
 import java.io.Serializable;
 
 public abstract class User implements Serializable {
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String accountPassword;
-    private String phoneNumber;
-    private Address address;
+    private final String firstName;
+    private final String lastName;
+    private final String email;
+    private final String accountPassword;
+    private final String phoneNumber;
+    private final Address address;
 
     public User(String firstName, String lastName, String email, String accountPassword, String phoneNumber, Address address){
         this.firstName=firstName;

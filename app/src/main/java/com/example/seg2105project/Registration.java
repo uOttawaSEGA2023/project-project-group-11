@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 
 public class Registration {
 
-    private static FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private static DatabaseReference databaseReference = database.getReference();
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private static final DatabaseReference databaseReference = database.getReference();
+    private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
 
     public static void createUserPatient(String firstName, String lastName, String email,
@@ -37,6 +37,9 @@ public class Registration {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (mAuth.getUid() == null) {
+                            throw new NullPointerException("Uid is null");
+                        }
                         // when the user is created, add patient object to database
                         databaseReference.child("users").child(mAuth.getUid()).setValue(patient);
                         // add new "type" key to represent the type of User in the database
@@ -62,6 +65,9 @@ public class Registration {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (mAuth.getUid() == null) {
+                            throw new NullPointerException("Uid is null");
+                        }
                         // when the user is created, add doctor object to database
                         databaseReference.child("users").child(mAuth.getUid()).setValue(doctor);
                         // add new "type" key to represent the type of User in the database
@@ -81,8 +87,6 @@ public class Registration {
 
         validateInput(admin);
 
-
-
         // use authentication ID as unique identifier for database
         // add sign-up information to database
         mAuth.createUserWithEmailAndPassword(email, accountPassword).addOnCompleteListener(
@@ -90,6 +94,9 @@ public class Registration {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (mAuth.getUid() == null) {
+                            throw new NullPointerException("Uid is null");
+                        }
                         // when the user is created, add admin object to database
                         databaseReference.child("users").child(mAuth.getUid()).setValue(admin);
                         // add new "type" key to represent the type of User in the database
@@ -116,6 +123,7 @@ public class Registration {
         }
 
         // email validation
+        // matches with example@example.example
         String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher emailMatch = pattern.matcher(user.getEmail());

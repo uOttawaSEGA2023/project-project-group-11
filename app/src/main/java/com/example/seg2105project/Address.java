@@ -3,11 +3,11 @@ package com.example.seg2105project;
 import java.io.Serializable;
 
 public class Address implements Serializable {
-    private String postalAddress;
-    private String postalCode;
-    private String city;
-    private String province;
-    private String country;
+    private final String postalAddress;
+    private final String postalCode;
+    private final String city;
+    private final String province;
+    private final String country;
 
     Address(String postalAddress, String postalCode,String city, String province, String country){
         this.postalAddress=postalAddress;

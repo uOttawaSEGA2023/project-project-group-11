@@ -22,19 +22,20 @@ public class RegistrationActivityPatient extends AppCompatActivity {
 
     public void submitInformation(View view) {
         // initializing every input field variable
-        firstName = (EditText)findViewById(R.id.editTextText2);
-        lastName = (EditText)findViewById(R.id.editTextText3);
-        emailAddress = (EditText)findViewById(R.id.editTextTextEmailAddress);
-        password = (EditText)findViewById(R.id.editTextTextPassword);
-        phoneNumber = (EditText)findViewById(R.id.editTextPhone);
-        //address elements
-        postalAddress = (EditText)findViewById(R.id.editTextTextPostalAddress);
-        postalCode = (EditText)findViewById(R.id.editTextText);
-        city = (EditText)findViewById(R.id.editTextText4);
-        province = (EditText)findViewById(R.id.editTextText5);
-        country = (EditText)findViewById(R.id.editTextText11);
+        firstName = findViewById(R.id.editTextText2);
+        lastName = findViewById(R.id.editTextText3);
+        emailAddress = findViewById(R.id.editTextTextEmailAddress);
+        password = findViewById(R.id.editTextTextPassword);
+        phoneNumber = findViewById(R.id.editTextPhone);
 
-        healthCardNumber = (EditText)findViewById(R.id.editTextNumber);
+        //address elements
+        postalAddress = findViewById(R.id.editTextTextPostalAddress);
+        postalCode = findViewById(R.id.editTextText);
+        city = findViewById(R.id.editTextText4);
+        province = findViewById(R.id.editTextText5);
+        country = findViewById(R.id.editTextText11);
+
+        healthCardNumber = findViewById(R.id.editTextNumber);
 
         // create Address object
         Address address = new Address(postalAddress.getText().toString(),postalCode.getText().toString(),city.getText().toString(),
