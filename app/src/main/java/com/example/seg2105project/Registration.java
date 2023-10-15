@@ -141,9 +141,9 @@ public class Registration {
 
             // zip code
 
-           // String zipForm = "\b\d{5}(?:-\d{4})?\b";
-            //Pattern zip = Pattern.compile(zipForm);
-            //Matcher zipMatch = zip.matcher(user.getAddress().getPostalCode());
+//           String zipForm = "\b\d{5}(?:-\d{4})?\b";
+//           Pattern zip = Pattern.compile(zipForm);
+//           Matcher zipMatch = zip.matcher(user.getAddress().getPostalCode());
 
 
 
@@ -159,7 +159,7 @@ public class Registration {
             if(!postalMatch.matches()){
                 throw new Exception("Postal code format: A1A 1A1");
             }
-//           // if(!zipMatch.matches()){
+//            if(!zipMatch.matches()){
 //                throw new Exception("zip code format: 11111");
 //            }
             if(user.getAddress().getCity().length() < 1) {
