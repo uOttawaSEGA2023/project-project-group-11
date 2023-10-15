@@ -75,11 +75,12 @@ public class Registration {
 
     public static void createUserAdmin(String firstName, String lastName, String email,
                                        String accountPassword, String phoneNumber,
-                                       Address address) throws Exception{
+                                       Address address) throws Exception {
         // create admin object
         User admin = new Admin(firstName, lastName, email, accountPassword, phoneNumber, address);
 
         validateInput(admin);
+
 
 
         // use authentication ID as unique identifier for database
@@ -105,17 +106,17 @@ public class Registration {
     private static void validateInput(User user) throws Exception {
 
         // first name validation
-        if(user.getFirstName().length() < 1) {
+        if (user.getFirstName().length() < 1) {
             throw new Exception("First Name not entered!");
         }
 
         // last name validation
-        if(user.getLastName().length() < 1) {
+        if (user.getLastName().length() < 1) {
             throw new Exception("Last Name not entered!");
         }
 
         // email validation
-        String regex = "^[A-Za-z0-9+_.-]+@(.+)$";
+        String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher emailMatch = pattern.matcher(user.getEmail());
         if (!emailMatch.matches()) {
@@ -134,57 +135,41 @@ public class Registration {
 
         // address validation
         if (user.getAddress() != null) {
-
-            //postal code format - A1A 1A1
-
-
-
-//             zip code
-//
-//           String zipForm = "\b\d{5}(?:-\d{4})?\b";
-//           Pattern zip = Pattern.compile(zipForm);
-//           Matcher zipMatch = zip.matcher(user.getAddress().getPostalCode());
-
-
-
-            // postal code
-            String postalForm = "^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$";
+            // postal code postal code format - A1A 1A1
+            String postalForm = "^(?!.*[DFIOQU])[A-VXYa-vxy][0-9][A-Za-z] ?[0-9][A-Za-z][0-9]$";
             Pattern postal = Pattern.compile(postalForm);
             Matcher postalMatch = postal.matcher(user.getAddress().getPostalCode());
 
             // street address, city, province, country
-            if (user.getAddress().getPostalAddress().length() < 1){
+            if (user.getAddress().getPostalAddress().length() < 1) {
                 throw new Exception("Postal Address not entered!");
             }
-            if(!postalMatch.matches()){
-                throw new Exception("Postal code format: A1A 1A1");
+            if (!postalMatch.matches()) {
+                throw new Exception("Postal code format A1A 1A1");
             }
-//            if(!zipMatch.matches()){
-//                throw new Exception("zip code format: 11111");
-//            }
-            if(user.getAddress().getCity().length() < 1) {
+            if (user.getAddress().getCity().length() < 1) {
                 throw new Exception("City not entered!");
             }
-            if(user.getAddress().getProvince().length() < 1){
+            if (user.getAddress().getProvince().length() < 1) {
                 throw new Exception("Province not entered!");
             }
-            if(user.getAddress().getCountry().length() < 1){
+            if (user.getAddress().getCountry().length() < 1) {
                 throw new Exception("Country not entered!");
             }
         }
 
         // patient health card number validation
         if (user instanceof Patient) {
-            if(((Patient) user).getHealthCardNumber().length() < 1) {
+            if (((Patient) user).getHealthCardNumber().length() < 1) {
                 throw new Exception("Health card number not entered!");
             }
         }
         // specialization length validation
         if (user instanceof Doctor) {
-            if (((Doctor) user).getSpecialties().size() < 1){
+            if (((Doctor) user).getSpecialties().size() < 1) {
                 throw new Exception("Specialties not entered!");
             }
-            if(((Doctor) user).getEmployeeNumber().length() < 1){
+            if (((Doctor) user).getEmployeeNumber().length() < 1) {
                 throw new Exception("Employee number not entered!");
             }
         }
