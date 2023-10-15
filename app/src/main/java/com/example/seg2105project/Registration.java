@@ -18,7 +18,7 @@ public class Registration {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final DatabaseReference databaseReference = database.getReference();
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    private static boolean emailInUse = false;
 
     public static void createUserPatient(String firstName, String lastName, String email,
                                          String accountPassword, String phoneNumber,
@@ -29,7 +29,6 @@ public class Registration {
                 address, healthCardNumber);
 
         validateInput(patient);
-
         // use authentication ID as unique identifier for database
         // add sign-up information to database
         mAuth.createUserWithEmailAndPassword(email, accountPassword).addOnCompleteListener(
@@ -37,19 +36,21 @@ public class Registration {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (mAuth.getUid() == null) {
-                            throw new NullPointerException("Uid is null");
+                        if(task.isSuccessful()){
+                            // when the user is created, add patient object to database
+                            databaseReference.child("users").child(mAuth.getUid()).setValue(patient);
+                            // add new "type" key to represent the type of User in the database
+                            databaseReference.child("users").child(mAuth.getUid()).child(
+                                    "type").setValue("patient");
+                            // sign user out so that they can re-login on login page
+                            FirebaseAuth.getInstance().signOut();
+                        }else{
+                            emailInUse = true;
                         }
-                        // when the user is created, add patient object to database
-                        databaseReference.child("users").child(mAuth.getUid()).setValue(patient);
-                        // add new "type" key to represent the type of User in the database
-                        databaseReference.child("users").child(mAuth.getUid()).child(
-                                "type").setValue("patient");
-                        // sign user out so that they can re-login on login page
-                        FirebaseAuth.getInstance().signOut();
                     }
                 });
     }
+
 
     public static void createUserDoctor(String firstName, String lastName, String email,
                                         String accountPassword, String phoneNumber,
@@ -65,18 +66,20 @@ public class Registration {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (mAuth.getUid() == null) {
-                            throw new NullPointerException("Uid is null");
+                        if(task.isSuccessful()){
+                            // when the user is created, add doctor object to database
+                            databaseReference.child("users").child(mAuth.getUid()).setValue(doctor);
+                            // add new "type" key to represent the type of User in the database
+                            databaseReference.child("users").child(mAuth.getUid()).child(
+                                    "type").setValue("doctor");
+                            // sign user out so that they can re-login on login page
+                            FirebaseAuth.getInstance().signOut();
+                        }else{
+                            emailInUse = true;
                         }
-                        // when the user is created, add doctor object to database
-                        databaseReference.child("users").child(mAuth.getUid()).setValue(doctor);
-                        // add new "type" key to represent the type of User in the database
-                        databaseReference.child("users").child(mAuth.getUid()).child(
-                                "type").setValue("doctor");
-                        // sign user out so that they can re-login on login page
-                        FirebaseAuth.getInstance().signOut();
                     }
                 });
+
     }
 
     public static void createUserAdmin(String firstName, String lastName, String email,
@@ -94,16 +97,17 @@ public class Registration {
 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (mAuth.getUid() == null) {
-                            throw new NullPointerException("Uid is null");
+                        if(task.isSuccessful()) {
+                            // when the user is created, add admin object to database
+                            databaseReference.child("users").child(mAuth.getUid()).setValue(admin);
+                            // add new "type" key to represent the type of User in the database
+                            databaseReference.child("users").child(mAuth.getUid()).child(
+                                    "type").setValue("admin");
+                            // sign user out so that they can re-login on login page
+                            FirebaseAuth.getInstance().signOut();
+                        }else{
+                            emailInUse = true;
                         }
-                        // when the user is created, add admin object to database
-                        databaseReference.child("users").child(mAuth.getUid()).setValue(admin);
-                        // add new "type" key to represent the type of User in the database
-                        databaseReference.child("users").child(mAuth.getUid()).child(
-                                "type").setValue("admin");
-                        // sign user out so that they can re-login on login page
-                        FirebaseAuth.getInstance().signOut();
                     }
                 });
     }
