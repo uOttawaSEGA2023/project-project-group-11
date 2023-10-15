@@ -139,10 +139,20 @@ public class Registration {
 
             //postal code format - A1A 1A1
 
+
+
+            // zip code
+
+           // String zipForm = "\b\d{5}(?:-\d{4})?\b";
+            //Pattern zip = Pattern.compile(zipForm);
+            //Matcher zipMatch = zip.matcher(user.getAddress().getPostalCode());
+
+
+
             // postal code
-            String regex2 = "^[A-Za-z]\\d[A-Za-z] \\d[A-Za-z]\\d$";
-            Pattern pattern2 = Pattern.compile(regex2);
-            Matcher postalMatch = pattern2.matcher(user.getAddress().getPostalCode());
+            String postalForm = "\b[A-Y][0-9][A-Z] [0-9][A-Z][0-9]\b";
+            Pattern postal = Pattern.compile(postalForm);
+            Matcher postalMatch = postal.matcher(user.getAddress().getPostalCode());
 
             // street address, city, province, country
             if (user.getAddress().getPostalAddress().length() < 1){
@@ -151,6 +161,9 @@ public class Registration {
             if(!postalMatch.matches()){
                 throw new Exception("Postal code format: A1A 1A1");
             }
+//           // if(!zipMatch.matches()){
+//                throw new Exception("zip code format: 11111");
+//            }
             if(user.getAddress().getCity().length() < 1) {
                 throw new Exception("City not entered!");
             }
