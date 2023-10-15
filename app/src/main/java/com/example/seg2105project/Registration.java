@@ -139,8 +139,8 @@ public class Registration {
 
 
 
-            // zip code
-
+//             zip code
+//
 //           String zipForm = "\b\d{5}(?:-\d{4})?\b";
 //           Pattern zip = Pattern.compile(zipForm);
 //           Matcher zipMatch = zip.matcher(user.getAddress().getPostalCode());
