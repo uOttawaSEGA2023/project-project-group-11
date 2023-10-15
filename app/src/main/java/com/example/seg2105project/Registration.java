@@ -15,8 +15,6 @@ import java.util.regex.Pattern;
 
 public class Registration {
 
-    private User user;
-
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static DatabaseReference databaseReference = database.getReference();
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -103,8 +101,8 @@ public class Registration {
     }
 
 
-    // TO BE IMPLEMENTED
-    public static void validateInput(User user) throws Exception {
+    // Validates input of user
+    private static void validateInput(User user) throws Exception {
 
         // first name validation
         if(user.getFirstName().length() < 1) {
