@@ -24,6 +24,13 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
         setContentView(R.layout.activity_registration_doctor);
     }
 
+    /**
+     *Submits the information received by the user and calls
+     * {@link Registration#createUserDoctor(String, String, String, String, String, Address, String, ArrayList)}
+     * to create a Patient object.
+     * @param view
+     * @see Registration#createUserDoctor(String, String, String, String, String, Address, String, ArrayList)
+     */
     public void submitInformation(View view) {
         // initializing every input field variable
         firstName = findViewById(R.id.editTextText2);
@@ -67,7 +74,12 @@ public class RegistrationActivityDoctor extends AppCompatActivity {
         }
     }
 
-    public ArrayList<String> splitSpecialties(String specialties) {
+    /**
+     * Returns an {@link ArrayList<String>} representing the specialties of the Doctor.
+     * @param specialties the user input of the Doctor's specialties to be split
+     * @return the specialties as an {@link ArrayList<String>}
+     */
+    private ArrayList<String> splitSpecialties(String specialties) {
         return new ArrayList<String>(Arrays.asList(specialties.split("\n")));
     }
 }

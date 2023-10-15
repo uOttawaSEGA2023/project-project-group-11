@@ -20,6 +20,20 @@ public class Registration {
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static boolean emailInUse = false;
 
+    /**
+     * Creates a {@link Patient} object with given input fields and stores the object in a Firebase
+     * Database.
+     * @param firstName the first name of the user
+     * @param lastName the last name of the user
+     * @param email the email address of the user: to be used as the username
+     * @param accountPassword the password of the user. Must contain at least 5 characters
+     * @param phoneNumber the phone number of the user. Must contain at least 6 numbers
+     * @param address the postal address of the user, represented as an {@link Address}
+     * @param healthCardNumber the health card number of the user
+     * @throws Exception thrown with a custom message when input is not valid, as calculated with
+     * {@link Registration#validateInput(User)}
+     * @see Patient
+     */
     public static void createUserPatient(String firstName, String lastName, String email,
                                          String accountPassword, String phoneNumber,
                                          Address address,
@@ -51,11 +65,26 @@ public class Registration {
                 });
     }
 
-
+    /**
+     * Creates a {@link Doctor} object with given input fields and stores the object in a Firebase
+     * Database.
+     * @param firstName the first name of the user
+     * @param lastName the last name of the user
+     * @param email the email address of the user: to be used as the username
+     * @param accountPassword the password of the user. Must contain at least 5 characters
+     * @param phoneNumber the phone number of the user. Must contain at least 6 numbers
+     * @param address the postal address of the user, represented as an {@link Address}
+     * @param employeeNumber the employee number of the user
+     * @param specialties the specialties of the user. Must be 1 or more items.
+     * @throws Exception thrown with a custom message when input is not valid, as calculated with
+     * {@link Registration#validateInput(User)}
+     * @see Doctor
+     */
     public static void createUserDoctor(String firstName, String lastName, String email,
                                         String accountPassword, String phoneNumber,
                                         Address address, String employeeNumber,
                                         ArrayList<String> specialties) throws Exception {
+        // create Doctor object
         User doctor = new Doctor(firstName, lastName, email, accountPassword, phoneNumber, address,
                 employeeNumber, specialties);
 
@@ -82,6 +111,19 @@ public class Registration {
 
     }
 
+    /**
+     * Creates an {@link Admin} object with given input fields and stores the object in a Firebase
+     * Database.
+     * @param firstName the first name of the user
+     * @param lastName the last name of the user
+     * @param email the email address of the user: to be used as the username
+     * @param accountPassword the password of the user. Must contain at least 5 characters
+     * @param phoneNumber the phone number of the user. Must contain at least 6 numbers
+     * @param address the postal address of the user, represented as an {@link Address}
+     * @throws Exception thrown with a custom message when input is not valid, as calculated with
+     * {@link Registration#validateInput(User)}
+     * @see Admin
+     */
     public static void createUserAdmin(String firstName, String lastName, String email,
                                        String accountPassword, String phoneNumber,
                                        Address address) throws Exception {
@@ -113,7 +155,11 @@ public class Registration {
     }
 
 
-    // Validates input of user
+    /**
+     * Validates input for a given User object.
+     * @param user the object whose fields will be validated
+     * @throws Exception thrown with a custom message when input is not valid
+     */
     private static void validateInput(User user) throws Exception {
 
         // first name validation

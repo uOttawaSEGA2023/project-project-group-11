@@ -45,6 +45,11 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
     }
 
+    /**
+     * Verifies login of a user and creates an intent to {@link WelcomePageActivity}
+     * on successful login. Else, the user will be notified of a failure to log in.
+     * @param view
+     */
     public void onClickLogin(View view) {
         // initializing input field variables
         username = findViewById(R.id.username);

@@ -27,6 +27,12 @@ public class WelcomePageActivity extends AppCompatActivity {
         welcomeText.setText("Welcome " + user.getFirstName() + " " + user.getLastName() +
                 "! You are logged in as " + type);
     }
+
+    /**
+     * Logs out a user and redirects them to {@link MainActivity} upon successful signout. Else,
+     * the user will be notified of a failure to sign out.
+     * @param view
+     */
     public void onClickSignOut(View view){
         try{
             mAuth.signOut();

@@ -15,6 +15,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
+    /**
+     * Creates an intent to either {@link SignUpActivity} or
+     * {@link LoginActivity}
+     * @param view
+     */
     public void onClickButton(View view) {
         // id of button clicked
         int pressID = view.getId();

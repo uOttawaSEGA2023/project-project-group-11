@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class RegistrationActivityPatient extends AppCompatActivity {
 
     // variables representing every input field
@@ -20,6 +22,13 @@ public class RegistrationActivityPatient extends AppCompatActivity {
         setContentView(R.layout.activity_registration_patient);
     }
 
+    /**
+     * Submits the information received by the user and calls
+     * {@link Registration#createUserPatient(String, String, String, String, String, Address, String)}
+     * to create a Patient object.
+     * @param view
+     * @see Registration#createUserPatient(String, String, String, String, String, Address, String)
+     */
     public void submitInformation(View view) {
         // initializing every input field variable
         firstName = findViewById(R.id.editTextText2);

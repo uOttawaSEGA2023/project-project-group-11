@@ -14,6 +14,11 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
     }
 
+    /**
+     * Creates an intent to either {@link RegistrationActivityPatient} or
+     * {@link RegistrationActivityDoctor}
+     * @param view
+     */
     public void onClickButton(View view) {
         // id of button clicked
         int pressID = view.getId();
