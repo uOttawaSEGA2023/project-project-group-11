@@ -18,7 +18,6 @@ public class Registration {
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();
     private static final DatabaseReference databaseReference = database.getReference();
     private static final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private static boolean emailInUse = false;
 
     /**
      * Creates a {@link Patient} object with given input fields and stores the object in a Firebase
@@ -58,8 +57,6 @@ public class Registration {
                                     "type").setValue("patient");
                             // sign user out so that they can re-login on login page
                             FirebaseAuth.getInstance().signOut();
-                        }else{
-                            emailInUse = true;
                         }
                     }
                 });
@@ -103,8 +100,6 @@ public class Registration {
                                     "type").setValue("doctor");
                             // sign user out so that they can re-login on login page
                             FirebaseAuth.getInstance().signOut();
-                        }else{
-                            emailInUse = true;
                         }
                     }
                 });
@@ -147,8 +142,6 @@ public class Registration {
                                     "type").setValue("admin");
                             // sign user out so that they can re-login on login page
                             FirebaseAuth.getInstance().signOut();
-                        }else{
-                            emailInUse = true;
                         }
                     }
                 });
