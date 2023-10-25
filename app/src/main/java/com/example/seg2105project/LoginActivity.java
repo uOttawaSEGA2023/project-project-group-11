@@ -67,11 +67,37 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // if the user is authenticated
                         if(task.isSuccessful()){
+                            // reference to "pending" key in the database
+                            DatabaseReference pendingRef = databaseReference.child("pending");
+
+                            Query pendingQuery = pendingRef.orderByChild("email").equalTo(username.getText().toString());
+                            pendingQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                // Checks if account is still in pending database
+                                // code assisted from https://stackoverflow.com/questions/37910008/check-if-value-exists-in-firebase-db
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        Toast.makeText(LoginActivity.this, "Registration Status is still Pending",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+
+
                             // reference to "users" key in the database
                             DatabaseReference usersRef = databaseReference.child("users");
+                            
                             // getting every child that has an email equal to the username input
                             Query usernameQuery =usersRef.orderByChild("email")
                                     .equalTo(username.getText().toString());
+
+
                             usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
 
                                 // retrieving user data that matches the username input
