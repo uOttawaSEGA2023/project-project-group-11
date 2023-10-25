@@ -51,9 +51,9 @@ public class Registration {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             // when the user is created, add patient object to database
-                            databaseReference.child("users").child(mAuth.getUid()).setValue(patient);
+                            databaseReference.child("pending").child(mAuth.getUid()).setValue(patient);
                             // add new "type" key to represent the type of User in the database
-                            databaseReference.child("users").child(mAuth.getUid()).child(
+                            databaseReference.child("pending").child(mAuth.getUid()).child(
                                     "type").setValue("patient");
                             // sign user out so that they can re-login on login page
                             FirebaseAuth.getInstance().signOut();
@@ -94,9 +94,9 @@ public class Registration {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             // when the user is created, add doctor object to database
-                            databaseReference.child("users").child(mAuth.getUid()).setValue(doctor);
+                            databaseReference.child("pending").child(mAuth.getUid()).setValue(doctor);
                             // add new "type" key to represent the type of User in the database
-                            databaseReference.child("users").child(mAuth.getUid()).child(
+                            databaseReference.child("pending").child(mAuth.getUid()).child(
                                     "type").setValue("doctor");
                             // sign user out so that they can re-login on login page
                             FirebaseAuth.getInstance().signOut();
@@ -136,9 +136,9 @@ public class Registration {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             // when the user is created, add admin object to database
-                            databaseReference.child("users").child(mAuth.getUid()).setValue(admin);
+                            databaseReference.child("pending").child(mAuth.getUid()).setValue(admin);
                             // add new "type" key to represent the type of User in the database
-                            databaseReference.child("users").child(mAuth.getUid()).child(
+                            databaseReference.child("pending").child(mAuth.getUid()).child(
                                     "type").setValue("admin");
                             // sign user out so that they can re-login on login page
                             FirebaseAuth.getInstance().signOut();
