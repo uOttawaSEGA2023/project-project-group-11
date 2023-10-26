@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
-    tools:context=".RejectionPage">
+    tools:context=".RejectionPageActivity">
 
     <TextView
         android:id="@+id/rejectionMessage"
@@ -35,9 +35,10 @@
     <Button
         android:id="@+id/returnToLogin"
         android:layout_width="153dp"
-        android:layout_height="85dp"
+        android:layout_height="80dp"
         android:layout_marginEnd="120dp"
         android:layout_marginBottom="140dp"
+        android:backgroundTint="@color/red"
         android:text="Return to Login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

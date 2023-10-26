@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class RejectionPage extends AppCompatActivity {
+public class RejectionPageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +18,7 @@ public class RejectionPage extends AppCompatActivity {
         int pressID = view.getId();
         // Sends user back to login or signup screen
         if(pressID == R.id.returnToLogin){
-            Intent i = new Intent(RejectionPage.this, MainActivity.class);
+            Intent i = new Intent(RejectionPageActivity.this, MainActivity.class);
             startActivity(i);
         }
     }
