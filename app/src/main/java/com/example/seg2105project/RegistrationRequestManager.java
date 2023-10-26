@@ -1,14 +1,12 @@
 package com.example.seg2105project;
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -19,8 +17,11 @@ public class RegistrationRequestManager {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     // reference variable to database
     private static DatabaseReference databaseReference = database.getReference();
+    // reference variable to Firebase Authentication
+    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    // gets all the registration requests for a given type
+    // gets all the registration requests for a given type of category
+    // ie. type can be "pending", "rejected", "users"
     public static ArrayList<User> getList(String type){
         // list to hold users matching given type
         ArrayList<User> list = new ArrayList<User>();
@@ -45,6 +46,35 @@ public class RegistrationRequestManager {
         return list;
     }
 
+    // transfers data of a user from a current category to a new category
+    // ex. pending to accepted/rejected
+    public static void transferData(User user, String oldCategory, String newCategory){
+        // reference to old category
+        DatabaseReference oldCategoryRef = databaseReference.child(oldCategory);
+        // getting reference to ID of user
+        DatabaseReference userID = oldCategoryRef.child(mAuth.getUid());
+        userID.addListenerForSingleValueEvent(new ValueEventListener(){
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // remove user object from current category
+                snapshot.getRef().removeValue();
+
+                // add data to new category
+                DatabaseReference newCategoryRef = databaseReference.child(newCategory);
+                newCategoryRef.child(mAuth.getUid()).setValue(user);
+                newCategoryRef.child(mAuth.getUid()).child("type")
+                        .setValue(snapshot.child("type").getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    // getting user object from DataSnapshot
     private static User getUserObject(DataSnapshot ds){
 
         // set default user

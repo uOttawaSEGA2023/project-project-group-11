@@ -188,6 +188,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                 }
                             });
+
                         } else {
                             // user failed to log in based on wrong credentials
                             Toast.makeText(LoginActivity.this, "Username or password is incorrect!",
