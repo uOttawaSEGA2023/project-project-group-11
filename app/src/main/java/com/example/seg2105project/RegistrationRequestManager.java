@@ -20,20 +20,20 @@ public class RegistrationRequestManager {
     // reference variable to database
     private static DatabaseReference databaseReference = database.getReference();
 
-    // gets all the pending registration requests
-    public static ArrayList<User> getPendingList(){
-        // list to hold pending users
-        ArrayList<User> pendingList = new ArrayList<User>();
-        // reference to pending tag of database (containing all pending users)
-        DatabaseReference pendingRef = databaseReference.child("pending");
-        pendingRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    // gets all the registration requests for a given type
+    public static ArrayList<User> getList(String type){
+        // list to hold users matching given type
+        ArrayList<User> list = new ArrayList<User>();
+        // reference to given tag of database
+        DatabaseReference listRef = databaseReference.child(type);
+        listRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // loops through every user in the pending section of the database
                 for(DataSnapshot ds : snapshot.getChildren()) {
                     // gets a User object to add to the pending list
                     User user = getUserObject(ds);
-                    pendingList.add(user);
+                    list.add(user);
                 }
             }
 
@@ -42,11 +42,7 @@ public class RegistrationRequestManager {
 
             }
         });
-        return pendingList;
-    }
-
-    public ArrayList<String> getRejectedList(){
-        return null;
+        return list;
     }
 
     private static User getUserObject(DataSnapshot ds){
