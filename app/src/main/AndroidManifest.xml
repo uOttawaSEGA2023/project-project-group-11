@@ -16,7 +16,7 @@
             android:name=".RejectionPage"
             android:exported="false" />
         <activity
-            android:name=".AdminInbox"
+            android:name=".AdminInboxActivity"
             android:exported="false" />
         <activity
             android:name=".WelcomeActivity"
