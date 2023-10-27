@@ -88,6 +88,24 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
 
+                            DatabaseReference rejectRef = databaseReference.child("rejected");
+                            Query rejectedQuery = rejectRef.orderByChild("email").equalTo(username.getText().toString());
+
+                            rejectedQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    if(snapshot.exists()){
+                                        Intent i = new Intent(LoginActivity.this,RejectionPageActivity.class);
+                                        startActivity(i);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
 
 
                             // reference to "users" key in the database
