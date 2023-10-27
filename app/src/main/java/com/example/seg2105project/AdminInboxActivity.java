@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
+import java.util.ArrayList;
+
 public class AdminInboxActivity extends AppCompatActivity {
 
     @Override
@@ -17,6 +19,11 @@ public class AdminInboxActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         // display pending list
-        recyclerView.setAdapter(new ListAdapter(getApplicationContext(), RegistrationRequestManager.getList("pending")));
+        RegistrationRequestManager.getList("pending", new SimpleCallback<ArrayList<User>>() {
+            @Override
+            public void callback(ArrayList<User> data) {
+                recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data));
+            }
+        });
     }
 }

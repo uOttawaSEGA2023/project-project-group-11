@@ -19,9 +19,6 @@
             android:name=".AdminInboxActivity"
             android:exported="false" />
         <activity
-            android:name=".WelcomeActivity"
-            android:exported="false" />
-        <activity
             android:name=".WelcomePageActivity"
             android:exported="false" />
         <activity

@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                             // put user object into bundle and go to welcome page
                                             Intent i = new Intent(LoginActivity.this,
-                                                    WelcomePageActivity.class);
+                                                    AdminInboxActivity.class);
                                             i.putExtra("User", user);
                                             i.putExtra("Type", type);
                                             startActivity(i);

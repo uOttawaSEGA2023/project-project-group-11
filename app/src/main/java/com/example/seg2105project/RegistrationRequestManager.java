@@ -22,7 +22,7 @@ public class RegistrationRequestManager {
 
     // gets all the registration requests for a given type of category
     // ie. type can be "pending", "rejected", "users"
-    public static ArrayList<User> getList(String type){
+    public static ArrayList<User> getList(String type, @NonNull SimpleCallback<ArrayList<User>> finishedCallback){
         // list to hold users matching given type
         ArrayList<User> list = new ArrayList<User>();
         // reference to given tag of database
@@ -36,6 +36,7 @@ public class RegistrationRequestManager {
                     User user = getUserObject(ds);
                     list.add(user);
                 }
+                finishedCallback.callback(list);
             }
 
             @Override
@@ -43,6 +44,7 @@ public class RegistrationRequestManager {
 
             }
         });
+
         return list;
     }
 
