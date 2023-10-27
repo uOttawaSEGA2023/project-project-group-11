@@ -15,18 +15,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/pendingTab"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pending Request"
+            android:text="Pending Requests"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="205dp"
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="2dp" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/rejectedTab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Rejected Request"
+            android:text="Rejected Requests"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="205dp"
             tools:layout_editor_absoluteX="205dp"
@@ -35,10 +38,9 @@
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recyclerview"
-        android:layout_below="@id/requestList"
-        />
+        android:layout_below="@id/requestList" />
 
 </RelativeLayout>
