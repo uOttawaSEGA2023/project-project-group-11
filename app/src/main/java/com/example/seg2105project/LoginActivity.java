@@ -88,10 +88,12 @@ public class LoginActivity extends AppCompatActivity {
                                 }
                             });
 
+                            // reference to rejected users in data base
                             DatabaseReference rejectRef = databaseReference.child("rejected");
                             Query rejectedQuery = rejectRef.orderByChild("email").equalTo(username.getText().toString());
 
                             rejectedQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                // Checks if user's account has been rejected
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     if(snapshot.exists()){
