@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
         // go to sign up page
         if(pressID == R.id.signUpButton){
-            Intent i = new Intent(MainActivity.this, AdminInboxActivity.class);
+            Intent i = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(i);
         }
         // go to log in page
