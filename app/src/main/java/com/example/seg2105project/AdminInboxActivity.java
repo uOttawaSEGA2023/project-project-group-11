@@ -4,13 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
-public class AdminInboxActivity extends AppCompatActivity {
+public class AdminInboxActivity extends AppCompatActivity implements ListViewHolder.OnRequestListener {
 
     RecyclerView recyclerView;
     TabLayout tabLayout;
@@ -30,7 +31,7 @@ public class AdminInboxActivity extends AppCompatActivity {
         RegistrationRequestManager.getList("pending", new SimpleCallback<ArrayList<User>>() {
             @Override
             public void callback(ArrayList<User> data) {
-                recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data));
+                recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data, AdminInboxActivity.this));
 
             }
         });
@@ -43,7 +44,7 @@ public class AdminInboxActivity extends AppCompatActivity {
                     RegistrationRequestManager.getList("pending", new SimpleCallback<ArrayList<User>>() {
                         @Override
                         public void callback(ArrayList<User> data) {
-                            recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data));
+                            recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data, AdminInboxActivity.this));
 
                         }
                     });
@@ -53,7 +54,7 @@ public class AdminInboxActivity extends AppCompatActivity {
                     RegistrationRequestManager.getList("rejected", new SimpleCallback<ArrayList<User>>() {
                         @Override
                         public void callback(ArrayList<User> data) {
-                            recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data));
+                            recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data, AdminInboxActivity.this));
 
                         }
                     });
@@ -70,5 +71,11 @@ public class AdminInboxActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public void onRequestClick(int position) {
+        Intent intent = new Intent(this, RequestInfoDisplay_Activity.class);
+        startActivity(intent);
     }
 }

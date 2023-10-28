@@ -13,16 +13,18 @@ public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     Context context;
     List<User> requests;
+    private ListViewHolder.OnRequestListener myOnRequestListener;
 
-    public ListAdapter(Context context, List<User> requests) {
+    public ListAdapter(Context context, List<User> requests, ListViewHolder.OnRequestListener onRequestListener) {
         this.context = context;
         this.requests = requests;
+        this.myOnRequestListener = onRequestListener;
     }
 
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ListViewHolder(LayoutInflater.from(context).inflate(R.layout.item_view, parent, false));
+        return new ListViewHolder(LayoutInflater.from(context).inflate(R.layout.item_view, parent, false), myOnRequestListener);
     }
 
     @Override
