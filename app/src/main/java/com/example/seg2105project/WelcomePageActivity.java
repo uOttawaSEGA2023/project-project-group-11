@@ -9,7 +9,7 @@ import android.view.View;
 import android.content.Intent;
 import android.widget.Toast;
 
-public class WelcomePageActivity extends AppCompatActivity {
+public class WelcomePageActivity extends AppCompatActivity implements View.OnClickListener {
 
     // variable to display message
     TextView welcomeText;
@@ -24,6 +24,11 @@ public class WelcomePageActivity extends AppCompatActivity {
         // get type of User
         String type = getIntent().getExtras().getString("Type");
         welcomeText = findViewById(R.id.welcomeText);
+        if(type.equals("admin")){
+            View button = findViewById(R.id.requestsButton);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(this);
+        }
         welcomeText.setText("Welcome " + user.getFirstName() + " " + user.getLastName() +
                 "! You are logged in as " + type);
     }
@@ -42,6 +47,20 @@ public class WelcomePageActivity extends AppCompatActivity {
         }catch(Exception e){
             Toast.makeText(WelcomePageActivity.this, "Error logging out", Toast.LENGTH_SHORT).show();
             System.out.println(e);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.requestsButton){
+            try{
+                Intent requestsLists = new Intent(WelcomePageActivity.this, AdminInboxActivity.class);
+                startActivity(requestsLists);
+            }
+            catch(Exception e){
+                Toast.makeText(WelcomePageActivity.this, "Error showing requests lists", Toast.LENGTH_SHORT).show();
+                System.out.println(e);
+            }
         }
     }
 }
