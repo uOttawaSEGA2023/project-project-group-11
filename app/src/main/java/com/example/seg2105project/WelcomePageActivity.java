@@ -56,6 +56,13 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    /**
+     * When the list of requests button is clicked by the admin, the
+     * admin then gets sent to his inbox of registration requests where
+     * the lists of pending and rejected registrations are displayed
+     *
+     * @param view The View (button) that was clicked.
+     */
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.requestsButton){

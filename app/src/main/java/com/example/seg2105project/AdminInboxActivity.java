@@ -79,6 +79,8 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
         });
     }
 
+    // When the admin click on a registration request from the list of pending requests or rejected
+    // the admin is sent to the page where the information of that registration request is displayed
     @Override
     public void onRequestClick(int position) {
         Intent intent = new Intent(this, RequestInfoDisplay_Activity.class);
