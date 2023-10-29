@@ -6,11 +6,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+/**
+ * Custom RecyclerView ViewHolder for displaying the users information.
+ * This class contains references to the views within items in the RecyclerView and
+ * provides callback for click events.
+ */
+public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     TextView name, email;
     OnRequestListener onRequestListener;
 
+    /**
+     * ListViewHolder Constructor
+     *
+     * @param itemView          Item in the RecyclerView.
+     * @param onRequestListener For handling item click events.
+     */
     public ListViewHolder(@NonNull View itemView, OnRequestListener onRequestListener) {
         super(itemView);
         name = itemView.findViewById(R.id.name);
@@ -20,12 +31,20 @@ public class ListViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         itemView.setOnClickListener(this);
     }
 
+    /**
+     * Called when the item view is clicked. Invokes the onRequestClick callback.
+     *
+     * @param view The clicked view.
+     */
     @Override
     public void onClick(View view) {
         onRequestListener.onRequestClick(getBindingAdapterPosition());
     }
 
-    public interface OnRequestListener{
+    /**
+     * Interface for handling item click events in the RecyclerView.
+     */
+    public interface OnRequestListener {
         void onRequestClick(int position);
     }
 }

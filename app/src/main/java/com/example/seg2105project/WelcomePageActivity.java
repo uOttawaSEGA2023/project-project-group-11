@@ -1,14 +1,19 @@
 package com.example.seg2105project;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.widget.TextView;
-import com.google.firebase.auth.*;
-import android.view.View;
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+
+/**
+ * The WelcomePageActivity class represents the activity displayed upon successful user login.
+ * It provides a welcome message, user type-specific functionality, and the ability to sign out.
+ */
 public class WelcomePageActivity extends AppCompatActivity implements View.OnClickListener {
 
     // variable to display message
@@ -34,9 +39,10 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
     }
 
     /**
-     * Logs out a user and redirects them to {@link MainActivity} upon successful signout. Else,
+     * Logs out a user and redirects them to the main activity upon successful signout. Otherwise,
      * the user will be notified of a failure to sign out.
-     * @param view
+     *
+     * @param view The View that triggered the signout button click.
      */
     public void onClickSignOut(View view){
         try{

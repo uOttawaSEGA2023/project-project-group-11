@@ -11,6 +11,10 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
+/**
+ * This activity displays and manages registration requests for an admin user.
+ * Admins can switch between pending and rejected requests using tabs and view request details.
+ */
 public class AdminInboxActivity extends AppCompatActivity implements ListViewHolder.OnRequestListener {
 
     RecyclerView recyclerView;
@@ -27,6 +31,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
         // get recycler view of lists
         recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         // display pending list
         RegistrationRequestManager.getList("pending", new SimpleCallback<ArrayList<User>>() {
             @Override
@@ -35,11 +40,13 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
 
             }
         });
+
+        // Set up TabLayout to switch between pending and rejected lists
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
-                if(position == 0){
+                if (position == 0) {
                     // display pending list
                     RegistrationRequestManager.getList("pending", new SimpleCallback<ArrayList<User>>() {
                         @Override
@@ -48,8 +55,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
 
                         }
                     });
-                }
-                else if(position == 1){
+                } else if (position == 1) {
                     // display rejected list
                     RegistrationRequestManager.getList("rejected", new SimpleCallback<ArrayList<User>>() {
                         @Override

@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
     private static DatabaseReference databaseReference;
 
     User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +47,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Verifies login of a user and creates an intent to {@link WelcomePageActivity}
-     * on successful login. Else, the user will be notified of a failure to log in.
-     * @param view
+     * Verifies login of a user and creates an intent to WelcomePageActivity on successful login.
+     * Else, the user will be notified of a failure to log in.
+     *
+     * @param view The view that triggered the login action.
      */
     public void onClickLogin(View view) {
         // initializing input field variables
@@ -66,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // if the user is authenticated
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             // reference to "pending" key in the database
                             DatabaseReference pendingRef = databaseReference.child("pending");
 
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // Checks if account is still in pending database
                                 // code assisted from https://stackoverflow.com/questions/37910008/check-if-value-exists-in-firebase-db
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if(snapshot.exists()){
+                                    if (snapshot.exists()) {
                                         Toast.makeText(LoginActivity.this, "Registration Status is still Pending",
                                                 Toast.LENGTH_SHORT).show();
                                     }
@@ -96,8 +98,8 @@ public class LoginActivity extends AppCompatActivity {
                                 // Checks if user's account has been rejected
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if(snapshot.exists()){
-                                        Intent i = new Intent(LoginActivity.this,RejectionPageActivity.class);
+                                    if (snapshot.exists()) {
+                                        Intent i = new Intent(LoginActivity.this, RejectionPageActivity.class);
                                         startActivity(i);
                                     }
                                 }
@@ -109,12 +111,11 @@ public class LoginActivity extends AppCompatActivity {
                             });
 
 
-
                             // reference to "users" key in the database
                             DatabaseReference usersRef = databaseReference.child("users");
-                            
+
                             // getting every child that has an email equal to the username input
-                            Query usernameQuery =usersRef.orderByChild("email")
+                            Query usernameQuery = usersRef.orderByChild("email")
                                     .equalTo(username.getText().toString());
 
 
@@ -123,12 +124,12 @@ public class LoginActivity extends AppCompatActivity {
                                 // retrieving user data that matches the username input
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    try{
+                                    try {
                                         // loop through snapshot data of user obtained from match
                                         // above
                                         // NOTE: should only have to loop through 1 child since only
                                         // one match
-                                        for(DataSnapshot ds : snapshot.getChildren()) {
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
                                             // create variables to create new user object based on
                                             // user data
                                             String firstName = ds.child("firstName")
@@ -193,7 +194,7 @@ public class LoginActivity extends AppCompatActivity {
                                             Toast.makeText(LoginActivity.this, "Logged in!",
                                                     Toast.LENGTH_SHORT).show();
                                         }
-                                    }catch(Exception e){
+                                    } catch (Exception e) {
                                         // catch exception if error occurs retrieving data
                                         Toast.makeText(LoginActivity.this, "Failed to retrieve user data!",
                                                 Toast.LENGTH_SHORT).show();

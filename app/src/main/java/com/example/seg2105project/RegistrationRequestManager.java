@@ -11,6 +11,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * The RegistrationRequestManager class provides methods for managing
+ * registration requests in the Firebase Real-Time Database.
+ */
 public class RegistrationRequestManager {
 
     // Firebase Real-Time Database for holding database
@@ -20,8 +24,14 @@ public class RegistrationRequestManager {
     // reference variable to Firebase Authentication
     private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    // gets all the registration requests for a given type of category
-    // ie. type can be "pending", "rejected", "users"
+    /**
+     * Retrieves all registration requests for a given type of category.
+     * For example, the type can be "pending," "rejected," or "users."
+     *
+     * @param type             The type of registration requests to retrieve.
+     * @param finishedCallback Callback to receive the list of users.
+     * @return An ArrayList of User objects matching the given type.
+     */
     public static ArrayList<User> getList(String type, @NonNull SimpleCallback<ArrayList<User>> finishedCallback){
         // list to hold users matching given type
         ArrayList<User> list = new ArrayList<User>();
@@ -48,8 +58,14 @@ public class RegistrationRequestManager {
         return list;
     }
 
-    // transfers data of a user from a current category to a new category
-    // ex. pending to accepted/rejected
+    /**
+     * Transfers data of a user from a current category to a new category.
+     * For example, from "pending" to "accepted/rejected."
+     *
+     * @param user        The User object to transfer.
+     * @param oldCategory The old category to transfer from.
+     * @param newCategory The new category to transfer to.
+     */
     public static void transferData(User user, String oldCategory, String newCategory){
         // reference to old category
         DatabaseReference oldCategoryRef = databaseReference.child(oldCategory);
@@ -76,7 +92,12 @@ public class RegistrationRequestManager {
         });
     }
 
-    // getting user object from DataSnapshot
+    /**
+     * Gets a User object from a DataSnapshot.
+     *
+     * @param ds The DataSnapshot containing user data.
+     * @return A User object created from the DataSnapshot.
+     */
     private static User getUserObject(DataSnapshot ds){
 
         // set default user

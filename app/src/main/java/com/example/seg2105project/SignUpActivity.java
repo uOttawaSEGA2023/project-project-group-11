@@ -1,10 +1,10 @@
 package com.example.seg2105project;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -15,9 +15,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates an intent to either {@link RegistrationActivityPatient} or
-     * {@link RegistrationActivityDoctor}
-     * @param view
+     * Handles button clicks and creates an intent to navigate to either the patient registration
+     * or doctor registration page.
+     *
+     * @param view The View that triggered the button click.
      */
     public void onClickButton(View view) {
         // id of button clicked
