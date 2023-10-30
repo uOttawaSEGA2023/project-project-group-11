@@ -167,6 +167,7 @@ public class Registration {
 
         // email validation
         // matches with example@example.example
+        // checks to see if email inputted is correct format
         String regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher emailMatch = pattern.matcher(user.getEmail());
