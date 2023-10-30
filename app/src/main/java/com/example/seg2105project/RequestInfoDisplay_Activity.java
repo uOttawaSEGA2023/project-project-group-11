@@ -20,6 +20,7 @@ public class RequestInfoDisplay_Activity extends AppCompatActivity {
     TextView userType, firstName, lastName, email, phoneNumber, postalAddress, postalCode, city,
     province, country, healthCardNumberText, employeeNumberText, specialtiesText;
     User user;
+    // represents the request type: 0 represents pending, 1 represents rejected
     int requestType;
 
     @Override
