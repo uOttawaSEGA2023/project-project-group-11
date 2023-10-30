@@ -25,13 +25,13 @@ public class RequestInfoDisplay_Activity extends AppCompatActivity {
         String type = getIntent().getExtras().getString("Type");
 
         userType = findViewById(R.id.userType);
-        userType.setText(type+ "Registration Overview");
+        userType.setText(type+ " Registration Overview");
 
         LinearLayout specialties, employeeNumber, healthCardNumber;
         specialties = findViewById(R.id.specialties);
         employeeNumber = findViewById(R.id.employeeNumber);
         healthCardNumber = findViewById(R.id.employeeNumber);
-        if(type.equals("doctor")){
+        if(type.equals("Doctor")){
             specialties.setVisibility(View.VISIBLE);
             employeeNumber.setVisibility(View.VISIBLE);
             healthCardNumber.setVisibility(View.INVISIBLE);

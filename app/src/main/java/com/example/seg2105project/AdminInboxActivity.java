@@ -20,6 +20,8 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
     RecyclerView recyclerView;
     TabLayout tabLayout;
 
+    ArrayList<User> listData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +39,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
             @Override
             public void callback(ArrayList<User> data) {
                 recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data, AdminInboxActivity.this));
-
+                listData = data;
             }
         });
 
@@ -52,7 +54,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
                         @Override
                         public void callback(ArrayList<User> data) {
                             recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data, AdminInboxActivity.this));
-
+                            listData = data;
                         }
                     });
                 } else if (position == 1) {
@@ -61,7 +63,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
                         @Override
                         public void callback(ArrayList<User> data) {
                             recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data, AdminInboxActivity.this));
-
+                            listData = data;
                         }
                     });
                 }
@@ -83,7 +85,14 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
     // the admin is sent to the page where the information of that registration request is displayed
     @Override
     public void onRequestClick(int position) {
+        System.out.println(position);
+        User userClicked = listData.get(position);
+        String type = userClicked.getClass().toString();
+        type = type.substring(type.lastIndexOf('.') + 1);
+        System.out.println(type);
         Intent intent = new Intent(this, RequestInfoDisplay_Activity.class);
+        intent.putExtra("User", userClicked);
+        intent.putExtra("Type", type);
         startActivity(intent);
     }
 }
