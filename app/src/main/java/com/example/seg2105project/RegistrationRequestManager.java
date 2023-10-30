@@ -7,6 +7,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -66,23 +67,29 @@ public class RegistrationRequestManager {
      * @param oldCategory The old category to transfer from.
      * @param newCategory The new category to transfer to.
      */
-    public static void transferData(User user, String oldCategory, String newCategory){
+    public static void transferData(User user, String oldCategory, String newCategory, @NonNull SimpleCallback<String> finishedCallback){
         // reference to old category
         DatabaseReference oldCategoryRef = databaseReference.child(oldCategory);
-        // getting reference to ID of user
-        DatabaseReference userID = oldCategoryRef.child(mAuth.getUid());
-        userID.addListenerForSingleValueEvent(new ValueEventListener(){
+
+        // getting every child that has an email equal to the username input
+        Query userQuery = oldCategoryRef.orderByChild("email")
+                .equalTo(user.getEmail());
+        userQuery.addListenerForSingleValueEvent(new ValueEventListener(){
 
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // remove user object from current category
-                snapshot.getRef().removeValue();
-
-                // add data to new category
-                DatabaseReference newCategoryRef = databaseReference.child(newCategory);
-                newCategoryRef.child(mAuth.getUid()).setValue(user);
-                newCategoryRef.child(mAuth.getUid()).child("type")
-                        .setValue(snapshot.child("type").getValue());
+                String key = "";
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    key = ds.getKey();
+                    ds.getRef().removeValue();
+                    // add data to new category
+                    DatabaseReference newCategoryRef = databaseReference.child(newCategory);
+                    newCategoryRef.child(key).setValue(user);
+                    newCategoryRef.child(key).child("type")
+                            .setValue(ds.child("type").getValue());
+                }
+                finishedCallback.callback("");
             }
 
             @Override

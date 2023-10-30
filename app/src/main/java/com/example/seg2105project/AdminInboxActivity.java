@@ -21,6 +21,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
     TabLayout tabLayout;
 
     ArrayList<User> listData;
+    int onList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
                 if (position == 0) {
+                    onList = 0;
                     // display pending list
                     RegistrationRequestManager.getList("pending", new SimpleCallback<ArrayList<User>>() {
                         @Override
@@ -58,6 +60,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
                         }
                     });
                 } else if (position == 1) {
+                    onList = 1;
                     // display rejected list
                     RegistrationRequestManager.getList("rejected", new SimpleCallback<ArrayList<User>>() {
                         @Override
@@ -85,14 +88,13 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
     // the admin is sent to the page where the information of that registration request is displayed
     @Override
     public void onRequestClick(int position) {
-        System.out.println(position);
         User userClicked = listData.get(position);
         String type = userClicked.getClass().toString();
         type = type.substring(type.lastIndexOf('.') + 1);
-        System.out.println(type);
         Intent intent = new Intent(this, RequestInfoDisplay_Activity.class);
         intent.putExtra("User", userClicked);
         intent.putExtra("Type", type);
+        intent.putExtra("RequestType", onList);
         startActivity(intent);
     }
 }
