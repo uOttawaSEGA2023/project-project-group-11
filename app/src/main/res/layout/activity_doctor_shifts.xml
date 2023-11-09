@@ -3,10 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".DoctorShiftsActivity">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/requestList"
+        android:id="@+id/shiftList"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
@@ -15,32 +16,22 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/pendingTab"
+            android:id="@+id/shiftTab"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pending Requests"
+            android:text="Shifts"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="205dp"
             tools:layout_editor_absoluteX="1dp"
             tools:layout_editor_absoluteY="2dp" />
 
-        <com.google.android.material.tabs.TabItem
-            android:id="@+id/rejectedTab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Rejected Requests"
-            tools:layout_conversion_absoluteHeight="48dp"
-            tools:layout_conversion_absoluteWidth="205dp"
-            tools:layout_editor_absoluteX="205dp"
-            tools:layout_editor_absoluteY="2dp" />
-
     </com.google.android.material.tabs.TabLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewShift"
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/requestList" />
-
+        android:layout_below="@id/shiftList" />
 </RelativeLayout>
+
