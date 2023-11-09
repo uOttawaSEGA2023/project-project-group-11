@@ -22,8 +22,6 @@ public class RegistrationRequestManager {
     private static FirebaseDatabase database = FirebaseDatabase.getInstance();
     // reference variable to database
     private static DatabaseReference databaseReference = database.getReference();
-    // reference variable to Firebase Authentication
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     /**
      * Retrieves all registration requests for a given type of category.
