@@ -6,8 +6,8 @@ public class Doctor extends User {
     private final String employeeNumber;
     private final ArrayList<String> specialties;
 
-    private ArrayList<Appointment> appointments;
-    private ArrayList<Shift> shifts;
+    private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+    private ArrayList<Shift> shifts = new ArrayList<Shift>();
 
 
 
