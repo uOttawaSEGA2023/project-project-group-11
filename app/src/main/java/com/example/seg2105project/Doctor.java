@@ -7,6 +7,7 @@ public class Doctor extends User {
     private final ArrayList<String> specialties;
 
     private ArrayList<Appointment> appointments;
+    private ArrayList<Shift> shifts;
 
 
 
@@ -60,5 +61,9 @@ public class Doctor extends User {
      */
     public ArrayList<Appointment> getAppointments() {
         return appointments;
+    }
+
+    public ArrayList<Shift> getShifts(){
+        return shifts;
     }
 }

@@ -2,8 +2,6 @@ package com.example.seg2105project;
 
 import android.icu.util.GregorianCalendar;
 
-import java.sql.Statement;
-
 
 public class Appointment {
     private Patient patient;
