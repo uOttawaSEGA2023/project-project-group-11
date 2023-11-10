@@ -6,6 +6,10 @@ public class Doctor extends User {
     private final String employeeNumber;
     private final ArrayList<String> specialties;
 
+    private ArrayList<Appointment> appointments;
+
+
+
     /**
      * Represents a Doctor user in the application. It is a subclass of {@link User}.
      * @param firstName the first name of the user
@@ -40,5 +44,21 @@ public class Doctor extends User {
      */
     public ArrayList<String> getSpecialties() {
         return this.specialties;
+    }
+
+    /**
+     * Adds a new appointment to the list of appointments
+     * @param newAppointment
+     */
+    public void setAppointments(Appointment newAppointment) {
+        this.appointments.add(newAppointment);
+    }
+
+    /**
+     * gets the list of all appointments this doctor have
+     * @return ArrayList</Appointment>
+     */
+    public ArrayList<Appointment> getAppointments() {
+        return appointments;
     }
 }
