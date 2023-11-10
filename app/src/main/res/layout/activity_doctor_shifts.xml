@@ -33,5 +33,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/shiftList" />
+
+    <Button
+        android:id="@+id/AddShiftButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/red"
+        android:text="Add Shift" />
 </RelativeLayout>
 
