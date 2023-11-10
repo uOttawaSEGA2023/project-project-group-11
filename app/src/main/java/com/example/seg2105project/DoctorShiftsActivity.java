@@ -34,9 +34,6 @@ public class DoctorShiftsActivity extends AppCompatActivity {
     //Doctor object
     private Doctor doctor;
 
-    // Shift list
-    private ArrayList<Shift> shifts;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +46,6 @@ public class DoctorShiftsActivity extends AppCompatActivity {
 
         // get object of user from previous page
         doctor = (Doctor) getIntent().getExtras().getSerializable("User");
-
-        // get shifts from user object
-        shifts = doctor.getShifts();
 
         // get tablayout
         tabLayout = findViewById(R.id.shiftList);
@@ -77,22 +71,27 @@ public class DoctorShiftsActivity extends AppCompatActivity {
      * Adds a shift for a Doctor object.
      */
     public void addShift() {
-        // get data from Views
+        // get data from Views (date, startTime, endTime)
         // If not using calendar, check if the specified date and time that the Doctor wants to add has passed
         // Check double booking (shift being added must not conflict with an existing one)
         // create a Shift object
         // add Shift object to shift list instance
+        //doctor.addShift(shift);
+
         // update list in database
+        databaseReference.child("users").child(mAuth.getUid()).child("shifts").setValue(doctor.getShifts());
     }
 
     /**
      * Deletes a shift for a Doctor object.
-     *
      */
     public void deleteShift() {
         // get location of shift that has been clicked
         // delete shift from shift list
+        //doctor.deleteShift(shift);
+
         // update list in database
+        databaseReference.child("users").child(mAuth.getUid()).child("shifts").setValue(doctor.getShifts());
     }
 
 }
