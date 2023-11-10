@@ -34,6 +34,14 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(this);
         }
+        else if(type.equals("doctor")){
+            View button = findViewById(R.id.shiftsbutton);
+            View button2 = findViewById(R.id.appointmentbutton);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(this);
+            button2.setVisibility(View.VISIBLE);
+            button2.setOnClickListener(this);
+        }
         welcomeText.setText("Welcome " + user.getFirstName() + " " + user.getLastName() +
                 "! You are logged in as " + type);
     }
@@ -75,5 +83,20 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
                 System.out.println(e);
             }
         }
+        else if(view.getId() == R.id.shiftsbutton){
+            try{
+                Intent shifts = new Intent(WelcomePageActivity.this, DoctorShiftsActivity.class);
+                startActivity(shifts);
+            }
+            catch(Exception e){
+                Toast.makeText(WelcomePageActivity.this, "Error showing shifts", Toast.LENGTH_SHORT).show();
+                System.out.println(e);
+            }
+        }/*
+        else if(view.getId() == R.id.appointmentbutton){
+            try{
+                Intent appointments = new Intent(WelcomePageActivity.this, )
+            }
+        }*/
     }
 }
