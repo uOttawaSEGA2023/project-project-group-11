@@ -1,7 +1,6 @@
 package com.example.seg2105project;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public abstract class User implements Serializable {
     private final String firstName;

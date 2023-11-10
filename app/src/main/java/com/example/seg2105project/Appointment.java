@@ -1,7 +1,5 @@
 package com.example.seg2105project;
 
-import android.icu.util.GregorianCalendar;
-
 
 public class Appointment {
     private Patient patient;
@@ -36,6 +34,13 @@ public class Appointment {
         return doctor;
     }
 
+
+    /**
+     * Returns the status associated with the appointment
+     * @return String
+     */
+    public String getStatus() { return status; }
+
     /**
      * Gets date of appointment in a string format
      * @return String
@@ -48,17 +53,38 @@ public class Appointment {
      * Gets start time of appointment
      * @return String
      */
-    public String getStartTime() {
-        return startTime;
-
-    }
+    public String getStartTime() {return startTime;}
 
     /**
      * Gets end time of appointment
      * @return String
      */
-
     public String getEndTime() {
         return endTime;
     }
+
+    /**
+     * Sets the status associated with the appointment.
+     * @param status the status of the appointment
+     */
+    public void setStatus(String status) { this.status = status; }
+
+    /**
+     * Sets the date associated with the appointment.
+     * @param date the date of the appointment
+     */
+    public void setDate(String date) { this.date = date; }
+
+    /**
+     * Sets the start-time associated with the appointment.
+     * @param startTime the start-time of the appointment
+     */
+    public void setStartTime(String startTime) { this.startTime = startTime; }
+
+    /**
+     * Sets the end-time associated with the appointment.
+     * @param endTime the end-time of the appointment
+     */
+    public void setEndTime(String endTime) { this.endTime = endTime; };
+
 }

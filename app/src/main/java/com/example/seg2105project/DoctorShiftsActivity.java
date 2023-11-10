@@ -15,6 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class DoctorShiftsActivity extends AppCompatActivity {
 
     // Firebase Real-Time Database for holding database
@@ -29,6 +31,11 @@ public class DoctorShiftsActivity extends AppCompatActivity {
 
     // shift list instance
 
+    //Doctor object
+    private Doctor doctor;
+
+    // Shift list
+    private ArrayList<Shift> shifts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,12 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         databaseReference = database.getReference();
         mAuth = FirebaseAuth.getInstance();
 
+        // get object of user from previous page
+        doctor = (Doctor) getIntent().getExtras().getSerializable("User");
+
+        // get shifts from user object
+        shifts = doctor.getShifts();
+
         // get tablayout
         tabLayout = findViewById(R.id.shiftList);
 
@@ -47,23 +60,7 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerviewShift);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // get user information using the ID of the user from the database
-        databaseReference.child("users").child(mAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // if there are shifts, display them
-                if(snapshot.child("shifts").exists()){
-                    // get list of shifts from the database
-                    // update shift list instance with list of shifts from database
-                    // display shifts using new item_view xml, ListViewHolder, and ListAdapter
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        // display shifts using new item_view xml, ListViewHolder, and ListAdapter
     }
 
     /**

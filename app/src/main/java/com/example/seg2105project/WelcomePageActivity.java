@@ -19,13 +19,16 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
     // variable to display message
     TextView welcomeText;
     private FirebaseAuth mAuth;
+
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
         mAuth = FirebaseAuth.getInstance();
         // get User object from log in
-        User user = (User) getIntent().getExtras().getSerializable("User");
+        user = (User) getIntent().getExtras().getSerializable("User");
         // get type of User
         String type = getIntent().getExtras().getString("Type");
         welcomeText = findViewById(R.id.welcomeText);
@@ -86,6 +89,7 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
         else if(view.getId() == R.id.shiftsbutton){
             try{
                 Intent shifts = new Intent(WelcomePageActivity.this, DoctorShiftsActivity.class);
+                shifts.putExtra("User", user);
                 startActivity(shifts);
             }
             catch(Exception e){

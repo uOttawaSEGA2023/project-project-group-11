@@ -63,7 +63,23 @@ public class Doctor extends User {
         return appointments;
     }
 
+    public void addAppointment(Appointment appointment) {
+        appointments.add(appointment);
+    }
+
+    public void deleteAppointment(Appointment appointment) {
+        appointments.remove(appointment);
+    }
+
     public ArrayList<Shift> getShifts(){
         return shifts;
+    }
+
+    public void addShift(Shift shift) {
+        shifts.add(shift);
+    }
+
+    public void deleteShift(Shift shift) {
+        shifts.remove(shift);
     }
 }
