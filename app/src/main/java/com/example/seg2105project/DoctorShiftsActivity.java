@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +19,8 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class DoctorShiftsActivity extends AppCompatActivity {
 
@@ -96,6 +94,54 @@ public class DoctorShiftsActivity extends AppCompatActivity {
             }
         });
 
+        // handler for delayed text check
+        final Handler handler = new Handler();
+
+        // ensures end time is 30 minutes after start time
+        editTextStartTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String startTime = editTextStartTime.getText().toString();
+                // split time into hour and minute
+                String[] startSplit = startTime.split(":");
+                // if the time input is valid, change time after 500 milliseconds
+                if(!startTime.equals("") && startSplit.length == 2 && startSplit[1].length() == 2) {
+                    handler.removeCallbacksAndMessages(null);
+                    handler.postDelayed(() -> {
+                        changeTime(editTextStartTime, editTextEndTime, true);
+                    }, 500);
+                }
+            }
+        });
+        
+        editTextEndTime.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String endTime = editTextEndTime.getText().toString();
+                // split time into hour and minute
+                String[] endSplit = endTime.split(":");
+                // if the time input is valid, change time after 500 milliseconds
+                if(!endTime.equals("") && endSplit.length == 2 && endSplit[1].length() == 2) {
+                    handler.removeCallbacksAndMessages(null);
+                    handler.postDelayed(() -> {
+                        changeTime(editTextStartTime, editTextEndTime, false);
+                    }, 500);
+                }
+            }
+        });
+
         // add a shift when button is clicked
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +151,6 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         });
 
         // if using calendar, check if specified date and time has passed and prevent from being clicked
-        // Update the start-time and end-time so that they are 30-minute incremented every time one is updated
         // call addShift()
     }
 
@@ -134,6 +179,90 @@ public class DoctorShiftsActivity extends AppCompatActivity {
 
         // update list in database
         databaseReference.child("users").child(mAuth.getUid()).child("shifts").setValue(doctor.getShifts());
+    }
+
+    /**
+     * Updates the start-time and end-time so that they are 30-minute incremented every time one
+     * is updated.
+     * @param editTextStartTime object representing the user input of the start time
+     * @param editTextEndTime object representing the user input of the end time
+     * @param forward if a forward or backward time change should be implemented
+     */
+    private void changeTime(EditText editTextStartTime, EditText editTextEndTime, boolean forward) {
+        if(forward){
+            String startTime = editTextStartTime.getText().toString();
+            // split time into hour and minute
+            String[] startSplit = startTime.split(":");
+            int minute = Integer.parseInt(startSplit[1]);
+            int hour = Integer.parseInt(startSplit[0]);
+
+            // add an hour if adding 30 minutes to the time causes minute clock
+            // to exceed 59
+            if (minute >= 30) {
+                hour = hour + 1;
+            }
+            // resets to 0 o'clock if 24 hours is reached
+            if (hour > 23) {
+                hour = 0;
+            }
+            // adds 30 minutes
+            minute = (minute + 30) % 60;
+
+            // string representations of minute and hour
+            String hourString = String.valueOf(hour);
+            String minuteString = String.valueOf(minute);
+
+            // adds a 0 in front of single digit times
+            if(hour < 10) {
+                hourString = "0" + hourString;
+            }
+            if(minute <10) {
+                minuteString = "0" + minuteString;
+            }
+
+            // sets the end time to be 30 minutes after the start time if the text has not changed yet
+            if(!editTextEndTime.getText().toString().equals(hourString + ":" + minuteString)){
+                editTextEndTime.setText(hourString + ":" + minuteString);
+            }
+
+        }
+        else {
+            String endTime = editTextEndTime.getText().toString();
+            // split time into hour and minute
+            String[] endSplit = endTime.split(":");
+            int minute = Integer.parseInt(endSplit[1]);
+            int hour = Integer.parseInt(endSplit[0]);
+
+            // subtract an hour if subtracting 30 minutes to the time causes minute clock
+            // to be less than 0
+            if(minute < 30){
+                hour = hour - 1;
+            }
+            // resets to 0 o'clock if 24 hours is reached
+            if(hour < 0) {
+                hour = 23;
+            }
+            // subtracts 30 minutes
+            minute = (minute + 30) % 60;
+
+            // string representations of minute and hour
+            String hourString = String.valueOf(hour);
+            String minuteString = String.valueOf(minute);
+
+            // adds a 0 in front of single digit times
+            if(hour < 10) {
+                hourString = "0" + hourString;
+            }
+            if(minute <10) {
+                minuteString = "0" + minuteString;
+            }
+
+            // sets the start time to be 30 minutes before the end time if the text has not changed yet
+            if(!editTextStartTime.getText().toString().equals(hourString + ":" + minuteString)){
+                editTextStartTime.setText(hourString + ":" + minuteString);
+            }
+
+        }
     }
 
 }

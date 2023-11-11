@@ -33,17 +33,19 @@
         android:id="@+id/editTextStartTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/selectedDate"
+        android:ems="10"
+        android:maxLength="5"
         android:hint="Enter start-time"
-        android:inputType="text" />
+        android:inputType="time" />
 
     <EditText
         android:id="@+id/editTextEndTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editTextStartTime"
+        android:ems="10"
+        android:maxLength="5"
         android:hint="Enter end-time"
-        android:inputType="text" />
+        android:inputType="time" />
 
     <LinearLayout
         android:layout_width="match_parent"
