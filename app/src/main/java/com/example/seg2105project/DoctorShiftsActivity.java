@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Date;
+
 public class DoctorShiftsActivity extends AppCompatActivity {
 
     // Firebase Real-Time Database for holding database
@@ -63,7 +65,7 @@ public class DoctorShiftsActivity extends AppCompatActivity {
     }
 
     /**
-     * Creates an Alert Dialog to add a shift
+     * Creates an Alert Dialog to add a shift.
      */
     public void createAlertDialog(View view){
 
@@ -74,7 +76,7 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         // get data from view elements
-        final CalendarView calendar = (CalendarView) dialogView.findViewById(R.id.calendar);
+        final CalendarView calendarView = (CalendarView) dialogView.findViewById(R.id.calendar);
         TextView selectedDate = (TextView) dialogView.findViewById(R.id.selectedDate);
         final EditText editTextStartTime  = (EditText) dialogView.findViewById(R.id.editTextStartTime);
         final EditText editTextEndTime  = (EditText) dialogView.findViewById(R.id.editTextEndTime);
@@ -85,7 +87,8 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         b.show();
 
         // set data for calendar
-        calendar.setOnDateChangeListener(new CalendarView
+        calendarView.setMinDate(new Date().getTime());
+        calendarView.setOnDateChangeListener(new CalendarView
                 .OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
@@ -119,7 +122,8 @@ public class DoctorShiftsActivity extends AppCompatActivity {
                 }
             }
         });
-        
+
+        // ensures start time is 30 minutes before end time
         editTextEndTime.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
@@ -149,9 +153,6 @@ public class DoctorShiftsActivity extends AppCompatActivity {
                 addShift();
             }
         });
-
-        // if using calendar, check if specified date and time has passed and prevent from being clicked
-        // call addShift()
     }
 
     /**
