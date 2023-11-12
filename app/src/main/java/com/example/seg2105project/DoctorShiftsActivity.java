@@ -93,7 +93,7 @@ public class DoctorShiftsActivity extends AppCompatActivity {
      */
     public void clickedDelete(View view){
         // get specific listview element
-        View parent = view.getRootView();
+        View parent = (View) view.getParent();
         TextView textViewDate = parent.findViewById(R.id.date);
         TextView textViewStartTime = parent.findViewById(R.id.startTime);
         TextView textViewEndTime = parent.findViewById(R.id.endTime);
