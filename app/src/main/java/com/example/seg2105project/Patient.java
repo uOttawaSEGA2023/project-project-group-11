@@ -25,4 +25,13 @@ public class Patient extends User {
     public String getHealthCardNumber(){
         return this.healthCardNumber;
     }
+
+    /**
+     * gets the patients full name
+     *
+     * @return string of the patients full name
+     */
+    public String getFullName() {
+        return super.getFirstName() + " " + super.getLastName();
+    }
 }
