@@ -2,14 +2,15 @@ package com.example.seg2105project;
 
 
 public class Appointment {
+
     private Patient patient;
     private Doctor doctor;
     private String status;
     private String date;
-
     private String startTime;
     private String endTime;
-    Appointment(Patient patient, Doctor doctor, String status,String date, String startTime, String endTime){
+
+    public Appointment(Patient patient, Doctor doctor, String status,String date, String startTime, String endTime){
         this.patient = patient;
         this.doctor=doctor;
         this.status=status;
