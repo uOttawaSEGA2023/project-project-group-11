@@ -151,15 +151,24 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean added = addShift(selectedDate.getText().toString().substring(13),
-                        editTextStartTime.getText().toString(), editTextEndTime.getText().toString());
-
-                if(added) {
-                    b.dismiss();
-                }
-                else {
-                    errorText.setText("ERROR: Shift conflicts with another shift or information " +
-                            "is not entered correctly.");
+                String date = selectedDate.getText().toString();
+                String startTime = editTextStartTime.getText().toString();
+                String endTime = editTextEndTime.getText().toString();
+                String[] startSplit = startTime.split(":");
+                String[] endSplit = endTime.split(":");
+                if(date.length() <13 || startTime.length() < 5 || endTime.length() < 5
+                        || endSplit.length != 2 || startSplit.length != 2
+                        || endSplit[1].length() != 2 || startSplit[1].length() != 2){
+                    errorText.setText("ERROR: Shift is not entered correctly.");
+                }else {
+                    date = date.substring(13);
+                    boolean added = addShift(date, startTime, endTime);
+                    if(added) {
+                        b.dismiss();
+                    }
+                    else {
+                        errorText.setText("ERROR: Shift conflicts with another shift.");
+                    }
                 }
             }
         });
@@ -175,16 +184,14 @@ public class DoctorShiftsActivity extends AppCompatActivity {
      */
     private boolean addShift(String date, String startTime, String endTime) {
 
-        if(date.equals("") || startTime.equals("") || endTime.equals("")){
-            return false;
-        }
-
         // create a Shift object
         Shift shift = new Shift(date, startTime, endTime);
 
-        // check if shift being added conflicts with an existing shift)
-        if (doctor.getShifts().contains(shift)){
-            return false;
+        // check if shift being added conflicts with an existing shift
+        for(Shift sh: doctor.getShifts()) {
+            if(shift.equals(sh)){
+                return false;
+            }
         }
 
         // add Shift object to shift list instance

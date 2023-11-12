@@ -1,5 +1,7 @@
 package com.example.seg2105project;
 
+import androidx.annotation.Nullable;
+
 public class Shift {
 
     private String date;
@@ -54,4 +56,12 @@ public class Shift {
      */
     public void setEndTime(String endTime){ this.endTime = endTime; }
 
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Shift))
+            return false;
+        Shift shift = (Shift) obj;
+        return (this.date.equals(shift.getDate())) && (this.startTime.equals(shift.getStartTime()) )
+                && (this.endTime.equals(shift.getEndTime()));
+    }
 }
