@@ -66,4 +66,10 @@ public class Address implements Serializable {
         return country;
     }
 
+    @Override
+    public String toString() {
+        String format = String.format("%s, %s, %s, %s", getPostalAddress(), getCity(), getProvince(), getPostalCode());
+        return format;
+    }
+
 }
