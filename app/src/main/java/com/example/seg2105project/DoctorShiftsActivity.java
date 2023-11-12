@@ -76,11 +76,12 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         // get data from view elements
-        final CalendarView calendarView = (CalendarView) dialogView.findViewById(R.id.calendar);
-        TextView selectedDate = (TextView) dialogView.findViewById(R.id.selectedDate);
-        final EditText editTextStartTime  = (EditText) dialogView.findViewById(R.id.editTextStartTime);
-        final EditText editTextEndTime  = (EditText) dialogView.findViewById(R.id.editTextEndTime);
-        final Button buttonAdd = (Button) dialogView.findViewById(R.id.buttonAddShift);
+        final CalendarView calendarView = dialogView.findViewById(R.id.calendar);
+        TextView selectedDate = dialogView.findViewById(R.id.selectedDate);
+        final EditText editTextStartTime  = dialogView.findViewById(R.id.editTextStartTime);
+        final EditText editTextEndTime  = dialogView.findViewById(R.id.editTextEndTime);
+        final Button buttonAdd = dialogView.findViewById(R.id.buttonAddShift);
+        final TextView errorText = dialogView.findViewById(R.id.errorText);
 
         // display alert dialog
         final AlertDialog b = dialogBuilder.create();
@@ -91,7 +92,8 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView
                 .OnDateChangeListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year,
+                                            int month, int day) {
                 String date = (month + 1) + "-" + day + "-" + year;
                 selectedDate.setText("Date Chosen: " + date);
             }
@@ -145,41 +147,73 @@ public class DoctorShiftsActivity extends AppCompatActivity {
                 }
             }
         });
-
         // add a shift when button is clicked
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addShift();
+                boolean added = addShift(selectedDate.getText().toString().substring(13),
+                        editTextStartTime.getText().toString(), editTextEndTime.getText().toString());
+
+                if(added) {
+                    b.dismiss();
+                }
+                else {
+                    errorText.setText("ERROR: Shift conflicts with another shift or information " +
+                            "is not entered correctly.");
+                }
             }
         });
     }
 
+
     /**
      * Adds a shift for a Doctor object.
+     * @param date the date of the shift
+     * @param startTime the start-time of the shift
+     * @param endTime the end-time of the shift
+     * @return
      */
-    public void addShift() {
-        // get data from Views (date, startTime, endTime)
-        // If not using calendar, check if the specified date and time that the Doctor wants to add has passed
-        // Check double booking (shift being added must not conflict with an existing one)
+    private boolean addShift(String date, String startTime, String endTime) {
+
+        if(date.equals("") || startTime.equals("") || endTime.equals("")){
+            return false;
+        }
+
         // create a Shift object
+        Shift shift = new Shift(date, startTime, endTime);
+
+        // check if shift being added conflicts with an existing shift)
+        if (doctor.getShifts().contains(shift)){
+            return false;
+        }
+
         // add Shift object to shift list instance
-        //doctor.addShift(shift);
+        doctor.addShift(shift);
 
         // update list in database
-        databaseReference.child("users").child(mAuth.getUid()).child("shifts").setValue(doctor.getShifts());
+        databaseReference.child("users").child(mAuth.getUid()).child("shifts")
+                .setValue(doctor.getShifts());
+        return true;
     }
+
 
     /**
      * Deletes a shift for a Doctor object.
+     * @param date the date of the shift
+     * @param startTime the start-time of the shift
+     * @param endTime the end-time of the shift
      */
-    public void deleteShift() {
-        // get location of shift that has been clicked
+    private void deleteShift(String date, String startTime, String endTime) {
+
+        // create a Shift object
+        Shift shift = new Shift(date, startTime, endTime);
+
         // delete shift from shift list
-        //doctor.deleteShift(shift);
+        doctor.deleteShift(shift);
 
         // update list in database
-        databaseReference.child("users").child(mAuth.getUid()).child("shifts").setValue(doctor.getShifts());
+        databaseReference.child("users").child(mAuth.getUid()).child("shifts")
+                .setValue(doctor.getShifts());
     }
 
     /**
@@ -221,7 +255,7 @@ public class DoctorShiftsActivity extends AppCompatActivity {
                 minuteString = "0" + minuteString;
             }
 
-            // sets the end time to be 30 minutes after the start time if the text has not changed yet
+            // sets the end time to be 30 minutes after the start time if the time has not changed yet
             if(!editTextEndTime.getText().toString().equals(hourString + ":" + minuteString)){
                 editTextEndTime.setText(hourString + ":" + minuteString);
             }
@@ -258,7 +292,7 @@ public class DoctorShiftsActivity extends AppCompatActivity {
                 minuteString = "0" + minuteString;
             }
 
-            // sets the start time to be 30 minutes before the end time if the text has not changed yet
+            // sets the start time to be 30 minutes before the end time if the time has not changed yet
             if(!editTextStartTime.getText().toString().equals(hourString + ":" + minuteString)){
                 editTextStartTime.setText(hourString + ":" + minuteString);
             }
