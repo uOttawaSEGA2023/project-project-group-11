@@ -7,7 +7,7 @@
     tools:context=".DoctorShiftsActivity">
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/shiftList"
+        android:id="@+id/shiftTabs"
         android:layout_width="409dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
@@ -20,7 +20,7 @@
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Shifts"
+            android:text="SHIFTS"
             tools:layout_conversion_absoluteHeight="48dp"
             tools:layout_conversion_absoluteWidth="205dp"
             tools:layout_editor_absoluteX="1dp"
@@ -28,18 +28,19 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerviewShift"
+    <ListView
+        android:id="@+id/shiftList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/shiftList" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/shiftTabs" />
 
     <Button
         android:id="@+id/AddShiftButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/red"
+        android:backgroundTint="@color/blue"
         android:onClick="createAlertDialog"
         android:text="Add Shift" />
+
 </RelativeLayout>
 

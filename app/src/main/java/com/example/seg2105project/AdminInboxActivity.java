@@ -84,7 +84,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
         });
     }
 
-    // When the admin click on a registration request from the list of pending requests or rejected
+    // When the admin clicks on a registration request from the list of pending requests or rejected
     // the admin is sent to the page where the information of that registration request is displayed
     // Used implementation of the onClickListener from a tutorial video: https://www.youtube.com/watch?v=69C1ljfDvl0
     @Override

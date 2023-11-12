@@ -3,8 +3,6 @@ package com.example.seg2105project;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,12 +13,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
@@ -33,10 +34,8 @@ public class DoctorShiftsActivity extends AppCompatActivity {
     // reference variable to Firebase Authentication
     private static FirebaseAuth mAuth;
 
-    RecyclerView recyclerView;
-    TabLayout tabLayout;
-
-    // shift list instance
+    // listview to display list
+    ListView shiftList;
 
     //Doctor object
     private Doctor doctor;
@@ -54,18 +53,59 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         // get object of user from previous page
         doctor = (Doctor) getIntent().getExtras().getSerializable("User");
 
-        // get tablayout
-        tabLayout = findViewById(R.id.shiftList);
+        // get listview element for shifts
+        shiftList = findViewById(R.id.shiftList);
+    }
 
-        // get recycler view of lists
-        recyclerView = findViewById(R.id.recyclerviewShift);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    @Override
+    protected void onStart() {
+        super.onStart();
 
-        // display shifts using new item_view xml, ListViewHolder, and ListAdapter
+        // get shift data from database
+        databaseReference.child("users").child(mAuth.getUid()).child("shifts")
+                .addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                doctor.getShifts().clear();
+                // display shift list
+                for(DataSnapshot ds: snapshot.getChildren()){
+                    String date = ds.child("date").getValue(String.class);
+                    String startTime = ds.child("startTime").getValue(String.class);
+                    String endTime = ds.child("endTime").getValue(String.class);
+                    Shift shift = new Shift(date, startTime, endTime);
+                    doctor.addShift(shift);
+                }
+                DoctorShiftList shiftAdapter = new DoctorShiftList(DoctorShiftsActivity.this,
+                        doctor.getShifts());
+                shiftList.setAdapter(shiftAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    /**
+     * Calls the method to delete a shift when the delete button is clicked.
+     * @param view
+     */
+    public void clickedDelete(View view){
+        // get specific listview element
+        View parent = view.getRootView();
+        TextView textViewDate = parent.findViewById(R.id.date);
+        TextView textViewStartTime = parent.findViewById(R.id.startTime);
+        TextView textViewEndTime = parent.findViewById(R.id.endTime);
+        // call method to delete shift
+        deleteShift(textViewDate.getText().toString().substring(6),
+                textViewStartTime.getText().toString().substring(12),
+                textViewEndTime.getText().toString().substring(10));
     }
 
     /**
      * Creates an Alert Dialog to add a shift.
+     * @param view
      */
     public void createAlertDialog(View view){
 
@@ -174,7 +214,6 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         });
     }
 
-
     /**
      * Adds a shift for a Doctor object.
      * @param date the date of the shift
@@ -224,7 +263,7 @@ public class DoctorShiftsActivity extends AppCompatActivity {
     }
 
     /**
-     * Updates the start-time and end-time so that they are 30-minute incremented every time one
+     * Updates the start-time and end-time so that they are 30-minute intervals every time one
      * is updated.
      * @param editTextStartTime object representing the user input of the start time
      * @param editTextEndTime object representing the user input of the end time

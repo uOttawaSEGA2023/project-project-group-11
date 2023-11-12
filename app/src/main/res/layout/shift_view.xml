@@ -5,39 +5,46 @@
     android:layout_marginTop="10dp">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/date"
-        android:textColor="@color/black"
-        android:textSize="20dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:text="Date"
-        />
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/startTime"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/date"
-        android:textColor="@color/black"
-        android:textSize="20dp"
         android:text="StartTime"
-        />
+        android:textColor="@color/black"
+        android:textSize="20dp" />
 
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/endTime"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:id="@+id/email"
         android:layout_below="@id/startTime"
-        android:textColor="@color/black"
-        android:textSize="20dp"
         android:text="EndTime"
-        />
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/date"
+        android:layout_toRightOf="@+id/startTime"
+        android:backgroundTint="@color/blue"
+        android:onClick="clickedDelete"
+        android:text="Delete" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/blue"
-        android:layout_below="@id/email"
+        android:layout_below="@id/endTime"
         android:layout_marginTop="10dp"
         />
 
