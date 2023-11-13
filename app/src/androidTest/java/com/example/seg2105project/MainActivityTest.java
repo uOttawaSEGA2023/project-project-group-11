@@ -3,8 +3,6 @@ package com.example.seg2105project;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 
-import androidx.annotation.UiThread;
-
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
