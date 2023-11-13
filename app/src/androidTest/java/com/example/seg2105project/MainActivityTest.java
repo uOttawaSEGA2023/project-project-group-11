@@ -9,14 +9,15 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.widget.TextView;
 
 public class MainActivityTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> myActivityTestRule = new ActivityTestRule<MainActivity>(MainActivity.class);
-    private MainActivity mActivity = null;
+    public ActivityTestRule<LoginActivity> myActivityTestRule = new ActivityTestRule<LoginActivity>(LoginActivity.class);
+    private LoginActivity mActivity = null;
     private TextView text;
 
     @Before
@@ -25,7 +26,7 @@ public class MainActivityTest {
     }
 
     @Test
-    @UiThread
+    @UiThreadTest
     public void checkFirstName() throws Exception{
         assertNotNull(mActivity.findViewById(R.id.textView4));
         text = mActivity.findViewById(R.id.username);
