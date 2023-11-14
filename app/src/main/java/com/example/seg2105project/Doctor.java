@@ -6,8 +6,10 @@ public class Doctor extends User {
     private final String employeeNumber;
     private final ArrayList<String> specialties;
 
-    private ArrayList<Appointment> appointments = new ArrayList<Appointment>();
-    private ArrayList<Shift> shifts = new ArrayList<Shift>();
+    private ArrayList<Appointment> upcomingAppointments = new ArrayList<>();
+    private ArrayList<Appointment> pastAppointments = new ArrayList<>();
+
+    private ArrayList<Shift> shifts = new ArrayList<>();
 
 
 
@@ -48,27 +50,27 @@ public class Doctor extends User {
     }
 
     /**
-     * Adds a new appointment to the list of appointments
-     * @param newAppointment
-     */
-    public void setAppointments(Appointment newAppointment) {
-        this.appointments.add(newAppointment);
-    }
-
-    /**
-     * gets the list of all appointments this doctor have
+     * gets the list of all upcoming appointments this doctor has
      * @return ArrayList</Appointment>
      */
-    public ArrayList<Appointment> getAppointments() {
-        return appointments;
+    public ArrayList<Appointment> getUpcomingAppointments() {
+        return upcomingAppointments;
     }
 
-    public void addAppointment(Appointment appointment) {
-        appointments.add(appointment);
+    public ArrayList<Appointment> getPastAppointments() {
+        return pastAppointments;
     }
 
-    public void deleteAppointment(Appointment appointment) {
-        appointments.remove(appointment);
+    public void addUpcomingAppointment(Appointment appointment) {
+        upcomingAppointments.add(appointment);
+    }
+
+    public void deleteUpcomingAppointment(Appointment appointment) {
+        upcomingAppointments.remove(appointment);
+    }
+
+    public void addPastAppointment(Appointment appointment) {
+        pastAppointments.add(appointment);
     }
 
     public ArrayList<Shift> getShifts(){

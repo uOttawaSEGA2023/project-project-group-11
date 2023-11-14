@@ -5,15 +5,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CalendarView;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
 
-public class DoctorShiftsActivity extends AppCompatActivity {
+public class DoctorShiftsActivity extends AppCompatActivity{
 
     // Firebase Real-Time Database for holding database
     private static FirebaseDatabase database;
@@ -39,6 +38,13 @@ public class DoctorShiftsActivity extends AppCompatActivity {
 
     //Doctor object
     private Doctor doctor;
+
+    String[] times = {"00:00", "00:30", "01:00", "01:30", "02:00", "02:30", "03:00", "03:30",
+    "04:00", "04:30", "05:00", "05:30", "06:00", "06:30", "07:00", "07:30", "08:00", "08:30",
+    "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
+    "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00", "17:30", "18:00", "18:30",
+    "19:00", "19:30", "20:00", "20:30", "21:00", "21:30", "22:00", "22:30", "23:00", "23:30"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,14 +124,51 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         // get data from view elements
         final CalendarView calendarView = dialogView.findViewById(R.id.calendar);
         TextView selectedDate = dialogView.findViewById(R.id.selectedDate);
-        final EditText editTextStartTime  = dialogView.findViewById(R.id.editTextStartTime);
-        final EditText editTextEndTime  = dialogView.findViewById(R.id.editTextEndTime);
+        final Spinner startTimeSpinner  = dialogView.findViewById(R.id.startTimeSpinner);
+        final Spinner endTimeSpinner  = dialogView.findViewById(R.id.endTimeSpinner);
         final Button buttonAdd = dialogView.findViewById(R.id.buttonAddShift);
         final TextView errorText = dialogView.findViewById(R.id.errorText);
 
         // display alert dialog
         final AlertDialog b = dialogBuilder.create();
         b.show();
+
+        // indices for spinner position
+        final int[] startTimeIndex = new int[1];
+        final int[] endTimeIndex = new int[1];
+
+        // start time spinner selection
+        startTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                startTimeIndex[0] = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        // end time spinner selection
+        endTimeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                endTimeIndex[0] = i;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+
+        // adapter for spinner
+        ArrayAdapter ad
+                = new ArrayAdapter(this, android.R.layout.simple_spinner_item, times);
+        ad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        startTimeSpinner.setAdapter(ad);
+        endTimeSpinner.setAdapter(ad);
 
         // set data for calendar
         calendarView.setMinDate(new Date().getTime());
@@ -139,67 +182,17 @@ public class DoctorShiftsActivity extends AppCompatActivity {
             }
         });
 
-        // handler for delayed text check
-        final Handler handler = new Handler();
-
-        // ensures end time is 30 minutes after start time
-        editTextStartTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String startTime = editTextStartTime.getText().toString();
-                // split time into hour and minute
-                String[] startSplit = startTime.split(":");
-                // if the time input is valid, change time after 500 milliseconds
-                if(!startTime.equals("") && startSplit.length == 2 && startSplit[1].length() == 2) {
-                    handler.removeCallbacksAndMessages(null);
-                    handler.postDelayed(() -> {
-                        changeTime(editTextStartTime, editTextEndTime, true);
-                    }, 500);
-                }
-            }
-        });
-
-        // ensures start time is 30 minutes before end time
-        editTextEndTime.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String endTime = editTextEndTime.getText().toString();
-                // split time into hour and minute
-                String[] endSplit = endTime.split(":");
-                // if the time input is valid, change time after 500 milliseconds
-                if(!endTime.equals("") && endSplit.length == 2 && endSplit[1].length() == 2) {
-                    handler.removeCallbacksAndMessages(null);
-                    handler.postDelayed(() -> {
-                        changeTime(editTextStartTime, editTextEndTime, false);
-                    }, 500);
-                }
-            }
-        });
         // add a shift when button is clicked
         buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String date = selectedDate.getText().toString();
-                String startTime = editTextStartTime.getText().toString();
-                String endTime = editTextEndTime.getText().toString();
-                String[] startSplit = startTime.split(":");
-                String[] endSplit = endTime.split(":");
-                if(date.length() <13 || startTime.length() < 5 || endTime.length() < 5
-                        || endSplit.length != 2 || startSplit.length != 2
-                        || endSplit[1].length() != 2 || startSplit[1].length() != 2){
-                    errorText.setText("ERROR: Shift is not entered correctly.");
+                String startTime = startTimeSpinner.getItemAtPosition(startTimeIndex[0]).toString();
+                String endTime = endTimeSpinner.getItemAtPosition(endTimeIndex[0]).toString();
+                System.out.println(startTime);
+                System.out.println(endTime);
+                if(date.length() <13){
+                    errorText.setText("ERROR: Please select a date.");
                 }else {
                     date = date.substring(13);
                     boolean added = addShift(date, startTime, endTime);
@@ -242,7 +235,6 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         return true;
     }
 
-
     /**
      * Deletes a shift for a Doctor object.
      * @param date the date of the shift
@@ -261,89 +253,4 @@ public class DoctorShiftsActivity extends AppCompatActivity {
         databaseReference.child("users").child(mAuth.getUid()).child("shifts")
                 .setValue(doctor.getShifts());
     }
-
-    /**
-     * Updates the start-time and end-time so that they are 30-minute intervals every time one
-     * is updated.
-     * @param editTextStartTime object representing the user input of the start time
-     * @param editTextEndTime object representing the user input of the end time
-     * @param forward if a forward or backward time change should be implemented
-     */
-    private void changeTime(EditText editTextStartTime, EditText editTextEndTime, boolean forward) {
-        if(forward){
-            String startTime = editTextStartTime.getText().toString();
-            // split time into hour and minute
-            String[] startSplit = startTime.split(":");
-            int minute = Integer.parseInt(startSplit[1]);
-            int hour = Integer.parseInt(startSplit[0]);
-
-            // add an hour if adding 30 minutes to the time causes minute clock
-            // to exceed 59
-            if (minute >= 30) {
-                hour = hour + 1;
-            }
-            // resets to 0 o'clock if 24 hours is reached
-            if (hour > 23) {
-                hour = 0;
-            }
-            // adds 30 minutes
-            minute = (minute + 30) % 60;
-
-            // string representations of minute and hour
-            String hourString = String.valueOf(hour);
-            String minuteString = String.valueOf(minute);
-
-            // adds a 0 in front of single digit times
-            if(hour < 10) {
-                hourString = "0" + hourString;
-            }
-            if(minute <10) {
-                minuteString = "0" + minuteString;
-            }
-
-            // sets the end time to be 30 minutes after the start time if the time has not changed yet
-            if(!editTextEndTime.getText().toString().equals(hourString + ":" + minuteString)){
-                editTextEndTime.setText(hourString + ":" + minuteString);
-            }
-
-        }
-        else {
-            String endTime = editTextEndTime.getText().toString();
-            // split time into hour and minute
-            String[] endSplit = endTime.split(":");
-            int minute = Integer.parseInt(endSplit[1]);
-            int hour = Integer.parseInt(endSplit[0]);
-
-            // subtract an hour if subtracting 30 minutes to the time causes minute clock
-            // to be less than 0
-            if(minute < 30){
-                hour = hour - 1;
-            }
-            // resets to 0 o'clock if 24 hours is reached
-            if(hour < 0) {
-                hour = 23;
-            }
-            // subtracts 30 minutes
-            minute = (minute + 30) % 60;
-
-            // string representations of minute and hour
-            String hourString = String.valueOf(hour);
-            String minuteString = String.valueOf(minute);
-
-            // adds a 0 in front of single digit times
-            if(hour < 10) {
-                hourString = "0" + hourString;
-            }
-            if(minute <10) {
-                minuteString = "0" + minuteString;
-            }
-
-            // sets the start time to be 30 minutes before the end time if the time has not changed yet
-            if(!editTextStartTime.getText().toString().equals(hourString + ":" + minuteString)){
-                editTextStartTime.setText(hourString + ":" + minuteString);
-            }
-
-        }
-    }
-
 }
