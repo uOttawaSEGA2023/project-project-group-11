@@ -1,6 +1,5 @@
 package com.example.seg2105project;
 
-
 public class Appointment {
 
     private Patient patient;

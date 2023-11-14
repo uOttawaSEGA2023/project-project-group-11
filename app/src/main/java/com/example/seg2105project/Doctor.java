@@ -9,7 +9,7 @@ public class Doctor extends User {
     private ArrayList<Appointment> upcomingAppointments = new ArrayList<>();
     private ArrayList<Appointment> pastAppointments = new ArrayList<>();
 
-    private ArrayList<Shift> shifts = new ArrayList<>();
+    private ArrayList<Shift> shifts = new ArrayList<Shift>();
 
 
 
