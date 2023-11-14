@@ -96,17 +96,11 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(WelcomePageActivity.this, "Error showing shifts", Toast.LENGTH_SHORT).show();
                 System.out.println(e);
             }
-        }
+        }/*
         else if(view.getId() == R.id.appointmentbutton){
             try{
-                Intent appointments = new Intent(WelcomePageActivity.this, DoctorAppointmentsActivity.class);
-                appointments.putExtra("User", user);
-                startActivity(appointments);
+                Intent appointments = new Intent(WelcomePageActivity.this, )
             }
-            catch(Exception e){
-                Toast.makeText(WelcomePageActivity.this, "Error showing appointments", Toast.LENGTH_SHORT).show();
-                System.out.println(e);
-            }
-        }
+        }*/
     }
 }
