@@ -189,11 +189,19 @@ public class DoctorShiftsActivity extends AppCompatActivity{
                 String date = selectedDate.getText().toString();
                 String startTime = startTimeSpinner.getItemAtPosition(startTimeIndex[0]).toString();
                 String endTime = endTimeSpinner.getItemAtPosition(endTimeIndex[0]).toString();
+                String[] startSplit = startTime.split(":");
+                String[] endSplit = endTime.split(":");
                 System.out.println(startTime);
                 System.out.println(endTime);
                 if(date.length() <13){
                     errorText.setText("ERROR: Please select a date.");
-                }else {
+                }
+                else if(Integer.parseInt(startSplit[0]) > Integer.parseInt(endSplit[0])
+                        || ((Integer.parseInt(startSplit[0]) == Integer.parseInt(endSplit[0]))
+                        && (Integer.parseInt(startSplit[1]) >= Integer.parseInt(endSplit[1])))) {
+                    errorText.setText("ERROR: Start time must be before the end time.");
+                }
+                else {
                     date = date.substring(13);
                     boolean added = addShift(date, startTime, endTime);
                     if(added) {
