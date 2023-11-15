@@ -1,6 +1,8 @@
 package com.example.seg2105project;
 
-public class Appointment {
+import java.io.Serializable;
+
+public class Appointment implements Serializable {
     private Patient patient;
     private Doctor doctor;
     private String status;

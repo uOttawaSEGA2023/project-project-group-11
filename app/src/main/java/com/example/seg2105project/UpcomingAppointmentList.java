@@ -31,7 +31,7 @@ public class UpcomingAppointmentList extends ArrayAdapter<Appointment> {
 
         Appointment appointment = appointments.get(position);
 
-        textViewPatient.setText("Patient: " + appointment.getPatient());
+        textViewPatient.setText("Patient: " + appointment.getPatient().getFullName());
         textViewDate.setText("Date: " + appointment.getDate());
         textViewStartTime.setText("Start Time: " + appointment.getStartTime());
         textViewEndTime.setText("End Time: " + appointment.getEndTime());

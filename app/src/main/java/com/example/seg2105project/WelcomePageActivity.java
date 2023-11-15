@@ -47,6 +47,7 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
         }
         welcomeText.setText("Welcome " + user.getFirstName() + " " + user.getLastName() +
                 "! You are logged in as " + type);
+
     }
 
     /**
@@ -96,11 +97,20 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(WelcomePageActivity.this, "Error showing shifts", Toast.LENGTH_SHORT).show();
                 System.out.println(e);
             }
-        }/*
+        }
         else if(view.getId() == R.id.appointmentbutton){
-            try{
-                Intent appointments = new Intent(WelcomePageActivity.this, )
-            }
-        }*/
+            Intent appointments = new Intent(WelcomePageActivity.this, DoctorAppointmentsActivityNew.class);
+            appointments.putExtra("User", user);
+            startActivity(appointments);
+//            try{
+//                Intent appointments = new Intent(WelcomePageActivity.this, DoctorAppointmentsActivity.class);
+//                appointments.putExtra("User", user);
+//                startActivity(appointments);
+//            }
+//            catch(Exception e){
+//                Toast.makeText(WelcomePageActivity.this, "Error showing appointments", Toast.LENGTH_SHORT).show();
+//                System.out.println(e);
+//            }
+        }
     }
 }
