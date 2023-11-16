@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+
+    <TextView
+        android:id="@+id/patientView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Patient:" />
+
+    <TextView
+        android:id="@+id/dateView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/patientView"
+        android:text="Date:" />
+
+    <TextView
+        android:id="@+id/startTimeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dateView"
+        android:text="Start Time:" />
+
+    <TextView
+        android:id="@+id/endTimeView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/startTimeView"
+        android:text="End Time:" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/blue"
+        android:layout_below="@id/endTimeView"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>
