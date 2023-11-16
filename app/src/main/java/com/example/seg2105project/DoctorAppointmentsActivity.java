@@ -32,7 +32,7 @@ public class DoctorAppointmentsActivity extends AppCompatActivity {
     int onList;
 
 
-    //Doctor object
+    //Doctor object instantiated
     private Doctor doctor;
 
     protected void onCreate(Bundle savedInstanceState) {
