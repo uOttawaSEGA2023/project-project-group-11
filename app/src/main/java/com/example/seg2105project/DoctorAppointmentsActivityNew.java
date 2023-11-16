@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,6 +58,11 @@ public class DoctorAppointmentsActivityNew extends AppCompatActivity {
         // get listview element for shifts
         appointment = findViewById(R.id.appointments);
 
+
+
+
+
+
         /* TEST CASE: REMEMBER TO COMMENT THIS OUT ONCE THE CASE IS IN THE DATABASE OR AN
          ERROR WILL OCCUR */
 //        Address address = new Address("123 Anywhere St.", "A1A1A1",
@@ -70,6 +77,7 @@ public class DoctorAppointmentsActivityNew extends AppCompatActivity {
 //        doctor.addUpcomingAppointment(appoint);
 //        databaseReference.child("users").child(mAuth.getUid())
 //                .child("upcomingAppointments").setValue(doctor.getUpcomingAppointments());
+
 
         // when an individual appointment is clicked
         appointment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -88,6 +96,55 @@ public class DoctorAppointmentsActivityNew extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Appointment approve all switch
+        Switch approveSwitch =(Switch) findViewById(R.id.switch1);
+
+        approveSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if(isChecked){
+                databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")
+                        .addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                doctor.getUpcomingAppointments().clear();
+                                // display appointment list
+                                for (DataSnapshot ds : snapshot.getChildren()) {
+                                    DataSnapshot dsP = ds.child("patient");
+                                    DataSnapshot dsA = dsP.child("address");
+                                    Address address = new Address(dsA.child("postalAddress").getValue(String.class),
+                                            dsA.child("postalCode").getValue(String.class),
+                                            dsA.child("city").getValue(String.class),
+                                            dsA.child("province").getValue(String.class),
+                                            dsA.child("country").getValue(String.class));
+                                    Patient patient = new Patient(dsP.child("firstName").getValue(String.class),
+                                            dsP.child("lastName").getValue(String.class),
+                                            dsP.child("email").getValue(String.class),
+                                            dsP.child("accountPassword").getValue(String.class),
+                                            dsP.child("phoneNumber").getValue(String.class),
+                                            address,
+                                            dsP.child("healthCardNumber").getValue(String.class));
+                                    String date = ds.child("date").getValue(String.class);
+                                    String startTime = ds.child("startTime").getValue(String.class);
+                                    String endTime = ds.child("endTime").getValue(String.class);
+                                    Appointment appointmentO = new Appointment(patient, doctor, "Approved", date, startTime, endTime);
+                                    doctor.addUpcomingAppointment(appointmentO);
+                                }
+                                UpcomingAppointmentList appointmentAdapter = new UpcomingAppointmentList(DoctorAppointmentsActivityNew.this,
+                                        doctor.getUpcomingAppointments());
+                                appointment.setAdapter(appointmentAdapter);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+            }
+        });
+
+
+
 
     }
 
@@ -161,7 +218,10 @@ public class DoctorAppointmentsActivityNew extends AppCompatActivity {
             }
         });
 
+
+
     }
+
 
     /**
      * Displays upcoming appointments as a ListView

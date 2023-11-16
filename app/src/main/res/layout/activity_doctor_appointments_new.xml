@@ -43,6 +43,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="9dp"
         android:text="Approve All"
+        android:checked="false"
         app:layout_constraintBottom_toTopOf="@+id/tabLayout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
