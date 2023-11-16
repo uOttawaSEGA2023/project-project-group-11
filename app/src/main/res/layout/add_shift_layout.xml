@@ -29,23 +29,15 @@
         android:text="Date Chosen:"
         android:textSize="18sp" />
 
-    <EditText
-        android:id="@+id/editTextStartTime"
+    <Spinner
+        android:id="@+id/startTimeSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:maxLength="5"
-        android:hint="Enter start-time"
-        android:inputType="time" />
+        android:layout_height="wrap_content" />
 
-    <EditText
-        android:id="@+id/editTextEndTime"
+    <Spinner
+        android:id="@+id/endTimeSpinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:maxLength="5"
-        android:hint="Enter end-time"
-        android:inputType="time" />
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:layout_width="match_parent"

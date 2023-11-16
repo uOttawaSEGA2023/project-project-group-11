@@ -98,19 +98,10 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
                 System.out.println(e);
             }
         }
-        else if(view.getId() == R.id.appointmentbutton){
+        else if(view.getId() == R.id.appointmentbutton) {
             Intent appointments = new Intent(WelcomePageActivity.this, DoctorAppointmentsActivityNew.class);
             appointments.putExtra("User", user);
             startActivity(appointments);
-//            try{
-//                Intent appointments = new Intent(WelcomePageActivity.this, DoctorAppointmentsActivity.class);
-//                appointments.putExtra("User", user);
-//                startActivity(appointments);
-//            }
-//            catch(Exception e){
-//                Toast.makeText(WelcomePageActivity.this, "Error showing appointments", Toast.LENGTH_SHORT).show();
-//                System.out.println(e);
-//            }
         }
     }
 }

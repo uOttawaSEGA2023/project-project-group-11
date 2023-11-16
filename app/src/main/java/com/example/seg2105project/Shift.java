@@ -8,7 +8,7 @@ public class Shift {
     private String startTime;
     private String endTime;
 
-    Shift(String date, String startTime, String endTime){
+    public Shift(String date, String startTime, String endTime){
         this.date = date;
         this.startTime = startTime;
         this.endTime = endTime;
