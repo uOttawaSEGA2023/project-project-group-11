@@ -84,4 +84,8 @@ public class Doctor extends User {
     public void deleteShift(Shift shift) {
         shifts.remove(shift);
     }
+
+    public String getFullName() {
+        return getFirstName() + getLastName();
+    }
 }
