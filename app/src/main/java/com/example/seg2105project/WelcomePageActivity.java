@@ -45,6 +45,12 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
             button2.setVisibility(View.VISIBLE);
             button2.setOnClickListener(this);
         }
+        else if(type.equals("patient")){
+            View button = findViewById(R.id.patientAppointment);
+            button.setVisibility(View.VISIBLE);
+            button.setOnClickListener(this);
+
+        }
         welcomeText.setText("Welcome " + user.getFirstName() + " " + user.getLastName() +
                 "! You are logged in as " + type);
 
@@ -102,6 +108,11 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
             Intent appointments = new Intent(WelcomePageActivity.this, DoctorAppointmentsActivityNew.class);
             appointments.putExtra("User", user);
             startActivity(appointments);
+        }
+        else if(view.getId() == R.id.patientAppointment){
+            Intent appointment = new Intent(WelcomePageActivity.this,PatientAppointmentActivity.class);
+            appointment.putExtra("User",user);
+            startActivity(appointment);
         }
     }
 }
