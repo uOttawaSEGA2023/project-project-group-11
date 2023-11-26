@@ -89,63 +89,8 @@ public class PatientAppointmentActivity extends AppCompatActivity {
                 }
                 else if(position == 1){
                     onList = 1;
-                    //displayPastAppointment();
-                    databaseReference.child("users").child(mAuth.getUid()).child("pastAppointments")
-                            .addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    patient.getPastAppointments().clear();
-                                    ArrayList<String> doctorSpecialities = new ArrayList<>();
+                    displayPastAppointment();
 
-                                    for(DataSnapshot ds : snapshot.getChildren()){
-                                        DataSnapshot dr = ds.child("doctor");
-                                        DataSnapshot doctorAddress = ds.child("address");
-                                        Address address = new Address(doctorAddress.child("postalAddress").getValue(String.class),
-                                                doctorAddress.child("postalCode").getValue(String.class),
-                                                doctorAddress.child("city").getValue(String.class),
-                                                doctorAddress.child("province").getValue(String.class),
-                                                doctorAddress.child("country").getValue(String.class));
-
-                                        // Iterates through
-                                        for(DataSnapshot d :dr.child("specialties").getChildren()){
-                                            doctorSpecialities.add(d.getValue(String.class));
-                                        }
-                                        // gets doctor associated with an appointment
-                                        Doctor doctor = new Doctor(dr.child("firstName").getValue(String.class),
-                                                dr.child("lastName").getValue(String.class),
-                                                dr.child("email").getValue(String.class),
-                                                dr.child("accountPassword").getValue(String.class),
-                                                dr.child("phoneNumber").getValue(String.class),address,
-                                                dr.child("employeeNumber").getValue(String.class),
-                                                doctorSpecialities);
-                                        String status = ds.child("status").getValue(String.class);
-                                        String date = ds.child("date").getValue(String.class);
-                                        String startTime = ds.child("startTime").getValue(String.class);
-                                        String endTime = ds.child("endTime").getValue(String.class);
-
-
-                                        Patient patient1 = new Patient(patient.getFirstName(),patient.getLastName(),patient.getEmail(),
-                                                patient.getAccountPassword(),patient.getPhoneNumber(),patient.getAddress(),
-                                                patient.getHealthCardNumber());
-
-                                        Appointment appointment1 = new Appointment(patient,doctor,status,date,startTime,endTime);
-                                        patient.addPastAppointment(appointment1);
-
-
-
-
-                                    }
-                                    UpcomingAppointmentList appointmentAdapter = new UpcomingAppointmentList(PatientAppointmentActivity.this,
-                                            patient.getPastAppointments());
-                                    appointment.setAdapter(appointmentAdapter);
-
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
                 }
             }
 
@@ -159,6 +104,13 @@ public class PatientAppointmentActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public void OnClickReturn(View view){
+        if(view.getId() == R.id.returnPatientPage){
+            Intent intent = new Intent(PatientAppointmentActivity.this, WelcomePageActivity.class);
+            intent.putExtra("User",patient);
+            startActivity(intent);
+        }
     }
 
     private void displayPastAppointment() {
@@ -203,11 +155,12 @@ public class PatientAppointmentActivity extends AppCompatActivity {
                             patient.addPastAppointment(appointment1);
 
 
-                            UpcomingAppointmentList appointmentAdapter = new UpcomingAppointmentList(PatientAppointmentActivity.this,
-                                    patient.getPastAppointments());
-                            appointment.setAdapter(appointmentAdapter);
+
 
                         }
+                        UpcomingAppointmentList appointmentAdapter = new UpcomingAppointmentList(PatientAppointmentActivity.this,
+                                patient.getPastAppointments());
+                        appointment.setAdapter(appointmentAdapter);
 
                     }
 
