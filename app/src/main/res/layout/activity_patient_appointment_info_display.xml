@@ -1,0 +1,55 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".PatientAppointmentInfoDisplay_Activity">
+
+    <TextView
+        android:id="@+id/doctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Doctor Name" />
+
+
+    <TextView
+        android:id="@+id/healthCardNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Health Card Number"/>
+
+    <TextView
+        android:id="@+id/appointmentDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Appointment Date"/>
+
+    <TextView
+        android:id="@+id/appointmentStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Time"/>
+
+    <TextView
+        android:id="@+id/appointmentEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Time"/>
+
+    <TextView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status"/>
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="OnClick"
+        android:text="Return to Patient inbox" />
+
+
+</LinearLayout>

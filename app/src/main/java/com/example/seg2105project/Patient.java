@@ -1,6 +1,12 @@
 package com.example.seg2105project;
+
+import java.util.ArrayList;
+
 public class Patient extends User {
     private final String healthCardNumber;
+
+    private ArrayList<Appointment> upcomingAppointments = new ArrayList<>();
+    private ArrayList<Appointment> pastAppointments = new ArrayList<>();
 
     /**
      * Represents a Patient user in the application. It is a subclass of {@link User}.
@@ -33,5 +39,25 @@ public class Patient extends User {
      */
     public String getFullName() {
         return super.getFirstName() + " " + super.getLastName();
+    }
+
+    public ArrayList<Appointment> getUpcomingAppointments() {
+        return upcomingAppointments;
+    }
+
+    public ArrayList<Appointment> getPastAppointments() {
+        return pastAppointments;
+    }
+
+    public void addUpcomingAppointment(Appointment appointment) {
+        upcomingAppointments.add(appointment);
+    }
+
+    public void deleteUpcomingAppointment(Appointment appointment) {
+        upcomingAppointments.remove(appointment);
+    }
+
+    public void addPastAppointment(Appointment appointment1) {
+        pastAppointments.add(appointment1);
     }
 }
