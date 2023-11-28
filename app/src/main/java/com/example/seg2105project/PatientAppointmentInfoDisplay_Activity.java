@@ -1,21 +1,17 @@
 package com.example.seg2105project;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,14 +90,17 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         rateDoctorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onRateDoctorButtonClick(v);
+                if(v.getId() == R.id.rateDoctorButton){
+                    Intent rateDoctorPage = new Intent(PatientAppointmentInfoDisplay_Activity.this, RateDoctorActivity.class);
+                    startActivity(rateDoctorPage);
+                    System.out.println("Does this work?"); }
             }
         });
     }
 
     public void onCancelButtonClick(View view) {
         if (!isAppointmentWithin60Minutes(appointment.getStartTime())) {
-            // TODO: Implement cancel logic
+            // TODO: remove appointment from data base
 
             // Display a toast message
             Toast.makeText(this, "Appointment canceled!", Toast.LENGTH_SHORT).show();
@@ -128,46 +127,4 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
             return false;
         }
     }
-
-    public void onRateDoctorButtonClick(View view) {
-        // Retrieve doctor ID and rating value
-        String doctorId = appointment.getDoctor().getEmployeeNumber();
-        RatingBar ratingBar = findViewById(R.id.doctorRatingBar);
-        float ratingValue = ratingBar.getRating();
-
-        // Save the rating to the database
-        saveDoctorRating(doctorId, ratingValue);
-    }
-
-    private void saveDoctorRating(String doctorId, float ratingValue) {
-        // Assuming you have a "doctors" node in your database
-        DatabaseReference doctorRef = databaseReference.child("doctors").child(doctorId);
-
-        // Retrieve existing ratings and count from the database
-        doctorRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    long totalRatings = dataSnapshot.child("totalRatings").getValue(Long.class);
-                    float averageRating = dataSnapshot.child("averageRating").getValue(Float.class);
-
-                    // Update total ratings and calculate new average rating
-                    totalRatings++;
-                    averageRating = ((averageRating * (totalRatings - 1)) + ratingValue) / totalRatings;
-
-                    // Update the database with the new ratings
-                    doctorRef.child("totalRatings").setValue(totalRatings);
-                    doctorRef.child("averageRating").setValue(averageRating);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
-    }
-
-
 }
