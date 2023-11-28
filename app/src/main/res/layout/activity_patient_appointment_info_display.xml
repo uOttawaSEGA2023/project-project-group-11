@@ -12,13 +12,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Doctor Name" />
-
-
     <TextView
-        android:id="@+id/healthCardNumber"
+        android:id="@+id/specialties"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Health Card Number"/>
+        android:text="Doctor Specialities" />
 
     <TextView
         android:id="@+id/appointmentDate"
@@ -38,18 +36,37 @@
         android:layout_height="wrap_content"
         android:text="End Time"/>
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status"/>
-
-    <Button
-        android:id="@+id/backButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="OnClick"
-        android:text="Return to Patient inbox" />
+        android:orientation="horizontal">
 
+        <Button
+            android:id="@+id/rateDoctorButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:onClick="onRateDoctorButtonClick"
+            android:text="Rate Doctor" />
+        <Button
+            android:id="@+id/cancelAppointmentButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:onClick="onCancelButtonClick"
+            android:text="Cancel" />
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:onClick="onBackButtonClick"
+            android:text="Back" />
+
+
+    </LinearLayout>
 
 </LinearLayout>

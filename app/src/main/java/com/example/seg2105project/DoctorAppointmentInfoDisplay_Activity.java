@@ -83,13 +83,13 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
         status = findViewById(R.id.status);
 
         // Set text for appointment details dynamically
-        patientName.setText(appointment.getPatient().getFullName());
-        address.setText(appointment.getPatient().getAddress().toString());
-        healthCardNumber.setText(appointment.getPatient().getHealthCardNumber());
-        appointmentDate.setText(appointment.getDate());
-        appointmentStartTime.setText(appointment.getStartTime());
-        appointmentEndTime.setText(appointment.getEndTime());
-        status.setText(appointment.getStatus());
+        patientName.setText("Patient Name:" + appointment.getPatient().getFullName());
+        address.setText("Address: " + appointment.getPatient().getAddress().toString());
+        healthCardNumber.setText("Health Card Number: " + appointment.getPatient().getHealthCardNumber());
+        appointmentDate.setText("Date: " + appointment.getDate());
+        appointmentStartTime.setText("Start Time: " + appointment.getStartTime());
+        appointmentEndTime.setText("End Time: " + appointment.getEndTime());
+        status.setText("Status: " + appointment.getStatus());
 
         // Check appointment status for button visibility
         if (AppointmentStatus.NOT_APPROVED_YET.getStatusText().equals(appointment.getStatus()) &&
@@ -97,7 +97,7 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
             // Display accept and reject buttons
             findViewById(R.id.acceptAppointmentButton).setVisibility(View.VISIBLE);
             findViewById(R.id.rejectAppointmentButton).setVisibility(View.VISIBLE);
-        }else {
+        } else {
             findViewById(R.id.acceptAppointmentButton).setVisibility(View.INVISIBLE);
             findViewById(R.id.rejectAppointmentButton).setVisibility(View.VISIBLE);
         }
@@ -122,16 +122,17 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
     /**
      * Changes the status of an appointment based on the button clicked
+     *
      * @param toastMessage the message to be sent on the toast
-     * @param view the button clicked
+     * @param view         the button clicked
      */
-    private void handleAppointmentAction(String toastMessage, View view) {
+    public void handleAppointmentAction(String toastMessage, View view) {
 
         // accepted
         if (view.getId() == R.id.acceptAppointmentButton) {
 
             // adding to respective databases based on appointment list (upcoming/past)
-            if(!isPastAppointment(appointment)){
+            if (!isPastAppointment(appointment)) {
                 databaseReference.child("users").child(mAuth.getUid()).
                         child("upcomingAppointments").child(String.valueOf(index))
                         .child("status")
@@ -144,7 +145,7 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
             }
             appointment.setStatus(AppointmentStatus.ACCEPTED.getStatusText());
 
-        // rejected
+            // rejected
         } else if (view.getId() == R.id.rejectAppointmentButton) {
             databaseReference.child("users").child(mAuth.getUid()).
                     child("upcomingAppointments").child(String.valueOf(index))
@@ -166,10 +167,11 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
     /**
      * Check if an appointment is in the past.
+     *
      * @param appointment The appointment to check.
      * @return True if the appointment is in the past, false otherwise.
      */
-    public static boolean isPastAppointment (Appointment appointment){
+    private static boolean isPastAppointment(Appointment appointment) {
         try {
             String dateTimeString = appointment.getDate() + " " + appointment.getStartTime();
             Date appointmentDateTime = timeFormat.parse(dateTimeString);
@@ -187,7 +189,7 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
     /**
      * Update the UI to reflect changes.
      */
-    private void updateUI () {
+    private void updateUI() {
         // Update the UI to reflect the changes in the appointment status
         status.setText(appointment.getStatus().toString());
 
