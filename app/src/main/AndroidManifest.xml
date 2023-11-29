@@ -13,7 +13,7 @@
         android:theme="@style/Theme.SEG2105Project"
         tools:targetApi="31">
         <activity
-            android:name=".bookAppointment"
+            android:name=".BookAppointment"
             android:exported="false" />
         <activity
             android:name=".PatientAppointmentInfoDisplay_Activity"
