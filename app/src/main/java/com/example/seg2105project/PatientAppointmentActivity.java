@@ -55,6 +55,7 @@ public class PatientAppointmentActivity extends AppCompatActivity {
         // get listview element for shifts
         appointment = findViewById(R.id.appointments);
 
+        // Goes to view appointment information page
         appointment.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -62,9 +63,12 @@ public class PatientAppointmentActivity extends AppCompatActivity {
                         PatientAppointmentInfoDisplay_Activity.class);
                 intent.putExtra("User", patient);
                 intent.putExtra("Index", i);
+
+                // show upcoming appointments information
                 if(onList == 0) {
                     intent.putExtra("Appointment", patient.getUpcomingAppointments().get(i));
                 }
+                // shows past appointment information
                 else{
                     intent.putExtra("Appointment", patient.getPastAppointments().get(i));
                 }
@@ -113,6 +117,9 @@ public class PatientAppointmentActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Displays past appointments from the database
+     */
     private void displayPastAppointment() {
         databaseReference.child("users").child(mAuth.getUid()).child("pastAppointments")
                 .addValueEventListener(new ValueEventListener() {
@@ -171,6 +178,9 @@ public class PatientAppointmentActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Displays patients upcoming appointments
+     */
     private void displayUpcoming(){
         databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")
                 .addValueEventListener(new ValueEventListener() {
@@ -188,7 +198,7 @@ public class PatientAppointmentActivity extends AppCompatActivity {
                                     doctorAddress.child("province").getValue(String.class),
                                     doctorAddress.child("country").getValue(String.class));
 
-                            // Iterates through
+                            // Iterates through doctors specialties
                             for(DataSnapshot d :dr.child("specialties").getChildren()){
                                 doctorSpecialities.add(d.getValue(String.class));
                             }
