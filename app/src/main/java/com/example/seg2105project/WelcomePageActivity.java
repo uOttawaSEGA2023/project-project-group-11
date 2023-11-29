@@ -86,6 +86,7 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
      */
     @Override
     public void onClick(View view) {
+        // Goes to the admin's inbox of requests
         if(view.getId() == R.id.requestsButton){
             try{
                 Intent requestsLists = new Intent(WelcomePageActivity.this, AdminInboxActivity.class);
@@ -96,6 +97,7 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
                 System.out.println(e);
             }
         }
+        // Goes to doctors upcoming shifts
         else if(view.getId() == R.id.shiftsbutton){
             try{
                 Intent shifts = new Intent(WelcomePageActivity.this, DoctorShiftsActivity.class);
@@ -107,16 +109,19 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
                 System.out.println(e);
             }
         }
+        // Goes to doctor's appointment list
         else if(view.getId() == R.id.appointmentbutton) {
             Intent appointments = new Intent(WelcomePageActivity.this, DoctorAppointmentsActivityNew.class);
             appointments.putExtra("User", user);
             startActivity(appointments);
         }
+        // Goes to patient's appointment list
         else if(view.getId() == R.id.patientAppointment){
             Intent appointment = new Intent(WelcomePageActivity.this,PatientAppointmentActivity.class);
             appointment.putExtra("User",user);
             startActivity(appointment);
         }
+        // Goes to book appointment page
         else if(view.getId() == R.id.bookAppointment){
             Intent bookAppointment = new Intent(WelcomePageActivity.this, BookAppointment.class);
             bookAppointment.putExtra("User",user);
