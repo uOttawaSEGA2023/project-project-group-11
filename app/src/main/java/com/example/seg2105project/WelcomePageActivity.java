@@ -118,7 +118,7 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
             startActivity(appointment);
         }
         else if(view.getId() == R.id.bookAppointment){
-            Intent bookAppointment = new Intent(WelcomePageActivity.this, bookAppointment.class);
+            Intent bookAppointment = new Intent(WelcomePageActivity.this, BookAppointment.class);
             bookAppointment.putExtra("User",user);
             startActivity(bookAppointment);
         }
