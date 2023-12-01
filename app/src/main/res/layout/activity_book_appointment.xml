@@ -16,4 +16,26 @@
         android:onClick="onClick"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/potentialAppointment"
+        android:layout_width="355dp"
+        android:layout_height="475dp"
+        tools:layout_editor_absoluteX="28dp"
+        tools:layout_editor_absoluteY="128dp" />
+
+    <SearchView
+        android:id="@+id/specialtySearch"
+        android:layout_width="182dp"
+        android:layout_height="38dp"
+        tools:layout_editor_absoluteX="114dp"
+        tools:layout_editor_absoluteY="64dp" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="218dp"
+        android:layout_height="18dp"
+        android:text="Book Appointment By Specialty"
+        tools:layout_editor_absoluteX="96dp"
+        tools:layout_editor_absoluteY="34dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
