@@ -5,25 +5,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
-    tools:context=".DoctorAppointmentInfoDisplay_Activity">
+    tools:context=".PatientAppointmentInfoDisplay_Activity">
 
     <TextView
-        android:id="@+id/patient"
+        android:id="@+id/doctor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Patient Name"/>
-
+        android:text="Doctor Name" />
     <TextView
-        android:id="@+id/address"
+        android:id="@+id/specialties"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Patient Address"/>
-
-    <TextView
-        android:id="@+id/healthCardNumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Health Card Number"/>
+        android:text="Doctor Specialities" />
 
     <TextView
         android:id="@+id/appointmentDate"
@@ -43,34 +36,19 @@
         android:layout_height="wrap_content"
         android:text="End Time"/>
 
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/acceptAppointmentButton"
+            android:id="@+id/rateDoctorButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/blue"
-            android:onClick="onAcceptRejectClick"
-            android:text="Accept" />
-
-        <Button
-            android:id="@+id/rejectAppointmentButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/blue"
-            android:onClick="onAcceptRejectClick"
-            android:text="Reject" />
+            android:onClick="onRateDoctorButtonClick"
+            android:text="Rate Doctor" />
         <Button
             android:id="@+id/cancelAppointmentButton"
             android:layout_width="0dp"
@@ -87,6 +65,7 @@
             android:backgroundTint="@color/blue"
             android:onClick="onBackButtonClick"
             android:text="Back" />
+
 
     </LinearLayout>
 
