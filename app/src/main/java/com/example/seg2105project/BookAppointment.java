@@ -31,13 +31,10 @@ import android.widget.Toast;
 
 public class BookAppointment extends AppCompatActivity {
 
-    ArrayList<AppointmentAvailView> availableAppointments;
     private DatabaseReference databaseReference;
     private void InitializeFirebase(){
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +50,7 @@ public class BookAppointment extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query){
                 //method is called when user clicks enter
                 //we handle the specialty search
-                Toast.makeText(BookAppointment.this, "pulling up list",
-                        Toast.LENGTH_SHORT).show();
                 handleSearch(query);
-
                 return true;
             }
 
@@ -122,13 +116,24 @@ public class BookAppointment extends AppCompatActivity {
                                                 DataSnapshot appointmentsSnapshot = usersSnapshot.child("upcomingAppointments");
                                                 // loop through upcoming appointments
                                                 for (DataSnapshot appointmentSnap : appointmentsSnapshot.getChildren()) {
-                                                    Appointment bookedAppointment = appointmentSnap.getValue(Appointment.class);
+                                                    String day = appointmentSnap.child("date").getValue(String.class);
+                                                    String starting = appointmentSnap.child("startTime").getValue(String.class);
+                                                    String ending = appointmentSnap.child("endTime").getValue(String.class);
+                                                    String doctorNum = appointmentSnap.child("doctor").child("employeeNumber").getValue(String.class);
+                                                    String doctorFN = appointmentSnap.child("doctor").child("firstName").getValue(String.class);
+                                                    String doctorLN = appointmentSnap.child("doctor").child("lastName").getValue(String.class);
+
+                                                    // create the doctor object that is corresponding to the appointment
+                                                    Doctor doc1 = new Doctor(doctorFN, doctorLN, null, null, null, null, doctorNum, null);
+
+                                                    Appointment bookedAppointment = new Appointment(null, doc1, "booked", day, starting, ending);
                                                     bookedAppointments.add(bookedAppointment);
                                                 }
                                             }
                                         }
                                     }
                                 }
+
                                 makeAppointments(doctor, bookedAppointments, newText);
 
                             }
@@ -143,6 +148,10 @@ public class BookAppointment extends AppCompatActivity {
     }
 
     public void makeAppointments(Doctor doc, ArrayList<Appointment> bookedApps, String specialT) {
+        // if the appointment is already booked, isBooked is true
+        ArrayList<AppointmentAvailView> availableAppointments = new ArrayList<>();
+        boolean isBooked = false;
+
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         // shifts of the doctor
         ArrayList<Shift> doctorShifts = doc.getShifts();
@@ -162,26 +171,36 @@ public class BookAppointment extends AppCompatActivity {
                 long startInterval = start.getTime();
 
                 // create a new appointment for each 30 minute interval
-                while (startInterval != end.getTime()) {
+                while (startInterval < end.getTime()) {
+                    isBooked = false;
+
                     // moving to next appointment slot if a booked appointment is already in the slot
                     for (Appointment appB : bookedApps) {
-                        if (startInterval == Long.parseLong(appB.getStartTime()) && appB.getDoctor().getEmployeeNumber().equals(doc.getEmployeeNumber()) && appB.getDate().equals(findTimes.getDate())) {
+                        Date appBStartTime = dateFormat.parse(appB.getStartTime());
+                        if (start.equals(appBStartTime) && appB.getDoctor().getEmployeeNumber().equals(doc.getEmployeeNumber()) && appB.getDate().equals(findTimes.getDate())) {
+                            // add 30 minutes to the start time
                             startInterval += interval;
+
+                            // indicated that the time slot is not available for the appointment
+                            isBooked = true;
                             break;
                         }
                     }
+                    if(isBooked){
+                        continue;
+                    }
+
+                    // if the appointment start time is available, we create an appointment with the start time and end time
                     Date startAppt = new Date(startInterval);
                     String formattedStart = dateFormat.format(startAppt);
                     Date endAppt = new Date(startInterval + interval);
                     String formattedEnd = dateFormat.format(endAppt);
 
-
-                    Appointment availableA = new Appointment(null, doc, "available", findTimes.getDate(), formattedStart, formattedEnd);
-                    availableAppointments.add(new AppointmentAvailView(availableA.getDoctor().getFullName(), specialT, availableA.getDate(), availableA.getStartTime(), availableA.getEndTime() ));
+                    availableAppointments.add(new AppointmentAvailView(doc.getFirstName() + " " + doc.getLastName(), specialT, findTimes.getDate(), formattedStart, formattedEnd ));
                     startInterval += interval;
+
                 }
-                Toast.makeText(BookAppointment.this, "hello",
-                        Toast.LENGTH_SHORT).show();
+
                 initializeListView(availableAppointments);
 
             } catch (Exception ex) {
@@ -190,8 +209,7 @@ public class BookAppointment extends AppCompatActivity {
         }
     }
     public void initializeListView(ArrayList<AppointmentAvailView> apps){
-        Toast.makeText(BookAppointment.this, "hi",
-                Toast.LENGTH_SHORT).show();
+
         AppointmentAvailViewAdapter appointmentArrayAdapter = new AppointmentAvailViewAdapter(this, apps);
 
         ListView available = findViewById(R.id.potentialAppointment);
