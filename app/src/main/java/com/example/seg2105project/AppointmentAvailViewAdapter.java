@@ -22,23 +22,23 @@ public class AppointmentAvailViewAdapter extends ArrayAdapter<AppointmentAvailVi
         if(currentItemView == null){
             currentItemView = LayoutInflater.from(getContext()).inflate(R.layout.booking_view_appointment, parent, false);
 
-        }
-        AppointmentAvailView currentAppointmentPosition = getItem(position);
+    }
+    AppointmentAvailView currentAppointmentPosition = getItem(position);
 
-        TextView docName = currentItemView.findViewById(R.id.doctor_name);
+    TextView docName = currentItemView.findViewById(R.id.doctor_name);
         assert currentAppointmentPosition != null;
         docName.setText(currentAppointmentPosition.getDoctorName());
 
-        TextView specialType = currentItemView.findViewById(R.id.specialty_doctor);
+    TextView specialType = currentItemView.findViewById(R.id.specialty_doctor);
         specialType.setText(currentAppointmentPosition.getSpecialty());
 
-        TextView dateDay = currentItemView.findViewById(R.id.date_day);
+    TextView dateDay = currentItemView.findViewById(R.id.date_day);
         dateDay.setText(currentAppointmentPosition.getDate());
 
-        TextView startT = currentItemView.findViewById(R.id.startTime);
+    TextView startT = currentItemView.findViewById(R.id.startTime);
         startT.setText(currentAppointmentPosition.getStartTime());
 
-        TextView endT = currentItemView.findViewById(R.id.endTime);
+    TextView endT = currentItemView.findViewById(R.id.endTime);
         endT.setText(currentAppointmentPosition.getEndTime());
 
         return currentItemView;

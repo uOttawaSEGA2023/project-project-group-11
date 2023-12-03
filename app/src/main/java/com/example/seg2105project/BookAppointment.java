@@ -34,7 +34,7 @@ public class BookAppointment extends AppCompatActivity {
     ArrayList<AppointmentAvailView> availableAppointments;
     private DatabaseReference databaseReference;
     private void InitializeFirebase(){
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
 
@@ -71,12 +71,18 @@ public class BookAppointment extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                // loop through all users
                 for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
-                    if (userSnapshot.child("type").equals("doctor")) {
+                    // if a user is a doctor
+                    if (userSnapshot.child("type").getValue().equals("doctor")) {
+                        // get specialties
                         DataSnapshot dr = userSnapshot.child("specialties");
+                        // loop through specialties
                         for (DataSnapshot specialtySnapshot : dr.getChildren()) {
-                            String specialityType = specialtySnapshot.getValue(String.class);
+                            String specialityType = specialtySnapshot.getValue().toString();
+                            // if specialty matches user query
                             if (specialityType.equals(newText)) {
+                                // create doctor object
                                 Doctor doctor = new Doctor(userSnapshot.child("firstName").getValue(String.class),
                                         userSnapshot.child("lastName").getValue(String.class),
                                         userSnapshot.child("email").getValue(String.class),
@@ -95,7 +101,8 @@ public class BookAppointment extends AppCompatActivity {
                                     doctor.addShift(shift);
                                 }
 
-                                //Checking to see if the appointment is already booked, meaning in upcoming appointments of a doctor
+                                //Checking to see if the appointment is already booked by another patient,
+                                // i.e. in upcoming appointments of a doctor
                                 ArrayList<Appointment> upcomingApp = new ArrayList<>();
                                 for (DataSnapshot usersSnapshot : dataSnapshot.getChildren()) {
                                     if (usersSnapshot.child("type").equals("doctor")) {
