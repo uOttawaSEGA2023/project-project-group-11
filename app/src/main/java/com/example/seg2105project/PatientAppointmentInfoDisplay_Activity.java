@@ -142,6 +142,12 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         return Math.abs(time1 - time2) <= 60;
     }
 
+    /**
+     * removes colons from strings representing time
+     *
+     * @param inputString string with colon to be removed
+     * @return string of numbers
+     */
     private String removeColon(String inputString) {
         return inputString.replace(":", "");
     }
