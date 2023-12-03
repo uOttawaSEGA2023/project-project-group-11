@@ -6,8 +6,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -23,10 +26,14 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
     ArrayList<User> listData;
     int onList;
 
+    FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_inbox);
+
+        mAuth = FirebaseAuth.getInstance();
 
         // get tablayout
         tabLayout = findViewById(R.id.requestList);
@@ -97,5 +104,23 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
         intent.putExtra("Type", type);
         intent.putExtra("RequestType", onList);
         startActivity(intent);
+    }
+
+    /**
+     * Logs out a user and redirects them to the main activity upon successful signout. Otherwise,
+     * the user will be notified of a failure to sign out.
+     *
+     * @param view The View that triggered the signout button click.
+     */
+    public void onClickSignOut(View view){
+        try{
+            mAuth.signOut();
+            Intent signOut = new Intent(AdminInboxActivity.this, MainActivity.class);
+            startActivity(signOut);
+            Toast.makeText(AdminInboxActivity.this, "Logged out!", Toast.LENGTH_SHORT).show();
+        }catch(Exception e){
+            Toast.makeText(AdminInboxActivity.this, "Error logging out", Toast.LENGTH_SHORT).show();
+            System.out.println(e);
+        }
     }
 }

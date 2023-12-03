@@ -62,160 +62,165 @@ public class LoginActivity extends AppCompatActivity {
         // text=To%20solve%20this%2C%20you%20need%20to%20query%20your,rootRef.child%20%28%22users%22
         // %29%3B%20Query%20regnoQuery%20%3D%20usersRef.orderByChild%20%28%22regno%22%29.equalsTo%20
         // %28regno%29%3B
-        mAuth.signInWithEmailAndPassword(username.getText().toString(), password.getText()
-                        .toString())
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // if the user is authenticated
-                        if (task.isSuccessful()) {
-                            // reference to "pending" key in the database
-                            DatabaseReference pendingRef = databaseReference.child("pending");
+        if (username.getText().toString().equals("") || password.getText().toString().equals("")) {
+            Toast.makeText(LoginActivity.this, "One or more input fields are empty.",
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            mAuth.signInWithEmailAndPassword(username.getText().toString(), password.getText()
+                            .toString())
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            // if the user is authenticated
+                            if (task.isSuccessful()) {
+                                // reference to "pending" key in the database
+                                DatabaseReference pendingRef = databaseReference.child("pending");
 
-                            Query pendingQuery = pendingRef.orderByChild("email").equalTo(username.getText().toString());
-                            pendingQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                // Checks if account is still in pending database
-                                // code assisted from https://stackoverflow.com/questions/37910008/check-if-value-exists-in-firebase-db
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()) {
-                                        Toast.makeText(LoginActivity.this, "Registration Status is still Pending",
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-                            // reference to rejected users in data base
-                            DatabaseReference rejectRef = databaseReference.child("rejected");
-                            Query rejectedQuery = rejectRef.orderByChild("email").equalTo(username.getText().toString());
-
-                            rejectedQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-                                // Checks if user's account has been rejected
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if (snapshot.exists()) {
-                                        Intent i = new Intent(LoginActivity.this, RejectionPageActivity.class);
-                                        startActivity(i);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-
-                            // reference to "users" key in the database
-                            DatabaseReference usersRef = databaseReference.child("users");
-
-                            // getting every child that has an email equal to the username input
-                            Query usernameQuery = usersRef.orderByChild("email")
-                                    .equalTo(username.getText().toString());
-
-
-                            usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
-
-                                // retrieving user data that matches the username input
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    try {
-                                        // loop through snapshot data of user obtained from match
-                                        // above
-                                        // NOTE: should only have to loop through 1 child since only
-                                        // one match
-                                        for (DataSnapshot ds : snapshot.getChildren()) {
-                                            // create variables to create new user object based on
-                                            // user data
-                                            String firstName = ds.child("firstName")
-                                                    .getValue(String.class);
-                                            String lastName = ds.child("lastName")
-                                                    .getValue(String.class);
-                                            String email = ds.child("email")
-                                                    .getValue(String.class);
-                                            String accountPassword = ds.child("accountPassword")
-                                                    .getValue(String.class);
-                                            String phoneNumber = ds.child("phoneNumber")
-                                                    .getValue(String.class);
-
-                                            // receiving for address class
-                                            String postalAddress = ds.child("address")
-                                                    .child("postalAddress").getValue(String.class);
-                                            String postalCode = ds.child("address")
-                                                    .child("postalCode").getValue(String.class);
-                                            String city = ds.child("address")
-                                                    .child("city").getValue(String.class);
-                                            String province = ds.child("address")
-                                                    .child("province").getValue(String.class);
-                                            String country = ds.child("address")
-                                                    .child("country").getValue(String.class);
-                                            Address address = new Address(postalAddress, postalCode, city, province, country);
-
-                                            String type = ds.child("type").getValue(String.class);
-                                            // creating new objects based on above data
-                                            switch (type) {
-                                                case "patient":
-                                                    String healthCardNumber = ds.child("healthCardNumber")
-                                                            .getValue(String.class);
-                                                    if (healthCardNumber != null) {
-                                                        user = new Patient(firstName, lastName, email,
-                                                                accountPassword, phoneNumber, address, healthCardNumber);
-                                                    }
-                                                    break;
-                                                case "doctor":
-                                                    String employeeNumber = ds.child("employeeNumber")
-                                                            .getValue(String.class);
-                                                    ArrayList<String> specialties = (ArrayList<String>)
-                                                            ds.child("specialties").getValue();
-                                                    if (employeeNumber != null && specialties != null) {
-                                                        user = new Doctor(firstName, lastName, email,
-                                                                accountPassword, phoneNumber, address,
-                                                                employeeNumber, specialties);
-                                                    }
-                                                    break;
-                                                case "admin":
-                                                    user = new Admin(firstName, lastName, email,
-                                                            accountPassword, phoneNumber, address);
-                                                    break;
-                                            }
-
-                                            // put user object into bundle and go to welcome page
-                                            Intent i = new Intent(LoginActivity.this,
-                                                    WelcomePageActivity.class);
-                                            i.putExtra("User", user);
-                                            i.putExtra("Type", type);
-                                            startActivity(i);
-                                            // toast to tell user that log in is successful
-                                            Toast.makeText(LoginActivity.this, "Logged in!",
+                                Query pendingQuery = pendingRef.orderByChild("email").equalTo(username.getText().toString());
+                                pendingQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    // Checks if account is still in pending database
+                                    // code assisted from https://stackoverflow.com/questions/37910008/check-if-value-exists-in-firebase-db
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            Toast.makeText(LoginActivity.this, "Registration Status is still Pending",
                                                     Toast.LENGTH_SHORT).show();
                                         }
-                                    } catch (Exception e) {
-                                        // catch exception if error occurs retrieving data
-                                        Toast.makeText(LoginActivity.this, "Failed to retrieve user data!",
-                                                Toast.LENGTH_SHORT).show();
-                                        System.out.println(e);
                                     }
 
-                                }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
 
-                                // required method to implement (can ignore)
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
+                                    }
+                                });
 
-                                }
-                            });
+                                // reference to rejected users in data base
+                                DatabaseReference rejectRef = databaseReference.child("rejected");
+                                Query rejectedQuery = rejectRef.orderByChild("email").equalTo(username.getText().toString());
 
-                        } else {
-                            // user failed to log in based on wrong credentials
-                            Toast.makeText(LoginActivity.this, "Username or password is incorrect!",
-                                    Toast.LENGTH_SHORT).show();
+                                rejectedQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    // Checks if user's account has been rejected
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        if (snapshot.exists()) {
+                                            Intent i = new Intent(LoginActivity.this, RejectionPageActivity.class);
+                                            startActivity(i);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+
+                                // reference to "users" key in the database
+                                DatabaseReference usersRef = databaseReference.child("users");
+
+                                // getting every child that has an email equal to the username input
+                                Query usernameQuery = usersRef.orderByChild("email")
+                                        .equalTo(username.getText().toString());
+
+
+                                usernameQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                    // retrieving user data that matches the username input
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        try {
+                                            // loop through snapshot data of user obtained from match
+                                            // above
+                                            // NOTE: should only have to loop through 1 child since only
+                                            // one match
+                                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                                // create variables to create new user object based on
+                                                // user data
+                                                String firstName = ds.child("firstName")
+                                                        .getValue(String.class);
+                                                String lastName = ds.child("lastName")
+                                                        .getValue(String.class);
+                                                String email = ds.child("email")
+                                                        .getValue(String.class);
+                                                String accountPassword = ds.child("accountPassword")
+                                                        .getValue(String.class);
+                                                String phoneNumber = ds.child("phoneNumber")
+                                                        .getValue(String.class);
+
+                                                // receiving for address class
+                                                String postalAddress = ds.child("address")
+                                                        .child("postalAddress").getValue(String.class);
+                                                String postalCode = ds.child("address")
+                                                        .child("postalCode").getValue(String.class);
+                                                String city = ds.child("address")
+                                                        .child("city").getValue(String.class);
+                                                String province = ds.child("address")
+                                                        .child("province").getValue(String.class);
+                                                String country = ds.child("address")
+                                                        .child("country").getValue(String.class);
+                                                Address address = new Address(postalAddress, postalCode, city, province, country);
+
+                                                String type = ds.child("type").getValue(String.class);
+                                                // creating new objects based on above data
+                                                switch (type) {
+                                                    case "patient":
+                                                        String healthCardNumber = ds.child("healthCardNumber")
+                                                                .getValue(String.class);
+                                                        if (healthCardNumber != null) {
+                                                            user = new Patient(firstName, lastName, email,
+                                                                    accountPassword, phoneNumber, address, healthCardNumber);
+                                                        }
+                                                        break;
+                                                    case "doctor":
+                                                        String employeeNumber = ds.child("employeeNumber")
+                                                                .getValue(String.class);
+                                                        ArrayList<String> specialties = (ArrayList<String>)
+                                                                ds.child("specialties").getValue();
+                                                        if (employeeNumber != null && specialties != null) {
+                                                            user = new Doctor(firstName, lastName, email,
+                                                                    accountPassword, phoneNumber, address,
+                                                                    employeeNumber, specialties);
+                                                        }
+                                                        break;
+                                                    case "admin":
+                                                        user = new Admin(firstName, lastName, email,
+                                                                accountPassword, phoneNumber, address);
+                                                        break;
+                                                }
+
+                                                // put user object into bundle and go to welcome page
+                                                Intent i = new Intent(LoginActivity.this,
+                                                        WelcomePageActivity.class);
+                                                i.putExtra("User", user);
+                                                i.putExtra("Type", type);
+                                                startActivity(i);
+                                                // toast to tell user that log in is successful
+                                                Toast.makeText(LoginActivity.this, "Logged in!",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (Exception e) {
+                                            // catch exception if error occurs retrieving data
+                                            Toast.makeText(LoginActivity.this, "Failed to retrieve user data!",
+                                                    Toast.LENGTH_SHORT).show();
+                                            System.out.println(e);
+                                        }
+
+                                    }
+
+                                    // required method to implement (can ignore)
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                            } else {
+                                // user failed to log in based on wrong credentials
+                                Toast.makeText(LoginActivity.this, "Username or password is incorrect!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 }
