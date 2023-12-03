@@ -53,7 +53,6 @@ public class Patient extends User {
         upcomingAppointments.add(appointment);
     }
 
- AppointmentBranch
     public void deleteUpcomingAppointment(int index) {
         upcomingAppointments.remove(index);
 }

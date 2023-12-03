@@ -7,20 +7,21 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Activity class to display appointment information for patients.
@@ -79,6 +80,12 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         Button cancelAppointmentButton = findViewById(R.id.cancelAppointmentButton);
         Button rateDoctorButton = findViewById(R.id.rateDoctorButton);
 
+        getAppointmentDetails();
+
+        if (equals(appointment, patient.getUpcomingAppointments().get(index))) {
+            rateDoctorButton.setVisibility(View.INVISIBLE);
+        }
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +119,72 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         });
     }
 
+    private boolean equals(Appointment appoint1, Appointment appoint2) {
+        if (!appoint1.getDate().equals(appoint2.getDate())) {
+            return false;
+        }
+
+        if (!appoint1.getStartTime().equals(appoint2.getStartTime())) {
+            return false;
+        }
+
+        if (!appoint1.getEndTime().equals(appoint2.getEndTime())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void getAppointmentDetails() {
+        databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        patient.getUpcomingAppointments().clear();
+                        ArrayList<String> doctorSpecialities = new ArrayList<>();
+
+                        for(DataSnapshot ds : snapshot.getChildren()){
+                            DataSnapshot dr = ds.child("doctor");
+                            DataSnapshot doctorAddress = ds.child("address");
+                            Address address = new Address(doctorAddress.child("postalAddress").getValue(String.class),
+                                    doctorAddress.child("postalCode").getValue(String.class),
+                                    doctorAddress.child("city").getValue(String.class),
+                                    doctorAddress.child("province").getValue(String.class),
+                                    doctorAddress.child("country").getValue(String.class));
+
+                            // Iterates through doctors specialties
+                            for(DataSnapshot d :dr.child("specialties").getChildren()){
+                                doctorSpecialities.add(d.getValue(String.class));
+                            }
+                            // gets doctor associated with an appointment
+                            Doctor doctor = new Doctor(dr.child("firstName").getValue(String.class),
+                                    dr.child("lastName").getValue(String.class),
+                                    dr.child("email").getValue(String.class),
+                                    dr.child("accountPassword").getValue(String.class),
+                                    dr.child("phoneNumber").getValue(String.class),address,
+                                    dr.child("employeeNumber").getValue(String.class),
+                                    doctorSpecialities);
+                            String status = ds.child("status").getValue(String.class);
+                            String date = ds.child("date").getValue(String.class);
+                            String startTime = ds.child("startTime").getValue(String.class);
+                            String endTime = ds.child("endTime").getValue(String.class);
+
+
+                            Patient patient1 = new Patient(patient.getFirstName(),patient.getLastName(),patient.getEmail(),
+                                    patient.getAccountPassword(),patient.getPhoneNumber(),patient.getAddress(),
+                                    patient.getHealthCardNumber());
+                            Appointment appointment1 = new Appointment(patient1,doctor,status,date,startTime,endTime);
+                            patient.addUpcomingAppointment(appointment1);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+    }
+
     public void onCancelButtonClick(View view) {
         if (isAppointmentWithin60Minutes(appointment)) {
 
@@ -120,7 +193,8 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
             databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")
                     .setValue(patient.getUpcomingAppointments());
 
-            // TODO: go back to main page
+            Intent welcomePage = new Intent(PatientAppointmentInfoDisplay_Activity.this, WelcomePageActivity.class);
+            startActivity(welcomePage);
 
             // Display a toast message
             Toast.makeText(this, "Appointment canceled!", Toast.LENGTH_SHORT).show();
