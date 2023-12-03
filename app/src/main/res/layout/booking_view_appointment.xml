@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+
+
+    <TextView
+        android:id="@+id/doctor_name"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:text="Doctor"
+        />
+    <TextView
+        android:layout_below="@id/doctor_name"
+        android:id="@+id/specialty_doctor"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:text="Specialty"
+        />
+    <TextView
+        android:layout_toRightOf="@id/doctor_name"
+        android:id="@+id/date_day"
+        android:layout_width="150dp"
+        android:layout_height="20dp"
+        android:text="Date"
+        />
+
+    <TextView
+        android:layout_below="@id/doctor_name"
+        android:layout_toRightOf="@id/specialty_doctor"
+        android:id="@+id/startTime"
+        android:layout_width="115dp"
+        android:layout_height="20dp"
+        android:text="Start Time"
+        />
+
+    <TextView
+        android:layout_below="@id/doctor_name"
+        android:layout_toRightOf="@id/startTime"
+        android:id="@+id/endTime"
+        android:layout_width="115dp"
+        android:layout_height="20dp"
+        android:text="End Time"
+        />
+
+
+</RelativeLayout>

@@ -1,0 +1,65 @@
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".BookAppointment">
+
+    <TextView
+        android:id="@+id/doctor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Doctor Name" />
+    <TextView
+        android:id="@+id/specialties"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Doctor Specialities" />
+
+    <TextView
+        android:id="@+id/appointmentDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Appointment Date"/>
+
+    <TextView
+        android:id="@+id/appointmentStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start Time"/>
+
+    <TextView
+        android:id="@+id/appointmentEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="End Time"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancelAppointmentButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:onClick="onCancelButtonClick"
+            android:text="Book" />
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:backgroundTint="@color/blue"
+            android:onClick="onBackButtonClick"
+            android:text="Back" />
+
+
+    </LinearLayout>
+
+</LinearLayout>
