@@ -101,25 +101,35 @@ public class BookAppointment extends AppCompatActivity {
                                     doctor.addShift(shift);
                                 }
 
-                                //Checking to see if the appointment is already booked by another patient,
-                                // i.e. in upcoming appointments of a doctor
-                                ArrayList<Appointment> upcomingApp = new ArrayList<>();
+                                /** Checking to see if the appointment is already booked by another patient,
+                                 i.e. in upcoming appointments of a doctor
+                                 */
+                                // list containing booked appointments
+                                ArrayList<Appointment> bookedAppointments = new ArrayList<>();
+
+                                // looping through users
                                 for (DataSnapshot usersSnapshot : dataSnapshot.getChildren()) {
-                                    if (usersSnapshot.child("type").equals("doctor")) {
+                                    // if a user is a doctor
+                                    if (usersSnapshot.child("type").getValue().equals("doctor")) {
+                                        // get specialties of the doctor
                                         DataSnapshot dA = userSnapshot.child("specialties");
+                                        // loop through specialties
                                         for (DataSnapshot sSnapshot : dA.getChildren()) {
-                                            String sType = specialtySnapshot.getValue(String.class);
+                                            String sType = sSnapshot.getValue(String.class);
+                                            // if specialty matches user query
                                             if (sType.equals(newText)) {
+                                                // get upcoming appointments of the doctor and add to booked appointment list
                                                 DataSnapshot appointmentsSnapshot = usersSnapshot.child("upcomingAppointments");
+                                                // loop through upcoming appointments
                                                 for (DataSnapshot appointmentSnap : appointmentsSnapshot.getChildren()) {
                                                     Appointment bookedAppointment = appointmentSnap.getValue(Appointment.class);
-                                                    upcomingApp.add(bookedAppointment);
+                                                    bookedAppointments.add(bookedAppointment);
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                makeAppointments(doctor, upcomingApp, newText);
+                                makeAppointments(doctor, bookedAppointments, newText);
 
                             }
                         }
@@ -134,7 +144,9 @@ public class BookAppointment extends AppCompatActivity {
 
     public void makeAppointments(Doctor doc, ArrayList<Appointment> bookedApps, String specialT) {
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        // shifts of the doctor
         ArrayList<Shift> doctorShifts = doc.getShifts();
+        // looping through each shift
         for (Shift findTimes : doctorShifts) {
             String startTime = findTimes.getStartTime();
             String endTime = findTimes.getEndTime();
@@ -143,15 +155,17 @@ public class BookAppointment extends AppCompatActivity {
                 Date start = dateFormat.parse(startTime);
                 Date end = dateFormat.parse(endTime);
 
+                // appointment interval
                 long interval = 30 * 60 * 1000; // 30 minutes in milliseconds
 
-
+                // start of an appointment
                 long startInterval = start.getTime();
 
-
+                // create a new appointment for each 30 minute interval
                 while (startInterval != end.getTime()) {
+                    // moving to next appointment slot if a booked appointment is already in the slot
                     for (Appointment appB : bookedApps) {
-                        if (startInterval == Long.parseLong(appB.getStartTime()) && appB.getDoctor() == doc && appB.getDate().equals(findTimes.getDate())) {
+                        if (startInterval == Long.parseLong(appB.getStartTime()) && appB.getDoctor().getEmployeeNumber().equals(doc.getEmployeeNumber()) && appB.getDate().equals(findTimes.getDate())) {
                             startInterval += interval;
                             break;
                         }
