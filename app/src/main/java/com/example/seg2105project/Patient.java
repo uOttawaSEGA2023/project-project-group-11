@@ -53,8 +53,8 @@ public class Patient extends User {
         upcomingAppointments.add(appointment);
     }
 
-    public void deleteUpcomingAppointment(Appointment appointment) {
-        upcomingAppointments.remove(appointment);
+    public void deleteUpcomingAppointment(int index) {
+        upcomingAppointments.remove(index);
     }
 
     public void addPastAppointment(Appointment appointment1) {

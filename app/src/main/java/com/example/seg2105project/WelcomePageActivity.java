@@ -26,18 +26,23 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_page);
+
         mAuth = FirebaseAuth.getInstance();
+
         // get User object from log in
         user = (User) getIntent().getExtras().getSerializable("User");
         // get type of User
         String type = getIntent().getExtras().getString("Type");
         welcomeText = findViewById(R.id.welcomeText);
+
+
         if(type.equals("admin")){
             View button = findViewById(R.id.requestsButton);
             button.setVisibility(View.VISIBLE);
             button.setOnClickListener(this);
         }
-        else if(type.equals("doctor")){
+
+        else if(type.equals("doctor")) {
             View button = findViewById(R.id.shiftsbutton);
             View button2 = findViewById(R.id.appointmentbutton);
             button.setVisibility(View.VISIBLE);
@@ -45,6 +50,7 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
             button2.setVisibility(View.VISIBLE);
             button2.setOnClickListener(this);
         }
+
         else if(type.equals("patient")){
             View button = findViewById(R.id.patientAppointment);
             button.setVisibility(View.VISIBLE);

@@ -13,10 +13,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Activity class to display appointment information for patients.
@@ -25,7 +25,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
     TextView doctorName, appointmentDate, appointmentStartTime, appointmentEndTime, doctorSpecialities;
     Appointment appointment;
 
-    User user;
+    Patient patient;
 
     int index; // index of appointment in list
 
@@ -44,7 +44,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_appointment_info_display);
 
-        user = (User) getIntent().getExtras().getSerializable("User");
+        patient = (Patient) getIntent().getExtras().getSerializable("User");
 
         // Retrieve appointment object from intent
         appointment = (Appointment) getIntent().getExtras().getSerializable("Appointment");
@@ -83,24 +83,34 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         cancelAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCancelButtonClick(v);
+                if (v.getId() == R.id.cancelAppointmentButton) {
+                    onCancelButtonClick(v);
+                    cancelAppointmentButton.setVisibility(v.INVISIBLE);
+                }
             }
         });
 
         rateDoctorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(v.getId() == R.id.rateDoctorButton){
+                if (v.getId() == R.id.rateDoctorButton) {
                     Intent rateDoctorPage = new Intent(PatientAppointmentInfoDisplay_Activity.this, RateDoctorActivity.class);
+                    rateDoctorPage.putExtra("Appointment", appointment);
                     startActivity(rateDoctorPage);
-                    System.out.println("Does this work?"); }
+                }
             }
         });
     }
 
     public void onCancelButtonClick(View view) {
-        if (!isAppointmentWithin60Minutes(appointment.getStartTime())) {
-            // TODO: remove appointment from data base
+        if (isAppointmentWithin60Minutes(appointment)) {
+
+            patient.deleteUpcomingAppointment(index);
+
+            databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")
+                    .setValue(patient.getUpcomingAppointments());
+
+            // TODO: go back to main page
 
             // Display a toast message
             Toast.makeText(this, "Appointment canceled!", Toast.LENGTH_SHORT).show();
@@ -110,21 +120,43 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         }
     }
 
-    public static boolean isAppointmentWithin60Minutes(String appointmentTime) {
-        try {
-            Date appointmentDateTime = timeFormat.parse(appointmentTime);
+    private boolean isAppointmentWithin60Minutes(Appointment appointment) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        Date currentDate = new Date();
+        String date1 = dateFormat.format(currentDate);
 
-            Calendar currentCalendar = Calendar.getInstance();
-            Date currentDate = currentCalendar.getTime();
+        int result = date1.compareTo(appointment.getDate());
 
-            long timeDifferenceMillis = appointmentDateTime.getTime() - currentDate.getTime();
-
-            long timeDifferenceMinutes = timeDifferenceMillis / (60 * 1000);
-
-            return timeDifferenceMinutes <= 60;
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (result < 0) {
             return false;
+        } else if (result > 0) {
+            return true;
         }
+
+        String timeOfAppointment = removeColon(appointment.getStartTime());
+        String currentTime = removeColon(getCurrentTimeAsString());
+
+        int time1 = Integer.parseInt(timeOfAppointment);
+        int time2 = Integer.parseInt(currentTime);
+
+        return Math.abs(time1 - time2) <= 60;
+    }
+
+    private String removeColon(String inputString) {
+        return inputString.replace(":", "");
+    }
+
+    private String getCurrentTimeAsString() {
+        // Create a SimpleDateFormat object with the desired format
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+        // Get the current date and time
+        Calendar currentCalendar = Calendar.getInstance();
+        Date currentDate = currentCalendar.getTime();
+
+        // Format the current time as a string
+        String formattedCurrentTime = timeFormat.format(currentDate);
+
+        return formattedCurrentTime;
     }
 }

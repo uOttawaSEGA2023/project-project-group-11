@@ -11,18 +11,21 @@ public class Doctor extends User {
 
     private ArrayList<Shift> shifts = new ArrayList<Shift>();
 
+    private double rating;
+    private int totalRatings;
 
 
     /**
      * Represents a Doctor user in the application. It is a subclass of {@link User}.
-     * @param firstName the first name of the user
-     * @param lastName the last name of the user
-     * @param email the email address of the user
-     * @param accountPass the password of the user
-     * @param phoneNumber the phone number of the user
-     * @param address the postal address of the user, represented as an {@link Address}
+     *
+     * @param firstName      the first name of the user
+     * @param lastName       the last name of the user
+     * @param email          the email address of the user
+     * @param accountPass    the password of the user
+     * @param phoneNumber    the phone number of the user
+     * @param address        the postal address of the user, represented as an {@link Address}
      * @param employeeNumber the employee number of the user
-     * @param specialties the specialties of the user
+     * @param specialties    the specialties of the user
      * @see User
      */
     public Doctor(String firstName, String lastName, String email, String accountPass,
@@ -31,10 +34,13 @@ public class Doctor extends User {
         super(firstName, lastName, email, accountPass, phoneNumber, address);
         this.employeeNumber = employeeNumber;
         this.specialties = specialties;
-    }
+        this.rating = 0;
+        this.totalRatings = 0;
 
+    }
     /**
      * Returns the doctor's employee number.
+     *
      * @return the employee number of the doctor
      */
     public String getEmployeeNumber() {
@@ -43,6 +49,7 @@ public class Doctor extends User {
 
     /**
      * Returns the doctor's specialties.
+     *
      * @return the specialties of the doctor.
      */
     public ArrayList<String> getSpecialties() {
@@ -51,7 +58,8 @@ public class Doctor extends User {
 
     /**
      * gets the list of all upcoming appointments this doctor has
-     * @return ArrayList</Appointment>
+     *
+     * @return ArrayList</ Appointment>
      */
     public ArrayList<Appointment> getUpcomingAppointments() {
         return upcomingAppointments;
@@ -73,7 +81,7 @@ public class Doctor extends User {
         pastAppointments.add(appointment);
     }
 
-    public ArrayList<Shift> getShifts(){
+    public ArrayList<Shift> getShifts() {
         return shifts;
     }
 
@@ -88,4 +96,6 @@ public class Doctor extends User {
     public String getFullName() {
         return getFirstName() + getLastName();
     }
+
+
 }
