@@ -50,7 +50,6 @@ public class WelcomePageActivity extends AppCompatActivity implements View.OnCli
             button2.setVisibility(View.VISIBLE);
             button2.setOnClickListener(this);
         }
-
         else if(type.equals("patient")){
             View button = findViewById(R.id.patientAppointment);
             button.setVisibility(View.VISIBLE);

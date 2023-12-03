@@ -17,6 +17,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Activity class to display appointment information for patients.
@@ -25,7 +29,9 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
     TextView doctorName, appointmentDate, appointmentStartTime, appointmentEndTime, doctorSpecialities;
     Appointment appointment;
 
+
     Patient patient;
+
 
     int index; // index of appointment in list
 
@@ -83,10 +89,14 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         cancelAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (v.getId() == R.id.cancelAppointmentButton) {
                     onCancelButtonClick(v);
                     cancelAppointmentButton.setVisibility(v.INVISIBLE);
                 }
+
+                onCancelButtonClick(v);
+
             }
         });
 
@@ -119,6 +129,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
             Toast.makeText(this, "Cannot cancel appointment within 60 minutes!", Toast.LENGTH_SHORT).show();
         }
     }
+
 
     private boolean isAppointmentWithin60Minutes(Appointment appointment) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -164,5 +175,6 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         String formattedCurrentTime = timeFormat.format(currentDate);
 
         return formattedCurrentTime;
+
     }
 }

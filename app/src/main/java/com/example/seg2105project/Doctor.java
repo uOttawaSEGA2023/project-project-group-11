@@ -96,6 +96,5 @@ public class Doctor extends User {
     public String getFullName() {
         return getFirstName() + getLastName();
     }
-
-
+  
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,12 +23,12 @@ public class RateDoctorActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private FirebaseAuth mAuth;
-
-
+  
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rate_doctor);
+
 
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
@@ -54,8 +55,10 @@ public class RateDoctorActivity extends AppCompatActivity {
         });
     }
 
+
     private void saveDoctorRating(Doctor doctorId, float ratingValue) {
     }
 
 }
+
 
