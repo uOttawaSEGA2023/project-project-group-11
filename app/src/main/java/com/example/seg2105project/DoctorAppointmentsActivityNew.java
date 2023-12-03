@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -187,6 +188,23 @@ public class DoctorAppointmentsActivityNew extends AppCompatActivity {
 
     }
 
+    /**
+     * Logs out a user and redirects them to the main activity upon successful signout. Otherwise,
+     * the user will be notified of a failure to sign out.
+     *
+     * @param view The View that triggered the signout button click.
+     */
+    public void onClickSignOut(View view){
+        try{
+            mAuth.signOut();
+            Intent signOut = new Intent(DoctorAppointmentsActivityNew.this, MainActivity.class);
+            startActivity(signOut);
+            Toast.makeText(DoctorAppointmentsActivityNew.this, "Logged out!", Toast.LENGTH_SHORT).show();
+        }catch(Exception e){
+            Toast.makeText(DoctorAppointmentsActivityNew.this, "Error logging out", Toast.LENGTH_SHORT).show();
+            System.out.println(e);
+        }
+    }
 
     /**
      * Displays upcoming appointments as a ListView

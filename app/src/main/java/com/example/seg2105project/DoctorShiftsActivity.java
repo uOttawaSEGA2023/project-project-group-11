@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -220,6 +221,24 @@ public class DoctorShiftsActivity extends AppCompatActivity{
                 }
             }
         });
+    }
+
+    /**
+     * Logs out a user and redirects them to the main activity upon successful signout. Otherwise,
+     * the user will be notified of a failure to sign out.
+     *
+     * @param view The View that triggered the signout button click.
+     */
+    public void onClickSignOut(View view){
+        try{
+            mAuth.signOut();
+            Intent signOut = new Intent(DoctorShiftsActivity.this, MainActivity.class);
+            startActivity(signOut);
+            Toast.makeText(DoctorShiftsActivity.this, "Logged out!", Toast.LENGTH_SHORT).show();
+        }catch(Exception e){
+            Toast.makeText(DoctorShiftsActivity.this, "Error logging out", Toast.LENGTH_SHORT).show();
+            System.out.println(e);
+        }
     }
 
     /**
