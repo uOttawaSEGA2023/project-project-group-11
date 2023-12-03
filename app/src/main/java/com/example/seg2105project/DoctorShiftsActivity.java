@@ -14,6 +14,7 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DoctorShiftsActivity extends AppCompatActivity{
@@ -97,16 +100,20 @@ public class DoctorShiftsActivity extends AppCompatActivity{
      * Calls the method to delete a shift when the delete button is clicked.
      * @param view
      */
-    public void clickedDelete(View view){
+    public void clickedDelete(View view) {
         // get specific listview element
         View parent = (View) view.getParent();
         TextView textViewDate = parent.findViewById(R.id.date);
         TextView textViewStartTime = parent.findViewById(R.id.startTime);
         TextView textViewEndTime = parent.findViewById(R.id.endTime);
         // call method to delete shift
-        deleteShift(textViewDate.getText().toString().substring(6),
-                textViewStartTime.getText().toString().substring(12),
-                textViewEndTime.getText().toString().substring(10));
+        try {
+            deleteShift(textViewDate.getText().toString().substring(6),
+                    textViewStartTime.getText().toString().substring(12),
+                    textViewEndTime.getText().toString().substring(10));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -249,7 +256,25 @@ public class DoctorShiftsActivity extends AppCompatActivity{
      * @param startTime the start-time of the shift
      * @param endTime the end-time of the shift
      */
-    private void deleteShift(String date, String startTime, String endTime) {
+    private void deleteShift(String date, String startTime, String endTime) throws ParseException {
+        // checks if shift conflicts with an appointment
+        for(Appointment appointment: doctor.getUpcomingAppointments()){
+            // appointment same date as a shift
+            if(appointment.getDate().equals(date)) {
+
+                //converting Strings to Date objects
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date appointmentStartTime = sdf.parse(appointment.getStartTime());
+                Date shiftStart = sdf.parse(startTime);
+                Date shiftEnd = sdf.parse(endTime);
+
+                // appointment conflicts with shift
+                if(appointmentStartTime.after(shiftStart) && appointmentStartTime.before(shiftEnd)){
+                    Toast.makeText(DoctorShiftsActivity.this, "ERROR: Cancel all " +
+                            "appointments linked with this shift.", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
 
         // create a Shift object
         Shift shift = new Shift(date, startTime, endTime);
