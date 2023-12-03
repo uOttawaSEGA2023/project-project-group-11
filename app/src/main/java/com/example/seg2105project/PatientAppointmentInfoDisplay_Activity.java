@@ -86,6 +86,10 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
             rateDoctorButton.setVisibility(View.INVISIBLE);
         }
 
+        if (equals(appointment, patient.getPastAppointments().get(index))) {
+            cancelAppointmentButton.setVisibility(View.INVISIBLE);
+        }
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +123,13 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         });
     }
 
+    /**
+     * checks if the appointments are equal
+     *
+     * @param appoint1 first appointment
+     * @param appoint2 second appointment
+     * @return if appointments are equal
+     */
     private boolean equals(Appointment appoint1, Appointment appoint2) {
         if (!appoint1.getDate().equals(appoint2.getDate())) {
             return false;
