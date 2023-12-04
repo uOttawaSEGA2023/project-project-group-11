@@ -27,12 +27,10 @@ import java.util.Locale;
  * Activity class to display appointment information for patients.
  */
 public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
-    TextView doctorName, appointmentDate, appointmentStartTime, appointmentEndTime, doctorSpecialities;
+    TextView doctorName, appointmentDate, appointmentStartTime, appointmentEndTime, doctorSpecialities, appointmentStatus;
     Appointment appointment;
 
-
     Patient patient;
-
 
     int index; // index of appointment in list
 
@@ -68,6 +66,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         appointmentDate = findViewById(R.id.appointmentDate);
         appointmentStartTime = findViewById(R.id.appointmentStartTime);
         appointmentEndTime = findViewById(R.id.appointmentEndTime);
+        appointmentStatus = findViewById(R.id.status);
 
         // Set text for appointment details dynamically
         doctorName.setText("Doctor: " + appointment.getDoctor().getFullName());
@@ -75,6 +74,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         appointmentDate.setText("Date: " + appointment.getDate());
         appointmentStartTime.setText("Start Time: " + appointment.getStartTime());
         appointmentEndTime.setText("End Time: " + appointment.getEndTime());
+        appointmentStatus.setText("Appointment Status: " + appointment.getStatus());
 
         Button backButton = findViewById(R.id.backButton);
         Button cancelAppointmentButton = findViewById(R.id.cancelAppointmentButton);
@@ -231,7 +231,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
      * @return true if you can remove the appointment, false otherwise
      */
     private boolean isAppointmentWithin60Minutes(Appointment appointment) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
         Date currentDate = new Date();
         String date1 = dateFormat.format(currentDate);
 
