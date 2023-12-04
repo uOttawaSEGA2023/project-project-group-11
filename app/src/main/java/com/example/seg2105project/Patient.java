@@ -8,6 +8,8 @@ public class Patient extends User {
     private ArrayList<Appointment> upcomingAppointments = new ArrayList<>();
     private ArrayList<Appointment> pastAppointments = new ArrayList<>();
 
+    private ArrayList<Rating> allRatings = new ArrayList<>();
+
     /**
      * Represents a Patient user in the application. It is a subclass of {@link User}.
      * @param firstName the first name of the user
@@ -49,11 +51,12 @@ public class Patient extends User {
         return pastAppointments;
     }
 
+    public ArrayList<Rating> getRatings() {return allRatings;}
+
     public void addUpcomingAppointment(Appointment appointment) {
         upcomingAppointments.add(appointment);
     }
 
- AppointmentBranch
     public void deleteUpcomingAppointment(int index) {
         upcomingAppointments.remove(index);
 }
@@ -62,4 +65,6 @@ public class Patient extends User {
     public void addPastAppointment(Appointment appointment1) {
         pastAppointments.add(appointment1);
     }
+
+    public void addRating(Rating rating) {allRatings.add(rating);}
 }
