@@ -9,10 +9,7 @@ public class Doctor extends User {
     private ArrayList<Appointment> upcomingAppointments = new ArrayList<>();
     private ArrayList<Appointment> pastAppointments = new ArrayList<>();
 
-    private ArrayList<Shift> shifts = new ArrayList<Shift>();
-
-    private double rating;
-    private int totalRatings;
+    private ArrayList<Shift> shifts = new ArrayList<>();
 
 
     /**
@@ -34,8 +31,6 @@ public class Doctor extends User {
         super(firstName, lastName, email, accountPass, phoneNumber, address);
         this.employeeNumber = employeeNumber;
         this.specialties = specialties;
-        this.rating = 0;
-        this.totalRatings = 0;
 
     }
     /**
