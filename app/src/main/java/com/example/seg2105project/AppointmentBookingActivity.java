@@ -43,7 +43,10 @@ public class AppointmentBookingActivity extends AppCompatActivity {
 
         AppointmentAvailView appointment = (AppointmentAvailView) getIntent().getExtras().getSerializable("Appointment");
         user = (Patient) getIntent().getExtras().getSerializable("User");
+        // get current appointments for the patient
         updateUserAppointments();
+        // get current appointments for the doctor
+        getCurrentDoctorAppointments(appointment);
 
         // Displaying the information on the layout
         TextView docName = findViewById(R.id.doctor);
@@ -61,8 +64,8 @@ public class AppointmentBookingActivity extends AppCompatActivity {
         TextView endT = findViewById(R.id.appointmentEndTime);
         endT.setText("Appointment end time : "  + appointment.getEndTime());
 
+        // book an appointment
         Button bookB = findViewById(R.id.BookButton);
-        Button backB = findViewById(R.id.backButton);
 
         bookB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +85,7 @@ public class AppointmentBookingActivity extends AppCompatActivity {
                         appointment.getStartTime(), appointment.getEndTime());
 
 
+                // add appointment to patient and doctor
                 user.addUpcomingAppointment(app);
 
                 appointment.getDoctor().addUpcomingAppointment(app);
@@ -117,7 +121,6 @@ public class AppointmentBookingActivity extends AppCompatActivity {
                 // update doctor data in database
                 for(DataSnapshot ds: snapshot.getChildren()) {
 
-
                     databaseReference.child("users").child(ds.getKey()).child("upcomingAppointments").setValue(doctor.getUpcomingAppointments());
                 }
             }
@@ -132,8 +135,10 @@ public class AppointmentBookingActivity extends AppCompatActivity {
     /**
      * Go back to Appointment Search
      */
-    public void goBackToSearch() {
+    public void goBackToSearch(View view) {
         Intent i = new Intent(AppointmentBookingActivity.this, BookAppointment.class);
+        i.putExtra("User", user);
+        i.putExtra("Type", "patient");
         startActivity(i);
     }
 
@@ -169,6 +174,49 @@ public class AppointmentBookingActivity extends AppCompatActivity {
                             ds.child("startTime").getValue().toString(),
                             ds.child("endTime").getValue().toString());
                     user.addUpcomingAppointment(app);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    /**
+     * Get the list of appointments that the doctor currently has in the database
+     */
+    private void getCurrentDoctorAppointments(AppointmentAvailView appointment) {
+        // find the doctor in the database by email
+        Query emailQuery = databaseReference.child("users").orderByChild("email").equalTo(appointment.getDoctor().getEmail());
+
+        emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // doctor object corresponding to the email
+                for(DataSnapshot ds: snapshot.getChildren()) {
+                    // upcoming appointments of the doctor
+                   DataSnapshot doctorAppointments = ds.child("upcomingAppointments");
+                   // loop through each appointment and add it to the doctor
+                   for(DataSnapshot currentAppointment : doctorAppointments.getChildren()){
+                        Patient p = new Patient(currentAppointment.child("patient").child("firstName").getValue().toString(),
+                                currentAppointment.child("patient").child("lastName").getValue().toString(),
+                                currentAppointment.child("patient").child("email").getValue().toString(),
+                                currentAppointment.child("patient").child("accountPassword").getValue().toString(),
+                                currentAppointment.child("patient").child("phoneNumber").getValue().toString(),
+                                null,
+                                currentAppointment.child("patient").child("healthCardNumber").getValue().toString());
+                       Doctor d = new Doctor(appointment.getDoctor().getFirstName(), appointment.getDoctor().getLastName(),
+                               appointment.getDoctor().getEmail(), appointment.getDoctor().getAccountPassword(),
+                               appointment.getDoctor().getPhoneNumber(), appointment.getDoctor().getAddress(),
+                               appointment.getDoctor().getEmployeeNumber(), appointment.getDoctor().getSpecialties());
+                       Appointment app = new Appointment(p,d, currentAppointment.child("status").getValue().toString(),
+                               currentAppointment.child("date").getValue().toString(),
+                               currentAppointment.child("startTime").getValue().toString(),
+                               currentAppointment.child("endTime").getValue().toString());
+                       appointment.getDoctor().addUpcomingAppointment(app);
+                   }
                 }
             }
 

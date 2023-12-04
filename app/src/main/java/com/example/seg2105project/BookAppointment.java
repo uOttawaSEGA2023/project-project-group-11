@@ -236,10 +236,12 @@ public class BookAppointment extends AppCompatActivity {
         });
     }
 
-    public void onClick(View view) {
+    public void onClickBack(View view) {
         // Button to return to welcome page
         if (view.getId() == R.id.button4) {
             Intent back = new Intent(BookAppointment.this, WelcomePageActivity.class);
+            back.putExtra("User", (Patient) getIntent().getExtras().getSerializable("User"));
+            back.putExtra("Type", "patient");
             startActivity(back);
         }
     }
