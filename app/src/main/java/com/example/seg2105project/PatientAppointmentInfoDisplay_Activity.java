@@ -82,12 +82,16 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
         getAppointmentDetails();
 
-        if (equals(appointment, patient.getUpcomingAppointments().get(index))) {
-            rateDoctorButton.setVisibility(View.INVISIBLE);
+        if(patient.getUpcomingAppointments().size() != 0){
+            if (equals(appointment, patient.getUpcomingAppointments().get(index))) {
+                rateDoctorButton.setVisibility(View.INVISIBLE);
+            }
         }
 
-        if (equals(appointment, patient.getPastAppointments().get(index))) {
-            cancelAppointmentButton.setVisibility(View.INVISIBLE);
+        if(patient.getPastAppointments().size() != 0) {
+            if (equals(appointment, patient.getPastAppointments().get(index))) {
+                cancelAppointmentButton.setVisibility(View.INVISIBLE);
+            }
         }
 
         backButton.setOnClickListener(new View.OnClickListener() {

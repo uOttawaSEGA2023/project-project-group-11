@@ -113,6 +113,7 @@ public class PatientAppointmentActivity extends AppCompatActivity {
         if(view.getId() == R.id.returnPatientPage){
             Intent intent = new Intent(PatientAppointmentActivity.this, WelcomePageActivity.class);
             intent.putExtra("User",patient);
+            intent.putExtra("Type", "patient");
             startActivity(intent);
         }
     }
