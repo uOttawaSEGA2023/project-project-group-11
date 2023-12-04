@@ -135,10 +135,6 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
      * @return if appointments are equal
      */
     private boolean equals(Appointment appoint1, Appointment appoint2) {
-        if (!appoint1.getDate().equals(appoint2.getDate())) {
-            return false;
-        }
-
         if (!appoint1.getStartTime().equals(appoint2.getStartTime())) {
             return false;
         }
@@ -234,8 +230,11 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
         Date currentDate = new Date();
         String date1 = dateFormat.format(currentDate);
+        System.out.println(date1);
+        System.out.println(appointment.getDate());
 
-        int result = date1.compareTo(appointment.getDate());
+        int result = appointment.getDate().compareTo(date1);
+        System.out.println(result);
 
         if (result < 0) {
             return false;
