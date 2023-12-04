@@ -11,6 +11,15 @@ public class Appointment implements Serializable {
     private String startTime;
     private String endTime;
 
+    /**
+     * Represents an Appointment between a {@link Patient} and a {@link Doctor}.
+     * @param patient the Patient associated with the appointment
+     * @param doctor the Doctor associated with the appointment
+     * @param status the status of the appointment (Accepted, Rejected, Not Approved Yet)
+     * @param date the date associated with the appointment
+     * @param startTime the start time of the appointment
+     * @param endTime the end time of the appointment
+     */
     public Appointment(Patient patient, Doctor doctor, String status,String date, String startTime, String endTime){
         this.patient = patient;
         this.doctor=doctor;
