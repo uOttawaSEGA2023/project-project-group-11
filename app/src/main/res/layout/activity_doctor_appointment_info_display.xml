@@ -71,13 +71,14 @@
             android:backgroundTint="@color/blue"
             android:onClick="onAcceptRejectClick"
             android:text="Reject" />
+
         <Button
             android:id="@+id/backButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/blue"
-            android:onClick="onBackButtonClick"
+            android:onClick="navigateToDoctorInbox"
             android:text="Back" />
 
     </LinearLayout>

@@ -131,7 +131,7 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
         // Update the UI after handling the click event
         updateUI();
         // go back to doctor inbox
-        navigateToDoctorInbox();
+        navigateToDoctorInbox(view);
     }
 
     /**
@@ -172,7 +172,7 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
     /**
      * Moves screen to DoctorAppointmentsActivityNew
      */
-    private void navigateToDoctorInbox() {
+    public void navigateToDoctorInbox(View view) {
         Intent backtoInbox = new Intent(DoctorAppointmentInfoDisplay_Activity.this, DoctorAppointmentsActivityNew.class);
         backtoInbox.putExtra("User", user);
         startActivity(backtoInbox);

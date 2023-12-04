@@ -209,6 +209,8 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
                     .setValue(patient.getUpcomingAppointments());
 
             Intent welcomePage = new Intent(PatientAppointmentInfoDisplay_Activity.this, WelcomePageActivity.class);
+            welcomePage.putExtra("User", patient);
+            welcomePage.putExtra("Type", "patient");
             startActivity(welcomePage);
 
             // Display a toast message
