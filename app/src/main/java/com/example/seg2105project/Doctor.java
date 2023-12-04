@@ -45,49 +45,81 @@ public class Doctor extends User {
     /**
      * Returns the doctor's specialties.
      *
-     * @return the specialties of the doctor.
+     * @return the specialties of the doctor
      */
     public ArrayList<String> getSpecialties() {
         return this.specialties;
     }
 
     /**
-     * gets the list of all upcoming appointments this doctor has
+     * Gets the list of all upcoming appointments this doctor has.
      *
-     * @return ArrayList</ Appointment>
+     * @return the upcoming appointments
      */
     public ArrayList<Appointment> getUpcomingAppointments() {
         return upcomingAppointments;
     }
 
+    /**
+     * Gets the list of all past appointments this doctor has.
+     * @return the past appointments
+     */
     public ArrayList<Appointment> getPastAppointments() {
         return pastAppointments;
     }
 
+    /**
+     * Adds an appointment to the list of upcoming appointments.
+     * @param appointment the upcoming appointment to be added
+     */
     public void addUpcomingAppointment(Appointment appointment) {
         upcomingAppointments.add(appointment);
     }
 
+    /**
+     * Deletes an appointment from the list of upcoming appointments.
+     * @param appointment the upcoming appointment to be removed
+     */
     public void deleteUpcomingAppointment(Appointment appointment) {
         upcomingAppointments.remove(appointment);
     }
 
+    /**
+     * Adds an appointment to the list of past appointments.
+     * @param appointment the past appointment to be added
+     */
     public void addPastAppointment(Appointment appointment) {
         pastAppointments.add(appointment);
     }
 
+    /**
+     * Gets the list of shifts associated with the doctor.
+     * @return the list of shifts
+     */
     public ArrayList<Shift> getShifts() {
         return shifts;
     }
 
+    /**
+     * Adds a shift to the list of shifts.
+     * @param shift the shift to be added
+     */
     public void addShift(Shift shift) {
         shifts.add(shift);
     }
 
+    /**
+     * Deletes a shift from the list of shifts.
+     * @param shift the shift to be deleted
+     */
     public void deleteShift(Shift shift) {
         shifts.remove(shift);
     }
 
+    /**
+     * Gets the Doctor's full name.
+     * @return the full name of the Doctor
+     */
     public String getFullName() {
         return getFirstName() + getLastName();
     }
