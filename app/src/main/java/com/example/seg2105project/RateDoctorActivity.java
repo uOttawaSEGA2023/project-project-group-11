@@ -33,7 +33,7 @@ public class RateDoctorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rate_doctor);
 
-
+        // database variables
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -41,6 +41,7 @@ public class RateDoctorActivity extends AppCompatActivity {
         // Get views from the layout
         RatingBar doctorRatingBar = findViewById(R.id.doctorRatingBar);
         Button submitRatingButton = findViewById(R.id.submitRatingButton);
+
         appointment = (Appointment) getIntent().getExtras().getSerializable("Appointment");
 
         // Set click listener for the submitRatingButton
@@ -55,6 +56,7 @@ public class RateDoctorActivity extends AppCompatActivity {
                 // Save the rating to the database
                 saveDoctorRating(doctor, rating);
 
+                // takes the user back to the welcome page
                 Intent backToMainPage = new Intent(RateDoctorActivity.this, WelcomePageActivity.class);
                 startActivity(backToMainPage);
             }
@@ -62,6 +64,12 @@ public class RateDoctorActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * saves the rating from the patient to the data base
+     *
+     * @param doctor object representing the doctor
+     * @param ratingValue the rating given to the doctor
+     */
     private void saveDoctorRating(Doctor doctor, float ratingValue) {
 
         databaseReference.child("users").child(mAuth.getUid()).child("doctorRatings")

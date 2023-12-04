@@ -146,6 +146,10 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * gets the details of the appointment, such as the doctor doing the appointment, patients addres
+     * and so on
+     */
     private void getAppointmentDetails() {
         databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")
                 .addValueEventListener(new ValueEventListener() {
@@ -216,6 +220,12 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
     }
 
 
+    /**
+     * logic to determine if the appointment should be allowed to be cancelled or not
+     *
+     * @param appointment to be determined whether or not it can be cancelled based on its start time
+     * @return true if you can remove the appointment, false otherwise
+     */
     private boolean isAppointmentWithin60Minutes(Appointment appointment) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date currentDate = new Date();
@@ -248,6 +258,11 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         return inputString.replace(":", "");
     }
 
+    /**
+     * gets the current time as a string to be compared with the appointment start time
+     *
+     * @return string representation of the current time
+     */
     private String getCurrentTimeAsString() {
         // Create a SimpleDateFormat object with the desired format
         SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
