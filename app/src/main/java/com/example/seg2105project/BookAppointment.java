@@ -13,6 +13,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -140,7 +142,7 @@ public class BookAppointment extends AppCompatActivity {
     }
 
     public void makeAppointments(Doctor doc, ArrayList<Appointment> bookedApps, String specialT) {
-        System.out.println(bookedApps.toArray());
+
         // if the appointment is already booked, isBooked is true
         availableAppointments = new ArrayList<>();
         boolean isBooked = false;
@@ -149,6 +151,7 @@ public class BookAppointment extends AppCompatActivity {
         // shifts of the doctor
         ArrayList<Shift> doctorShifts = doc.getShifts();
         // looping through each shift
+
         for (Shift findTimes : doctorShifts) {
             String startTime = findTimes.getStartTime();
             String endTime = findTimes.getEndTime();
@@ -165,14 +168,17 @@ public class BookAppointment extends AppCompatActivity {
 
                 // create a new appointment for each 30 minute interval
                 while (startInterval < end.getTime()) {
+                    //converting the start interval to a date instance
+                    Date startAT = new Date(startInterval);
 
                     isBooked = false;
 
                     // moving to next appointment slot if a booked appointment is already in the slot
                     for (Appointment appB : bookedApps) {
+
                         // booked appointment start time
                         Date appBStartTime = dateFormat.parse(appB.getStartTime());
-                        if (start.equals(appBStartTime) && appB.getDoctor().getEmployeeNumber().equals(doc.getEmployeeNumber()) && appB.getDate().equals(findTimes.getDate())) {
+                        if (startAT.equals(appBStartTime) && appB.getDoctor().getEmployeeNumber().equals(doc.getEmployeeNumber()) && appB.getDate().equals(findTimes.getDate())) {
                             // add 30 minutes to the start time
                             startInterval += interval;
 

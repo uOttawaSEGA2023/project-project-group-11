@@ -67,21 +67,29 @@ public class AppointmentBookingActivity extends AppCompatActivity {
         bookB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                
                 Patient p = new Patient(user.getFirstName(), user.getLastName(), user.getEmail(),
                         user.getAccountPassword(), user.getPhoneNumber(), user.getAddress(), user.getHealthCardNumber());
+
                 appointment.setPatient(p);
+
                 Doctor d = new Doctor(appointment.getDoctor().getFirstName(), appointment.getDoctor().getLastName(),
                         appointment.getDoctor().getEmail(), appointment.getDoctor().getAccountPassword(),
                         appointment.getDoctor().getPhoneNumber(), appointment.getDoctor().getAddress(),
                         appointment.getDoctor().getEmployeeNumber(), appointment.getDoctor().getSpecialties());
+
                 Appointment app = new Appointment(p,d, appointment.getStatus(), appointment.getDate(),
                         appointment.getStartTime(), appointment.getEndTime());
+
+
                 user.addUpcomingAppointment(app);
+
                 appointment.getDoctor().addUpcomingAppointment(app);
 
                 updatePatientUpcomingAppointments(user);
 
                 updateDoctorUpcomingAppointments(appointment.getDoctor());
+
                 Toast.makeText(AppointmentBookingActivity.this, "Appointment Booked!", Toast.LENGTH_SHORT).show();
                 goBackToAppointments();
             }
@@ -108,6 +116,8 @@ public class AppointmentBookingActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // update doctor data in database
                 for(DataSnapshot ds: snapshot.getChildren()) {
+
+
                     databaseReference.child("users").child(ds.getKey()).child("upcomingAppointments").setValue(doctor.getUpcomingAppointments());
                 }
             }
