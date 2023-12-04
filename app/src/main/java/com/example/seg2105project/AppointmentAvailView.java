@@ -34,7 +34,7 @@ public class AppointmentAvailView implements Serializable {
 
     public void setPatient(Patient p){
         patient = p;
-        status = "not approve yet";
+        status = "Not Approved Yet";
     }
     public Doctor getDoctor(){
         return doctor;
