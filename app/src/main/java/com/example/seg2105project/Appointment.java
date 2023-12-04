@@ -1,5 +1,7 @@
 package com.example.seg2105project;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 
 public class Appointment implements Serializable {
@@ -97,5 +99,15 @@ public class Appointment implements Serializable {
      * @param endTime the end-time of the appointment
      */
     public void setEndTime(String endTime) { this.endTime = endTime; };
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Appointment))
+            return false;
+        Appointment app = (Appointment) obj;
+        return (this.date.equals(app.getDate())) && (this.startTime.equals(app.getStartTime()) )
+                && (this.endTime.equals(app.getEndTime())) && (this.doctor.equals(app.getDoctor()))
+                && (this.patient.equals(app.getPatient()));
+    }
 
 }

@@ -160,7 +160,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
                         for(DataSnapshot ds : snapshot.getChildren()){
                             DataSnapshot dr = ds.child("doctor");
-                            DataSnapshot doctorAddress = ds.child("address");
+                            DataSnapshot doctorAddress = dr.child("address");
                             Address address = new Address(doctorAddress.child("postalAddress").getValue(String.class),
                                     doctorAddress.child("postalCode").getValue(String.class),
                                     doctorAddress.child("city").getValue(String.class),
@@ -200,13 +200,17 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Cancels an appointment and deletes it from the database
+     * @param view
+     */
     public void onCancelButtonClick(View view) {
         if (isAppointmentWithin60Minutes(appointment)) {
+            System.out.println(patient.getUpcomingAppointments());
 
             patient.deleteUpcomingAppointment(index);
 
-            databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")
-                    .setValue(patient.getUpcomingAppointments());
+            AppointmentManager.removeAppointment(appointment);
 
             Intent welcomePage = new Intent(PatientAppointmentInfoDisplay_Activity.this, WelcomePageActivity.class);
             welcomePage.putExtra("User", patient);

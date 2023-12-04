@@ -145,25 +145,15 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
         // accepted
         if (view.getId() == R.id.acceptAppointmentButton) {
 
-            // adding to respective databases based on appointment list (upcoming/past)
+            // updating the database with accepted status
             if (!isPastAppointment(appointment)) {
-                databaseReference.child("users").child(mAuth.getUid()).
-                        child("upcomingAppointments").child(String.valueOf(index))
-                        .child("status")
-                        .setValue(AppointmentStatus.ACCEPTED.getStatusText());
-            } else {
-                databaseReference.child("users").child(mAuth.getUid()).
-                        child("pastAppointments").child(String.valueOf(index))
-                        .child("status")
-                        .setValue(AppointmentStatus.ACCEPTED.getStatusText());
+                AppointmentManager.updateStatusToAccepted(appointment);
             }
             appointment.setStatus(AppointmentStatus.ACCEPTED.getStatusText());
 
             // rejected
         } else if (view.getId() == R.id.rejectAppointmentButton) {
-            databaseReference.child("users").child(mAuth.getUid()).
-                    child("upcomingAppointments").child(String.valueOf(index))
-                    .removeValue();
+            AppointmentManager.removeAppointment(appointment);
         }
         Toast.makeText(DoctorAppointmentInfoDisplay_Activity.this, toastMessage,
                 Toast.LENGTH_SHORT).show();
