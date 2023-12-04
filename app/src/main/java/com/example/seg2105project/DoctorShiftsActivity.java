@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.ParseException;
@@ -62,6 +63,7 @@ public class DoctorShiftsActivity extends AppCompatActivity{
 
         // get object of user from previous page
         doctor = (Doctor) getIntent().getExtras().getSerializable("User");
+        getAppointmentsFromDatabase();
 
         // get listview element for shifts
         shiftList = findViewById(R.id.shiftList);
@@ -199,8 +201,6 @@ public class DoctorShiftsActivity extends AppCompatActivity{
                 String endTime = endTimeSpinner.getItemAtPosition(endTimeIndex[0]).toString();
                 String[] startSplit = startTime.split(":");
                 String[] endSplit = endTime.split(":");
-                System.out.println(startTime);
-                System.out.println(endTime);
                 if(date.length() <13){
                     errorText.setText("ERROR: Please select a date.");
                 }
@@ -280,7 +280,6 @@ public class DoctorShiftsActivity extends AppCompatActivity{
         for(Appointment appointment: doctor.getUpcomingAppointments()){
             // appointment same date as a shift
             if(appointment.getDate().equals(date)) {
-
                 //converting Strings to Date objects
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 Date appointmentStartTime = sdf.parse(appointment.getStartTime());
@@ -288,9 +287,10 @@ public class DoctorShiftsActivity extends AppCompatActivity{
                 Date shiftEnd = sdf.parse(endTime);
 
                 // appointment conflicts with shift
-                if(appointmentStartTime.after(shiftStart) && appointmentStartTime.before(shiftEnd)){
+                if(appointmentStartTime.equals(shiftStart) || (appointmentStartTime.after(shiftStart) && appointmentStartTime.before(shiftEnd))){
                     Toast.makeText(DoctorShiftsActivity.this, "ERROR: Cancel all " +
                             "appointments linked with this shift.", Toast.LENGTH_LONG).show();
+                    return;
                 }
             }
         }
@@ -304,5 +304,47 @@ public class DoctorShiftsActivity extends AppCompatActivity{
         // update list in database
         databaseReference.child("users").child(mAuth.getUid()).child("shifts")
                 .setValue(doctor.getShifts());
+    }
+
+    /**
+     * Get the list of appointments that the doctor currently has in the database
+     */
+    private void getAppointmentsFromDatabase() {
+        // find the doctor in the database by email
+        Query emailQuery = databaseReference.child("users").orderByChild("email").equalTo(doctor.getEmail());
+
+        emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // doctor object corresponding to the email
+                for(DataSnapshot ds: snapshot.getChildren()) {
+                    // upcoming appointments of the doctor
+                    DataSnapshot doctorAppointments = ds.child("upcomingAppointments");
+                    // loop through each appointment and add it to the doctor
+                    for(DataSnapshot currentAppointment : doctorAppointments.getChildren()){
+                        Patient p = new Patient(currentAppointment.child("patient").child("firstName").getValue().toString(),
+                                currentAppointment.child("patient").child("lastName").getValue().toString(),
+                                currentAppointment.child("patient").child("email").getValue().toString(),
+                                currentAppointment.child("patient").child("accountPassword").getValue().toString(),
+                                currentAppointment.child("patient").child("phoneNumber").getValue().toString(),
+                                null,
+                                currentAppointment.child("patient").child("healthCardNumber").getValue().toString());
+                        Doctor d = new Doctor(doctor.getFirstName(), doctor.getLastName(), doctor.getEmail(),
+                                doctor.getAccountPassword(), doctor.getPhoneNumber(), doctor.getAddress(),
+                                doctor.getEmployeeNumber(), doctor.getSpecialties());
+                        Appointment app = new Appointment(p,d, currentAppointment.child("status").getValue().toString(),
+                                currentAppointment.child("date").getValue().toString(),
+                                currentAppointment.child("startTime").getValue().toString(),
+                                currentAppointment.child("endTime").getValue().toString());
+                        doctor.addUpcomingAppointment(app);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
