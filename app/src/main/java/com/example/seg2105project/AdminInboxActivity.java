@@ -20,12 +20,19 @@ import java.util.ArrayList;
  */
 public class AdminInboxActivity extends AppCompatActivity implements ListViewHolder.OnRequestListener {
 
+    // view displaying registration requests
     RecyclerView recyclerView;
+
+    // tab switching between pending and rejected requests
     TabLayout tabLayout;
 
+    // list of requests
     ArrayList<User> listData;
+
+    // integer representing the current tab that the user is on
     int onList;
 
+    // Firebase Authentication
     FirebaseAuth mAuth;
 
     @Override
@@ -33,6 +40,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_inbox);
 
+        // initialize Authentication instance
         mAuth = FirebaseAuth.getInstance();
 
         // get tablayout
@@ -46,6 +54,7 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
         RegistrationRequestManager.getList("pending", new SimpleCallback<ArrayList<User>>() {
             @Override
             public void callback(ArrayList<User> data) {
+                // set adapter to display on the view
                 recyclerView.setAdapter(new ListAdapter(getApplicationContext(), data, AdminInboxActivity.this));
                 listData = data;
             }
@@ -91,9 +100,13 @@ public class AdminInboxActivity extends AppCompatActivity implements ListViewHol
         });
     }
 
-    // When the admin clicks on a registration request from the list of pending requests or rejected
-    // the admin is sent to the page where the information of that registration request is displayed
-    // Used implementation of the onClickListener from a tutorial video: https://www.youtube.com/watch?v=69C1ljfDvl0
+    /**
+     * The admin is sent to the page where the information of a specific registration request is
+     * displayed.
+     * Used implementation of the onClickListener from a tutorial video:
+     * https://www.youtube.com/watch?v=69C1ljfDvl0
+     * @param position the position of the individual request
+     */
     @Override
     public void onRequestClick(int position) {
         User userClicked = listData.get(position);
