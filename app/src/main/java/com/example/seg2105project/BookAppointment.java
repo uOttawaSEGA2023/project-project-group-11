@@ -1,6 +1,5 @@
 package com.example.seg2105project;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.widget.AdapterView;
@@ -8,25 +7,16 @@ import android.widget.SearchView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import android.widget.ListView;
-import java.lang.reflect.Array;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import android.widget.Toast;
 
 
 
@@ -150,6 +140,7 @@ public class BookAppointment extends AppCompatActivity {
     }
 
     public void makeAppointments(Doctor doc, ArrayList<Appointment> bookedApps, String specialT) {
+        System.out.println(bookedApps.toArray());
         // if the appointment is already booked, isBooked is true
         availableAppointments = new ArrayList<>();
         boolean isBooked = false;
@@ -179,6 +170,7 @@ public class BookAppointment extends AppCompatActivity {
 
                     // moving to next appointment slot if a booked appointment is already in the slot
                     for (Appointment appB : bookedApps) {
+                        // booked appointment start time
                         Date appBStartTime = dateFormat.parse(appB.getStartTime());
                         if (start.equals(appBStartTime) && appB.getDoctor().getEmployeeNumber().equals(doc.getEmployeeNumber()) && appB.getDate().equals(findTimes.getDate())) {
                             // add 30 minutes to the start time
