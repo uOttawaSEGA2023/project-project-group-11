@@ -351,7 +351,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/specialty"
                         android:layout_width="25dp"
                         android:layout_height="60dp"
                         android:layout_weight="1"

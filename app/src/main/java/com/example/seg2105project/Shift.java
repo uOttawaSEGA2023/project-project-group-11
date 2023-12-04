@@ -2,7 +2,9 @@ package com.example.seg2105project;
 
 import androidx.annotation.Nullable;
 
-public class Shift {
+import java.io.Serializable;
+
+public class Shift implements Serializable {
 
     private String date;
     private String startTime;

@@ -15,7 +15,10 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
+        // Test 2
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Test 1
+        //testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
