@@ -2,6 +2,8 @@ package com.example.seg2105project;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.widget.AdapterView;
 import android.widget.SearchView;
 import android.content.Intent;
 import android.os.Bundle;
@@ -30,7 +32,7 @@ import android.widget.Toast;
 
 
 public class BookAppointment extends AppCompatActivity {
-
+    public ArrayList<AppointmentAvailView> availableAppointments;
     private DatabaseReference databaseReference;
     private void InitializeFirebase(){
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -149,7 +151,7 @@ public class BookAppointment extends AppCompatActivity {
 
     public void makeAppointments(Doctor doc, ArrayList<Appointment> bookedApps, String specialT) {
         // if the appointment is already booked, isBooked is true
-        ArrayList<AppointmentAvailView> availableAppointments = new ArrayList<>();
+        availableAppointments = new ArrayList<>();
         boolean isBooked = false;
 
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
@@ -172,6 +174,7 @@ public class BookAppointment extends AppCompatActivity {
 
                 // create a new appointment for each 30 minute interval
                 while (startInterval < end.getTime()) {
+
                     isBooked = false;
 
                     // moving to next appointment slot if a booked appointment is already in the slot
@@ -196,7 +199,7 @@ public class BookAppointment extends AppCompatActivity {
                     Date endAppt = new Date(startInterval + interval);
                     String formattedEnd = dateFormat.format(endAppt);
 
-                    availableAppointments.add(new AppointmentAvailView(doc.getFirstName() + " " + doc.getLastName(), specialT, findTimes.getDate(), formattedStart, formattedEnd ));
+                    availableAppointments.add(new AppointmentAvailView(doc, specialT, findTimes.getDate(), formattedStart, formattedEnd ));
                     startInterval += interval;
 
                 }
@@ -214,6 +217,25 @@ public class BookAppointment extends AppCompatActivity {
 
         ListView available = findViewById(R.id.potentialAppointment);
         available.setAdapter(appointmentArrayAdapter);
+
+        // Handling the click events in the ListView
+        available.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //getting the appointment that was selected
+                AppointmentAvailView selectedAppointment = apps.get(i);
+
+                Patient patientClicking = (Patient) getIntent().getExtras().getSerializable("User");
+
+                Intent selectingAppointment = new Intent(BookAppointment.this, AppointmentBookingActivity.class);
+
+                selectingAppointment.putExtra("Appointment", selectedAppointment);
+                selectingAppointment.putExtra("User", patientClicking);
+
+                startActivity(selectingAppointment);
+
+            }
+        });
     }
 
     public void onClick(View view) {
