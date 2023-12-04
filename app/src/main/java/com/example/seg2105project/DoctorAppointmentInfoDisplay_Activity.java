@@ -18,21 +18,29 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Activity class to display appointment information.
+ * Activity class to display individual appointment information for the Doctor.
  */
 public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
+
+    // UI elements
     TextView patientName, address, healthCardNumber, appointmentDate, appointmentStartTime, appointmentEndTime, status;
+
+    // the appointment to be displayed
     Appointment appointment;
 
+    // the user instance
     User user;
 
-    int index; // index of appointment in list
+    // index of appointment in list
+    int index;
 
     // Firebase Real-Time Database for holding database
     private static FirebaseDatabase database;
+
     // reference variable to database
     private static DatabaseReference databaseReference;
 
+    // Firebase Authentication
     private static FirebaseAuth mAuth;
 
     // SimpleDateFormat for parsing time
@@ -62,13 +70,16 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_appointment_info_display);
 
+        // Retrieve user object from intent
         user = (User) getIntent().getExtras().getSerializable("User");
 
         // Retrieve appointment object from intent
         appointment = (Appointment) getIntent().getExtras().getSerializable("Appointment");
 
+        // get index of appointment from intent
         index = getIntent().getExtras().getInt("Index");
 
+        // initialize Firebase instances
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         mAuth = FirebaseAuth.getInstance();
@@ -93,11 +104,11 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
         // Check appointment status for button visibility
         if (AppointmentStatus.NOT_APPROVED_YET.getStatusText().equals(appointment.getStatus()) &&
-                !isPastAppointment(appointment)) {
+                !isPastAppointment(appointment)) { // for pending appointments
             // Display accept and reject buttons
             findViewById(R.id.acceptAppointmentButton).setVisibility(View.VISIBLE);
             findViewById(R.id.rejectAppointmentButton).setVisibility(View.VISIBLE);
-        } else {
+        } else { // for rejected appointments
             findViewById(R.id.acceptAppointmentButton).setVisibility(View.INVISIBLE);
             findViewById(R.id.rejectAppointmentButton).setVisibility(View.VISIBLE);
         }
@@ -110,13 +121,16 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
      */
     public void onAcceptRejectClick(View view) {
         if (view.getId() == R.id.acceptAppointmentButton) {
+            // accept appointment
             handleAppointmentAction("User Accepted!", view);
         } else if (view.getId() == R.id.rejectAppointmentButton) {
+            // rejected appointment
             handleAppointmentAction("User Rejected!", view);
         }
 
         // Update the UI after handling the click event
         updateUI();
+        // go back to doctor inbox
         navigateToDoctorInbox();
     }
 
