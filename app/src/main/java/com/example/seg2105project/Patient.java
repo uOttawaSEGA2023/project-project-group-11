@@ -1,5 +1,7 @@
 package com.example.seg2105project;
 
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 
 public class Patient extends User {
@@ -100,5 +102,18 @@ public class Patient extends User {
      */
     public void addRating(Rating rating) {
         allRatings.add(rating);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Patient))
+            return false;
+        Patient patient = (Patient) obj;
+        return (this.getFirstName().equals(patient.getFirstName()))
+                && (this.getLastName().equals(patient.getLastName()) )
+                && (this.getEmail().equals(patient.getEmail()))
+                && (this.getAccountPassword().equals(patient.getAccountPassword()))
+                && (this.getPhoneNumber().equals(patient.getPhoneNumber()))
+                && (this.getHealthCardNumber().equals(patient.getHealthCardNumber()));
     }
 }

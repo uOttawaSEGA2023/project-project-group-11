@@ -1,5 +1,7 @@
 package com.example.seg2105project;
 
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -123,6 +125,18 @@ public class Doctor extends User {
      */
     public String getFullName() {
         return getFirstName() + getLastName();
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (!(obj instanceof Doctor))
+            return false;
+        Doctor doc = (Doctor) obj;
+        return (this.getFirstName().equals(doc.getFirstName())) && (this.getLastName().equals(doc.getLastName()) )
+                && (this.getEmail().equals(doc.getEmail())) && (this.getAccountPassword().equals(doc.getAccountPassword()))
+                && (this.getPhoneNumber().equals(doc.getPhoneNumber()))
+                && (this.getEmployeeNumber().equals(doc.getEmployeeNumber()))
+                && (this.getSpecialties().equals(doc.getSpecialties()));
     }
   
 }
