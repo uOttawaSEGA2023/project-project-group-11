@@ -19,100 +19,10 @@ public class AppointmentManager {
      */
     public static void updateStatusToAccepted(Appointment appointment) {
         // update for the doctor
-        Query emailQueryDoctor = databaseReference.child("users").orderByChild("email").equalTo(appointment.getDoctor().getEmail());
-        emailQueryDoctor.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // doctor object corresponding to the email
-                for(DataSnapshot ds: snapshot.getChildren()) {
-                    // upcoming appointments of the doctor
-                    DataSnapshot doctorAppointments = ds.child("upcomingAppointments");
-                    // loop through each appointment until the appointment is found
-                    for(DataSnapshot currentAppointment : doctorAppointments.getChildren()){
-                        Patient p = new Patient(currentAppointment.child("patient").child("firstName").getValue().toString(),
-                                currentAppointment.child("patient").child("lastName").getValue().toString(),
-                                currentAppointment.child("patient").child("email").getValue().toString(),
-                                currentAppointment.child("patient").child("accountPassword").getValue().toString(),
-                                currentAppointment.child("patient").child("phoneNumber").getValue().toString(),
-                                appointment.getPatient().getAddress(),
-                                currentAppointment.child("patient").child("healthCardNumber").getValue().toString());
-                        Doctor d = new Doctor(currentAppointment.child("doctor").child("firstName").getValue().toString(),
-                                currentAppointment.child("doctor").child("lastName").getValue().toString(),
-                                currentAppointment.child("doctor").child("email").getValue().toString(),
-                                currentAppointment.child("doctor").child("accountPassword").getValue().toString(),
-                                currentAppointment.child("doctor").child("phoneNumber").getValue().toString(),
-                                appointment.getDoctor().getAddress(),
-                                currentAppointment.child("doctor").child("employeeNumber").getValue().toString(),
-                                appointment.getDoctor().getSpecialties());
-                        Appointment app = new Appointment(p,d, currentAppointment.child("status").getValue().toString(),
-                                currentAppointment.child("date").getValue().toString(),
-                                currentAppointment.child("startTime").getValue().toString(),
-                                currentAppointment.child("endTime").getValue().toString());
-                        // if the appointments in the database match
-                        if(app.equals(appointment)){
-                            databaseReference.child("users").child(ds.getKey()).
-                                    child("upcomingAppointments").child(currentAppointment.getKey())
-                                    .child("status")
-                                    .setValue(DoctorAppointmentInfoDisplay_Activity.AppointmentStatus.ACCEPTED.getStatusText());
-                            return;
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        updateStatusForUser(appointment.getDoctor().getEmail(), appointment, true);
 
         // update for the patient
-        Query emailQueryPatient = databaseReference.child("users").orderByChild("email").equalTo(appointment.getPatient().getEmail());
-        emailQueryPatient.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // patient object corresponding to the email
-                for(DataSnapshot ds: snapshot.getChildren()) {
-                    // upcoming appointments of the patient
-                    DataSnapshot doctorAppointments = ds.child("upcomingAppointments");
-                    // loop through each appointment until the appointment is found
-                    for(DataSnapshot currentAppointment : doctorAppointments.getChildren()){
-                        Patient p = new Patient(currentAppointment.child("patient").child("firstName").getValue().toString(),
-                                currentAppointment.child("patient").child("lastName").getValue().toString(),
-                                currentAppointment.child("patient").child("email").getValue().toString(),
-                                currentAppointment.child("patient").child("accountPassword").getValue().toString(),
-                                currentAppointment.child("patient").child("phoneNumber").getValue().toString(),
-                                appointment.getPatient().getAddress(),
-                                currentAppointment.child("patient").child("healthCardNumber").getValue().toString());
-                        Doctor d = new Doctor(currentAppointment.child("doctor").child("firstName").getValue().toString(),
-                                currentAppointment.child("doctor").child("lastName").getValue().toString(),
-                                currentAppointment.child("doctor").child("email").getValue().toString(),
-                                currentAppointment.child("doctor").child("accountPassword").getValue().toString(),
-                                currentAppointment.child("doctor").child("phoneNumber").getValue().toString(),
-                                appointment.getDoctor().getAddress(),
-                                currentAppointment.child("doctor").child("employeeNumber").getValue().toString(),
-                                appointment.getDoctor().getSpecialties());
-                        Appointment app = new Appointment(p,d, currentAppointment.child("status").getValue().toString(),
-                                currentAppointment.child("date").getValue().toString(),
-                                currentAppointment.child("startTime").getValue().toString(),
-                                currentAppointment.child("endTime").getValue().toString());
-                        // if the appointments in the database match
-                        if(app.equals(appointment)){
-                            databaseReference.child("users").child(ds.getKey()).
-                                    child("upcomingAppointments").child(currentAppointment.getKey())
-                                    .child("status")
-                                    .setValue(DoctorAppointmentInfoDisplay_Activity.AppointmentStatus.ACCEPTED.getStatusText());
-                            return;
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        updateStatusForUser(appointment.getPatient().getEmail(), appointment, true);
 
     }
 
@@ -121,8 +31,24 @@ public class AppointmentManager {
      */
     public static void removeAppointment(Appointment appointment) {
         // update for the doctor
-        Query emailQueryDoctor = databaseReference.child("users").orderByChild("email").equalTo(appointment.getDoctor().getEmail());
-        emailQueryDoctor.addListenerForSingleValueEvent(new ValueEventListener() {
+        updateStatusForUser(appointment.getDoctor().getEmail(), appointment, false);
+
+        // update for the patient
+        updateStatusForUser(appointment.getPatient().getEmail(), appointment, false);
+
+
+    }
+
+    /**
+     * Update database appointment for a given user.
+     * @param user
+     * @param appointment
+     * @param accept if the update should be a status acceptance or removal of appointment
+     */
+    private static void updateStatusForUser(String user, Appointment appointment, boolean accept) {
+        // update for the user
+        Query emailQuery = databaseReference.child("users").orderByChild("email").equalTo(user);
+        emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 // doctor object corresponding to the email
@@ -152,10 +78,18 @@ public class AppointmentManager {
                                 currentAppointment.child("endTime").getValue().toString());
                         // if the appointments in the database match
                         if(app.equals(appointment)){
-                            databaseReference.child("users").child(ds.getKey()).
-                                    child("upcomingAppointments").child(currentAppointment.getKey())
-                                    .removeValue();
-                            return;
+                            if(accept) {
+                                databaseReference.child("users").child(ds.getKey()).
+                                        child("upcomingAppointments").child(currentAppointment.getKey())
+                                        .child("status")
+                                        .setValue(DoctorAppointmentInfoDisplay_Activity.AppointmentStatus.ACCEPTED.getStatusText());
+                                break;
+                            } else {
+                                databaseReference.child("users").child(ds.getKey()).
+                                        child("upcomingAppointments").child(currentAppointment.getKey())
+                                        .removeValue();
+                                break;
+                            }
                         }
                     }
                 }
@@ -166,56 +100,6 @@ public class AppointmentManager {
 
             }
         });
-
-
-        // update for the patient
-        Query emailQueryPatient = databaseReference.child("users").orderByChild("email").equalTo(appointment.getPatient().getEmail());
-        emailQueryPatient.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // patient object corresponding to the email
-                for(DataSnapshot ds: snapshot.getChildren()) {
-                    // upcoming appointments of the patient
-                    DataSnapshot doctorAppointments = ds.child("upcomingAppointments");
-                    // loop through each appointment until the appointment is found
-                    for(DataSnapshot currentAppointment : doctorAppointments.getChildren()){
-                        Patient p = new Patient(currentAppointment.child("patient").child("firstName").getValue().toString(),
-                                currentAppointment.child("patient").child("lastName").getValue().toString(),
-                                currentAppointment.child("patient").child("email").getValue().toString(),
-                                currentAppointment.child("patient").child("accountPassword").getValue().toString(),
-                                currentAppointment.child("patient").child("phoneNumber").getValue().toString(),
-                                appointment.getPatient().getAddress(),
-                                currentAppointment.child("patient").child("healthCardNumber").getValue().toString());
-                        Doctor d = new Doctor(currentAppointment.child("doctor").child("firstName").getValue().toString(),
-                                currentAppointment.child("doctor").child("lastName").getValue().toString(),
-                                currentAppointment.child("doctor").child("email").getValue().toString(),
-                                currentAppointment.child("doctor").child("accountPassword").getValue().toString(),
-                                currentAppointment.child("doctor").child("phoneNumber").getValue().toString(),
-                                appointment.getDoctor().getAddress(),
-                                currentAppointment.child("doctor").child("employeeNumber").getValue().toString(),
-                                appointment.getDoctor().getSpecialties());
-                        Appointment app = new Appointment(p,d, currentAppointment.child("status").getValue().toString(),
-                                currentAppointment.child("date").getValue().toString(),
-                                currentAppointment.child("startTime").getValue().toString(),
-                                currentAppointment.child("endTime").getValue().toString());
-                        // if the appointments in the database match
-                        if(app.equals(appointment)){
-                            databaseReference.child("users").child(ds.getKey()).
-                                    child("upcomingAppointments").child(currentAppointment.getKey())
-                                    .removeValue();
-                            return;
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-
     }
 
 }
