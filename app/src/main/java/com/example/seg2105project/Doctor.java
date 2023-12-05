@@ -124,7 +124,7 @@ public class Doctor extends User {
      * @return the full name of the Doctor
      */
     public String getFullName() {
-        return getFirstName() + getLastName();
+        return getFirstName() + " " + getLastName();
     }
 
     @Override

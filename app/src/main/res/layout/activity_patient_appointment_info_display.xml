@@ -12,11 +12,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Doctor Name" />
-    <TextView
-        android:id="@+id/specialties"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Doctor Specialities" />
 
     <TextView
         android:id="@+id/appointmentDate"

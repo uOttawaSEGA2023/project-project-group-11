@@ -28,7 +28,7 @@ import java.util.Locale;
  * Activity class to display appointment information for patients.
  */
 public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
-    TextView doctorName, appointmentDate, appointmentStartTime, appointmentEndTime, doctorSpecialities, appointmentStatus;
+    TextView doctorName, appointmentDate, appointmentStartTime, appointmentEndTime, appointmentStatus;
     Appointment appointment;
 
     Patient patient;
@@ -63,7 +63,6 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
         // Initialize TextViews
         doctorName = findViewById(R.id.doctor);
-        doctorSpecialities = findViewById(R.id.specialties);
         appointmentDate = findViewById(R.id.appointmentDate);
         appointmentStartTime = findViewById(R.id.appointmentStartTime);
         appointmentEndTime = findViewById(R.id.appointmentEndTime);
@@ -71,7 +70,6 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
         // Set text for appointment details dynamically
         doctorName.setText("Doctor: " + appointment.getDoctor().getFullName());
-        doctorSpecialities.setText("Specialities" + appointment.getDoctor().getSpecialties().toString());
         appointmentDate.setText("Date: " + appointment.getDate());
         appointmentStartTime.setText("Start Time: " + appointment.getStartTime());
         appointmentEndTime.setText("End Time: " + appointment.getEndTime());
@@ -185,7 +183,6 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
                                     patient.getHealthCardNumber());
                             Appointment appointment1 = new Appointment(patient1,doctor,status,date,startTime,endTime);
                             patient.addUpcomingAppointment(appointment1);
-                            System.out.println(patient.getUpcomingAppointments());
                         }
                     }
 
@@ -202,7 +199,6 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
      */
     public void onCancelButtonClick(View view) {
         if (isAppointmentWithin60Minutes(appointment)) {
-            System.out.println(patient.getUpcomingAppointments());
 
             // remove appointment for patient in database
             patient.deleteUpcomingAppointment(index);
