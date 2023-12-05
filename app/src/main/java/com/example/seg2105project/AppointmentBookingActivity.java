@@ -19,6 +19,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * This is an Activity class representing a specific appointment to be booked.
+ */
 public class AppointmentBookingActivity extends AppCompatActivity {
 
     private static FirebaseDatabase database;

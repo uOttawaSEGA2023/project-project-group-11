@@ -4,6 +4,9 @@ import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 
+/**
+ * This class represents an appointment between a Doctor and a Patient.
+ */
 public class Appointment implements Serializable {
 
     private Patient patient;

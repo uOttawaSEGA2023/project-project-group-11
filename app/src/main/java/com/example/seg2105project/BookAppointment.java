@@ -21,8 +21,10 @@ import java.util.ArrayList;
 import java.util.Date;
 
 
-
-
+/**
+ * This is an Activity class representing the list of searched appointments
+ * corresponding to the specialty provided in the search bar.
+ */
 public class BookAppointment extends AppCompatActivity {
     public ArrayList<AppointmentAvailView> availableAppointments;
     private DatabaseReference databaseReference;

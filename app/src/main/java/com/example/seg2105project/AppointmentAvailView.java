@@ -2,6 +2,10 @@ package com.example.seg2105project;
 
 import java.io.Serializable;
 
+/**
+ * This class represents an Appointment to be Booked - separate from Appointment due to
+ * the need for a specific specialty when searching.
+ */
 public class AppointmentAvailView implements Serializable {
     // the name of the doctor corresponding to the appointment
     private Doctor doctor;

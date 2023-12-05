@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 /**
- * This activity displays and manages registration requests for an admin user.
+ * This Activity class displays and manages registration requests for an admin user.
  * Admins can switch between pending and rejected requests using tabs and view request details.
  */
 public class AdminInboxActivity extends AppCompatActivity implements ListViewHolder.OnRequestListener {

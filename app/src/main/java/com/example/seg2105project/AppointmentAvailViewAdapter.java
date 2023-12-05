@@ -9,6 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import java.util.ArrayList;
+
+/**
+ * This class represents the adapter for an AppointmentAvailView object to be displayed
+ * when searching for an appointment.
+ */
 public class AppointmentAvailViewAdapter extends ArrayAdapter<AppointmentAvailView>{
     public AppointmentAvailViewAdapter(@NonNull Context context, ArrayList<AppointmentAvailView> arrayList){
         super(context, 0, arrayList);

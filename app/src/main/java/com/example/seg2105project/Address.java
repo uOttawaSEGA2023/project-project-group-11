@@ -2,6 +2,9 @@ package com.example.seg2105project;
 
 import java.io.Serializable;
 
+/**
+ * This class represents the Address of a User.
+ */
 public class Address implements Serializable {
     private final String postalAddress;
     private final String postalCode;

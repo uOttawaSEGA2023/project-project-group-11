@@ -1,5 +1,8 @@
 package com.example.seg2105project;
 
+/**
+ * This class represents an Admin user.
+ */
 public class Admin extends User {
 
     /**

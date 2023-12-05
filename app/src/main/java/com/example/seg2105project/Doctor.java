@@ -5,6 +5,9 @@ import androidx.annotation.Nullable;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class represents a Doctor user.
+ */
 public class Doctor extends User {
     private final String employeeNumber;
     private final ArrayList<String> specialties;
