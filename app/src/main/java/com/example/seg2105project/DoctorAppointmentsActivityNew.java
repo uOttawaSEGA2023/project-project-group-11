@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -246,6 +247,57 @@ public class DoctorAppointmentsActivityNew extends AppCompatActivity {
                             Appointment appointmentO = new Appointment(patient, newDoctor, status,
                                     date, startTime, endTime);
                             doctor.addUpcomingAppointment(appointmentO);
+                            // update for patient
+                            if(switchOn) {
+                                // update patient status to accepted
+                                Query emailQuery = databaseReference.child("users").orderByChild("email")
+                                        .equalTo(appointmentO.getPatient().getEmail());
+                                emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        // user object corresponding to the email
+                                        for (DataSnapshot ds : snapshot.getChildren()) {
+                                            // upcoming appointments of the user
+                                            DataSnapshot userAppointments = ds.child("upcomingAppointments");
+                                            // loop through each appointment until the appointment is found
+                                            for (DataSnapshot currentAppointment : userAppointments.getChildren()) {
+                                                Patient p = new Patient(currentAppointment.child("patient").child("firstName").getValue().toString(),
+                                                        currentAppointment.child("patient").child("lastName").getValue().toString(),
+                                                        currentAppointment.child("patient").child("email").getValue().toString(),
+                                                        currentAppointment.child("patient").child("accountPassword").getValue().toString(),
+                                                        currentAppointment.child("patient").child("phoneNumber").getValue().toString(),
+                                                        appointmentO.getPatient().getAddress(),
+                                                        currentAppointment.child("patient").child("healthCardNumber").getValue().toString());
+                                                Doctor d = new Doctor(currentAppointment.child("doctor").child("firstName").getValue().toString(),
+                                                        currentAppointment.child("doctor").child("lastName").getValue().toString(),
+                                                        currentAppointment.child("doctor").child("email").getValue().toString(),
+                                                        currentAppointment.child("doctor").child("accountPassword").getValue().toString(),
+                                                        currentAppointment.child("doctor").child("phoneNumber").getValue().toString(),
+                                                        appointmentO.getDoctor().getAddress(),
+                                                        currentAppointment.child("doctor").child("employeeNumber").getValue().toString(),
+                                                        appointmentO.getDoctor().getSpecialties());
+                                                Appointment app = new Appointment(p, d, currentAppointment.child("status").getValue().toString(),
+                                                        currentAppointment.child("date").getValue().toString(),
+                                                        currentAppointment.child("startTime").getValue().toString(),
+                                                        currentAppointment.child("endTime").getValue().toString());
+                                                // if the appointments in the database match
+                                                if (app.equals(appointmentO)) {
+                                                    // update the status to accepted
+                                                    databaseReference.child("users").child(ds.getKey()).
+                                                            child("upcomingAppointments").child(currentAppointment.getKey())
+                                                            .child("status")
+                                                            .setValue(DoctorAppointmentInfoDisplay_Activity.AppointmentStatus.ACCEPTED.getStatusText());
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
                         }
 
                         // update data in database if any changes occur

@@ -15,6 +15,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -104,14 +105,8 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         cancelAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (v.getId() == R.id.cancelAppointmentButton) {
-                    onCancelButtonClick(v);
-                    cancelAppointmentButton.setVisibility(v.INVISIBLE);
-                }
-
                 onCancelButtonClick(v);
-
+                cancelAppointmentButton.setVisibility(v.INVISIBLE);
             }
         });
 
@@ -190,6 +185,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
                                     patient.getHealthCardNumber());
                             Appointment appointment1 = new Appointment(patient1,doctor,status,date,startTime,endTime);
                             patient.addUpcomingAppointment(appointment1);
+                            System.out.println(patient.getUpcomingAppointments());
                         }
                     }
 
@@ -208,14 +204,64 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         if (isAppointmentWithin60Minutes(appointment)) {
             System.out.println(patient.getUpcomingAppointments());
 
+            // remove appointment for patient in database
             patient.deleteUpcomingAppointment(index);
 
-            AppointmentManager.removeAppointment(appointment);
+            databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")
+                    .setValue(patient.getUpcomingAppointments());
 
-            Intent welcomePage = new Intent(PatientAppointmentInfoDisplay_Activity.this, WelcomePageActivity.class);
-            welcomePage.putExtra("User", patient);
-            welcomePage.putExtra("Type", "patient");
-            startActivity(welcomePage);
+            // remove appointment for doctor in database
+            Query emailQuery = databaseReference.child("users").orderByChild("email")
+                    .equalTo(appointment.getDoctor().getEmail());
+            emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    // user object corresponding to the email
+                    for (DataSnapshot ds : snapshot.getChildren()) {
+                        // upcoming appointments of the user
+                        DataSnapshot userAppointments = ds.child("upcomingAppointments");
+                        // loop through each appointment until the appointment is found
+                        for (DataSnapshot currentAppointment : userAppointments.getChildren()) {
+                            Patient p = new Patient(currentAppointment.child("patient").child("firstName").getValue().toString(),
+                                    currentAppointment.child("patient").child("lastName").getValue().toString(),
+                                    currentAppointment.child("patient").child("email").getValue().toString(),
+                                    currentAppointment.child("patient").child("accountPassword").getValue().toString(),
+                                    currentAppointment.child("patient").child("phoneNumber").getValue().toString(),
+                                    appointment.getPatient().getAddress(),
+                                    currentAppointment.child("patient").child("healthCardNumber").getValue().toString());
+                            Doctor d = new Doctor(currentAppointment.child("doctor").child("firstName").getValue().toString(),
+                                    currentAppointment.child("doctor").child("lastName").getValue().toString(),
+                                    currentAppointment.child("doctor").child("email").getValue().toString(),
+                                    currentAppointment.child("doctor").child("accountPassword").getValue().toString(),
+                                    currentAppointment.child("doctor").child("phoneNumber").getValue().toString(),
+                                    appointment.getDoctor().getAddress(),
+                                    currentAppointment.child("doctor").child("employeeNumber").getValue().toString(),
+                                    appointment.getDoctor().getSpecialties());
+                            Appointment app = new Appointment(p, d, currentAppointment.child("status").getValue().toString(),
+                                    currentAppointment.child("date").getValue().toString(),
+                                    currentAppointment.child("startTime").getValue().toString(),
+                                    currentAppointment.child("endTime").getValue().toString());
+                            // if the appointments in the database match
+                            if (app.equals(appointment)) {
+                                // remove appointment from database
+                                databaseReference.child("users").child(ds.getKey()).
+                                        child("upcomingAppointments").child(currentAppointment.getKey())
+                                        .removeValue();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            // go back to appointment inbox
+            Intent i = new Intent(PatientAppointmentInfoDisplay_Activity.this, PatientAppointmentActivity.class);
+            i.putExtra("User", patient);
+            startActivity(i);
 
             // Display a toast message
             Toast.makeText(this, "Appointment canceled!", Toast.LENGTH_SHORT).show();
@@ -236,11 +282,8 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault());
         Date currentDate = new Date();
         String date1 = dateFormat.format(currentDate);
-        System.out.println(date1);
-        System.out.println(appointment.getDate());
 
         int result = appointment.getDate().compareTo(date1);
-        System.out.println(result);
 
         if (result < 0) {
             return false;
