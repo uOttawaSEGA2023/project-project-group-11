@@ -19,6 +19,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * This Activity class represents the list of appointments for a Patient.
+ */
 public class PatientAppointmentActivity extends AppCompatActivity {
 
     // Firebase Real-Time Database for holding database
@@ -32,6 +35,7 @@ public class PatientAppointmentActivity extends AppCompatActivity {
     ListView appointment;
     TabLayout tabLayout;
 
+    // the index of the tab (upcoming/past)
     int onList;
 
     private Patient patient;
@@ -81,6 +85,7 @@ public class PatientAppointmentActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         displayUpcoming();
+        // switching between upcoming and past appointments
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
 
             @Override
@@ -109,6 +114,11 @@ public class PatientAppointmentActivity extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Handles returning to the Welcome Page.
+     * @param view
+     */
     public void OnClickReturn(View view){
         if(view.getId() == R.id.returnPatientPage){
             Intent intent = new Intent(PatientAppointmentActivity.this, WelcomePageActivity.class);
@@ -119,7 +129,7 @@ public class PatientAppointmentActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays past appointments from the database
+     * Displays past appointments from the database.
      */
     private void displayPastAppointment() {
         databaseReference.child("users").child(mAuth.getUid()).child("pastAppointments")
@@ -180,7 +190,7 @@ public class PatientAppointmentActivity extends AppCompatActivity {
     }
 
     /**
-     * Displays patients upcoming appointments
+     * Displays upcoming appointments for the Patient.
      */
     private void displayUpcoming(){
         databaseReference.child("users").child(mAuth.getUid()).child("upcomingAppointments")

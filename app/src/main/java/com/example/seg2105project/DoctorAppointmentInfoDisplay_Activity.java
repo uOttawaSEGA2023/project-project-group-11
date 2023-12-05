@@ -270,7 +270,7 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
     }
 
     /**
-     * Moves screen to DoctorAppointmentsActivityNew
+     * Moves screen to DoctorAppointmentsActivityNew page
      */
     public void navigateToDoctorInbox(View view) {
         Intent backtoInbox = new Intent(DoctorAppointmentInfoDisplay_Activity.this, DoctorAppointmentsActivityNew.class);
@@ -287,9 +287,11 @@ public class DoctorAppointmentInfoDisplay_Activity extends AppCompatActivity {
      */
     private static boolean isPastAppointment(Appointment appointment) {
         try {
+            // representation of the appointment date and time
             String dateTimeString = appointment.getDate() + " " + appointment.getStartTime();
             Date appointmentDateTime = timeFormat.parse(dateTimeString);
 
+            // representation of the current date and time
             Calendar currentCalendar = Calendar.getInstance();
             Date currentDate = currentCalendar.getTime();
 

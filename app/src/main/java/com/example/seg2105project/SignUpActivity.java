@@ -6,6 +6,10 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * This Activity class represents the UI for the user to choose between registration
+ * for a doctor or a patient.
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     @Override

@@ -8,8 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
+/**
+ * This Activity class represents the UI elements for Patient registration.
+ */
 public class RegistrationActivityPatient extends AppCompatActivity {
 
     // variables representing every input field

@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+/**
+ * This class represents a custom adapter for the list of registration requests.
+ */
 public class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
 
     Context context;

@@ -1,5 +1,4 @@
-package com.example.seg2105project;// RateDoctorActivity.java
-
+package com.example.seg2105project;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+/**
+ * Activity class for a Patient to rate a Doctor.
+ */
 public class RateDoctorActivity extends AppCompatActivity {
 
     private Appointment appointment;

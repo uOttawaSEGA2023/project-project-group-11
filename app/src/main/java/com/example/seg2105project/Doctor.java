@@ -2,7 +2,6 @@ package com.example.seg2105project;
 
 import androidx.annotation.Nullable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**

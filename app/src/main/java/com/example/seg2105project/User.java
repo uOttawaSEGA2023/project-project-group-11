@@ -2,6 +2,9 @@ package com.example.seg2105project;
 
 import java.io.Serializable;
 
+/**
+ * This class represents a User of the application.
+ */
 public abstract class User implements Serializable {
     private final String firstName;
     private final String lastName;

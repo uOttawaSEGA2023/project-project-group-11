@@ -13,7 +13,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -28,18 +27,15 @@ import java.util.Date;
 public class BookAppointment extends AppCompatActivity {
     public ArrayList<AppointmentAvailView> availableAppointments;
     private DatabaseReference databaseReference;
-    private void InitializeFirebase(){
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        InitializeFirebase();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_appointment);
 
+        InitializeFirebase();
 
+        // get UI element for search view
         SearchView searchSpecialty = findViewById(R.id.specialtySearch);
         searchSpecialty.setOnQueryTextListener(new SearchView.OnQueryTextListener(){
             @Override
@@ -56,7 +52,28 @@ public class BookAppointment extends AppCompatActivity {
             }
         });
     }
+
+    /**
+     * Handles the back button event to return to the welcome page.
+     * @param view the button clicked
+     */
+    public void onClickBack(View view) {
+        // Button to return to welcome page
+        if (view.getId() == R.id.button4) {
+            Intent back = new Intent(BookAppointment.this, WelcomePageActivity.class);
+            back.putExtra("User", (Patient) getIntent().getExtras().getSerializable("User"));
+            back.putExtra("Type", "patient");
+            startActivity(back);
+        }
+    }
+
+    /**
+     * Handles the search for a specialty.
+     * @param newText the search query.
+     */
     private void handleSearch(String newText){
+
+        // search through users to find where the specialty exists
         databaseReference.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
@@ -81,9 +98,8 @@ public class BookAppointment extends AppCompatActivity {
                                         userSnapshot.child("employeeNumber").getValue(String.class),
                                         null);
 
-                                /**
-                                 * Gets all the possible shifts for the doctor
-                                 */
+
+                                // Gets all the possible shifts for the doctor
                                 for (DataSnapshot d : userSnapshot.child("shifts").getChildren()) {
                                     Shift shift = new Shift(d.child("date").getValue(String.class),
                                             d.child("startTime").getValue(String.class),
@@ -130,6 +146,7 @@ public class BookAppointment extends AppCompatActivity {
                                     }
                                 }
 
+                                // create the appointment
                                 makeAppointments(doctor, bookedAppointments, newText);
 
                             }
@@ -143,22 +160,38 @@ public class BookAppointment extends AppCompatActivity {
         });
     }
 
-    public void makeAppointments(Doctor doc, ArrayList<Appointment> bookedApps, String specialT) {
+    /**
+     * Initializes the Firebase reference
+     */
+    private void InitializeFirebase(){
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+    }
 
-        // if the appointment is already booked, isBooked is true
+    /**
+     * Creates an appointment between a Doctor and a Patient.
+     * @param doc the doctor associated with the appointment
+     * @param bookedApps the booked appointments of every doctor associated with the specialty
+     * @param specialT the specialty of the appointment
+     */
+    private void makeAppointments(Doctor doc, ArrayList<Appointment> bookedApps, String specialT) {
+
+        // list of available appointments to display
         availableAppointments = new ArrayList<>();
-        boolean isBooked = false;
+        // if an appointment is booked
+        boolean isBooked;
 
+        // DateFormat representation of a time
         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
         // shifts of the doctor
         ArrayList<Shift> doctorShifts = doc.getShifts();
         // looping through each shift
-
         for (Shift findTimes : doctorShifts) {
+            // interval of the shift
             String startTime = findTimes.getStartTime();
             String endTime = findTimes.getEndTime();
 
             try {
+                // interval of the shift in Date format
                 Date start = dateFormat.parse(startTime);
                 Date end = dateFormat.parse(endTime);
 
@@ -175,11 +208,14 @@ public class BookAppointment extends AppCompatActivity {
 
                     isBooked = false;
 
-                    // moving to next appointment slot if a booked appointment is already in the slot
+                    // loops through every booked appointment and checks if any are in the current
+                    // slot
                     for (Appointment appB : bookedApps) {
 
                         // booked appointment start time
                         Date appBStartTime = dateFormat.parse(appB.getStartTime());
+                        // if the appointment interval, doctor, and date matches
+                        // the booked interval, doctor, and date
                         if (startAT.equals(appBStartTime) && appB.getDoctor().getEmployeeNumber().equals(doc.getEmployeeNumber()) && appB.getDate().equals(findTimes.getDate())) {
                             // add 30 minutes to the start time
                             startInterval += interval;
@@ -189,11 +225,13 @@ public class BookAppointment extends AppCompatActivity {
                             break;
                         }
                     }
+                    // goes to next interval if a booked appointment is already occurring
                     if(isBooked){
                         continue;
                     }
 
-                    // if the appointment start time is available, we create an appointment with the start time and end time
+                    // if the appointment start time is available,
+                    // we create an appointment with the start time and end time
                     Date startAppt = new Date(startInterval);
                     String formattedStart = dateFormat.format(startAppt);
                     Date endAppt = new Date(startInterval + interval);
@@ -204,6 +242,7 @@ public class BookAppointment extends AppCompatActivity {
 
                 }
 
+                // displays available appointments
                 initializeListView(availableAppointments);
 
             } catch (Exception ex) {
@@ -211,7 +250,12 @@ public class BookAppointment extends AppCompatActivity {
             }
         }
     }
-    public void initializeListView(ArrayList<AppointmentAvailView> apps){
+
+    /**
+     * Displays the list of available appointments as a ListView.
+     * @param apps
+     */
+    private void initializeListView(ArrayList<AppointmentAvailView> apps){
 
         AppointmentAvailViewAdapter appointmentArrayAdapter = new AppointmentAvailViewAdapter(this, apps);
 
@@ -236,15 +280,5 @@ public class BookAppointment extends AppCompatActivity {
 
             }
         });
-    }
-
-    public void onClickBack(View view) {
-        // Button to return to welcome page
-        if (view.getId() == R.id.button4) {
-            Intent back = new Intent(BookAppointment.this, WelcomePageActivity.class);
-            back.putExtra("User", (Patient) getIntent().getExtras().getSerializable("User"));
-            back.putExtra("Type", "patient");
-            startActivity(back);
-        }
     }
 }

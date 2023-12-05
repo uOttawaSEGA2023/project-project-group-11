@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class creates a user and adds their information to the database.
+ */
 public class Registration {
 
     private static final FirebaseDatabase database = FirebaseDatabase.getInstance();

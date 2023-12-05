@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * A custom Adapter class representing the adapter for the Doctor's shift list
+ */
 public class DoctorShiftList extends ArrayAdapter<Shift> {
     private Activity context;
     List<Shift> shifts;

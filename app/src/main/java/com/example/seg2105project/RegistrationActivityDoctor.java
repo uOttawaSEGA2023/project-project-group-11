@@ -13,6 +13,9 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This Activity class represents the UI elements for Doctor registration.
+ */
 public class RegistrationActivityDoctor extends AppCompatActivity {
 
     private EditText firstName, lastName, emailAddress, password, phoneNumber,

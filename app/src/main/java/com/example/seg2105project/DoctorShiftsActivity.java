@@ -29,6 +29,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * This Activity class displays the list of shifts for a Doctor.
+ */
 public class DoctorShiftsActivity extends AppCompatActivity{
 
     // Firebase Real-Time Database for holding database

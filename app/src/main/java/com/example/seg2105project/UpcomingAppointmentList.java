@@ -9,6 +9,10 @@ import android.widget.TextView;
 
 import java.util.List;
 
+/**
+ * A custom Adapter class representing the adapter for the Doctor's appointments.
+ * It represents both the Upcoming and Past appointments of the Doctor.
+ */
 public class UpcomingAppointmentList extends ArrayAdapter<Appointment> {
     private Activity context;
     List<Appointment> appointments;

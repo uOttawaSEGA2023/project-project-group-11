@@ -4,6 +4,9 @@ import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 
+/**
+ * This class represents a Shift of a Doctor.
+ */
 public class Shift implements Serializable {
 
     private String date;

@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Activity class to display appointment information for patients.
+ * Activity class to display specific appointment information for patients.
  */
 public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
     TextView doctorName, appointmentDate, appointmentStartTime, appointmentEndTime, appointmentStatus;
@@ -81,18 +81,21 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
         getAppointmentDetails();
 
+        // removes rating button if it is an upcoming appointment
         if(patient.getUpcomingAppointments().size() != 0){
             if (equals(appointment, patient.getUpcomingAppointments().get(index))) {
                 rateDoctorButton.setVisibility(View.INVISIBLE);
             }
         }
 
+        // removes cancel button if it is a past appointment
         if(patient.getPastAppointments().size() != 0) {
             if (equals(appointment, patient.getPastAppointments().get(index))) {
                 cancelAppointmentButton.setVisibility(View.INVISIBLE);
             }
         }
 
+        // goes back to patient appointment list page
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +103,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
             }
         });
 
+        // cancels the appointment
         cancelAppointmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,6 +112,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
             }
         });
 
+        // rates the doctor
         rateDoctorButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +126,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
     }
 
     /**
-     * checks if the appointments are equal
+     * Checks if the appointments are equal.
      *
      * @param appoint1 first appointment
      * @param appoint2 second appointment
@@ -140,7 +145,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
     }
 
     /**
-     * gets the details of the appointment, such as the doctor doing the appointment, patients addres
+     * gets the details of the appointment, such as the doctor doing the appointment, patients address
      * and so on
      */
     private void getAppointmentDetails() {
@@ -151,7 +156,9 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
                         patient.getUpcomingAppointments().clear();
                         ArrayList<String> doctorSpecialities = new ArrayList<>();
 
+                        // loops through each appointment
                         for(DataSnapshot ds : snapshot.getChildren()){
+                            // gets the doctor of the specific appointment
                             DataSnapshot dr = ds.child("doctor");
                             DataSnapshot doctorAddress = dr.child("address");
                             Address address = new Address(doctorAddress.child("postalAddress").getValue(String.class),
@@ -177,7 +184,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
                             String startTime = ds.child("startTime").getValue(String.class);
                             String endTime = ds.child("endTime").getValue(String.class);
 
-
+                            // creates the patient from the current patient instance
                             Patient patient1 = new Patient(patient.getFirstName(),patient.getLastName(),patient.getEmail(),
                                     patient.getAccountPassword(),patient.getPhoneNumber(),patient.getAddress(),
                                     patient.getHealthCardNumber());
@@ -194,7 +201,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
     }
 
     /**
-     * Cancels an appointment and deletes it from the database
+     * Cancels an appointment and deletes it from the database.
      * @param view
      */
     public void onCancelButtonClick(View view) {
@@ -281,6 +288,7 @@ public class PatientAppointmentInfoDisplay_Activity extends AppCompatActivity {
 
         int result = appointment.getDate().compareTo(date1);
 
+        // if the appointment is past the current date
         if (result < 0) {
             return false;
         } else if (result > 0) {

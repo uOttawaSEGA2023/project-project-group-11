@@ -37,13 +37,13 @@ public class AppointmentBookingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_booking);
 
+        // initializing database variables
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         mAuth = FirebaseAuth.getInstance();
 
         // Retrieving the information of the appointment and the user/patient wanting to view the
         // information of the appointment
-
         AppointmentAvailView appointment = (AppointmentAvailView) getIntent().getExtras().getSerializable("Appointment");
         user = (Patient) getIntent().getExtras().getSerializable("User");
         // get current appointments for the patient
@@ -69,14 +69,13 @@ public class AppointmentBookingActivity extends AppCompatActivity {
 
         // book an appointment
         Button bookB = findViewById(R.id.BookButton);
-
         bookB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
+                // creating patient and doctor instances for the appointment
                 Patient p = new Patient(user.getFirstName(), user.getLastName(), user.getEmail(),
                         user.getAccountPassword(), user.getPhoneNumber(), user.getAddress(), user.getHealthCardNumber());
-
                 appointment.setPatient(p);
 
                 Doctor d = new Doctor(appointment.getDoctor().getFirstName(), appointment.getDoctor().getLastName(),
@@ -84,17 +83,16 @@ public class AppointmentBookingActivity extends AppCompatActivity {
                         appointment.getDoctor().getPhoneNumber(), appointment.getDoctor().getAddress(),
                         appointment.getDoctor().getEmployeeNumber(), appointment.getDoctor().getSpecialties());
 
+                // creating an Appointment instance
                 Appointment app = new Appointment(p,d, appointment.getStatus(), appointment.getDate(),
                         appointment.getStartTime(), appointment.getEndTime());
 
-
                 // add appointment to patient and doctor
                 user.addUpcomingAppointment(app);
-
                 appointment.getDoctor().addUpcomingAppointment(app);
 
+                // update in database
                 updatePatientUpcomingAppointments(user);
-
                 updateDoctorUpcomingAppointments(appointment.getDoctor());
 
                 Toast.makeText(AppointmentBookingActivity.this, "Appointment Booked!", Toast.LENGTH_SHORT).show();
@@ -102,10 +100,12 @@ public class AppointmentBookingActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
+
+    /**
+     * Update appointments for the Patient in the database.
+     * @param patient
+     */
     private void updatePatientUpcomingAppointments(Patient patient) {
 
         // Update the patient's upcoming appointments
@@ -113,6 +113,10 @@ public class AppointmentBookingActivity extends AppCompatActivity {
                 .setValue(patient.getUpcomingAppointments());
     }
 
+    /**
+     * Update appointments for the Doctor in the database.
+     * @param doctor
+     */
     private void updateDoctorUpcomingAppointments(Doctor doctor) {
 
         // find the doctor in the database by email
@@ -136,7 +140,7 @@ public class AppointmentBookingActivity extends AppCompatActivity {
     }
 
     /**
-     * Go back to Appointment Search
+     * Go back to Appointment Search page.
      */
     public void goBackToSearch(View view) {
         Intent i = new Intent(AppointmentBookingActivity.this, BookAppointment.class);
@@ -147,7 +151,7 @@ public class AppointmentBookingActivity extends AppCompatActivity {
 
 
     /**
-     * Go back to Patient Appointments
+     * Go back to Patient Appointments page.
      */
     private void goBackToAppointments() {
         Intent i = new Intent(AppointmentBookingActivity.this, PatientAppointmentActivity.class);

@@ -23,6 +23,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+/**
+ * Activity class displaying the list of appointments of a Doctor.
+ */
 public class DoctorAppointmentsActivityNew extends AppCompatActivity {
 
     // Firebase Real-Time Database for holding database
@@ -83,25 +86,6 @@ public class DoctorAppointmentsActivityNew extends AppCompatActivity {
 
         // Appointment approve all switch
         approveSwitch = findViewById(R.id.switch1);
-
-
-
-
-
-        /* TEST CASE: REMEMBER TO COMMENT THIS OUT ONCE THE CASE IS IN THE DATABASE OR AN
-         ERROR WILL OCCUR */
-//        Address address = new Address("123 Anywhere St.", "A1A1A1",
-//                "Ottawa", "Ontario", "Canada");
-//        Patient newPatient = new Patient("Test", "One", "testone@gmail.com",
-//                "test123", "12345678", address, "123456789");
-//        Doctor newDoctor = new Doctor(doctor.getFirstName(), doctor.getLastName(), doctor.getEmail(),
-//                doctor.getAccountPassword(),doctor.getPhoneNumber(), doctor.getAddress(),
-//                doctor.getEmployeeNumber(), doctor.getSpecialties());
-//        Appointment appoint = new Appointment(newPatient, newDoctor, "Not Approved Yet",
-//                "01-03-2024", "01:30","10:30");
-//        doctor.addUpcomingAppointment(appoint);
-//        databaseReference.child("users").child(mAuth.getUid())
-//                .child("upcomingAppointments").setValue(doctor.getUpcomingAppointments());
     }
 
     @Override

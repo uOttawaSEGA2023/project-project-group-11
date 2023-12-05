@@ -4,6 +4,9 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
+/**
+ * This class represents a Patient user.
+ */
 public class Patient extends User {
     private final String healthCardNumber;
 
