@@ -9,6 +9,8 @@ import java.io.Serializable;
 public class AppointmentAvailView implements Serializable {
     // the name of the doctor corresponding to the appointment
     private Doctor doctor;
+
+    // full name of the doctor, used when displaying the appointment details
     private String doctorName;
 
     // the specialty for the appointment
@@ -23,8 +25,10 @@ public class AppointmentAvailView implements Serializable {
     // the time the appointment ends (30 minutes after start)
     private String endTime;
 
+    // the patient corresponding to the appointment
     private Patient patient;
 
+    // the status of the appointment
     private String status;
 
     public AppointmentAvailView(Doctor doc, String special, String day, String start, String end){
@@ -36,37 +40,48 @@ public class AppointmentAvailView implements Serializable {
         endTime = end;
     }
 
+    // assigns the patient to the appointment when being booked
     public void setPatient(Patient p){
         patient = p;
         status = "Not Approved Yet";
     }
+
+    // returns the doctor that is directing the appointment
     public Doctor getDoctor(){
         return doctor;
     }
 
+    // returns the patient that booked the appointment
     public Patient getPatient(){
         return patient;
     }
 
+    // returns the status of the appointment, if it has been accepted or rejected by the doctor
     public String getStatus(){
         return status;
     }
 
+    // returns the name of the doctor
     public String getDoctorName(){
         return doctorName;
     }
+
+    // returns the specialty the appointment is booked for, specified by the patient
     public String getSpecialty(){
         return specialty;
     }
 
+    // returns the date for when the appointment is booked for
     public String getDate(){
         return date;
     }
 
+    // returns at what time the appointment will start
     public String getStartTime(){
         return startTime;
     }
 
+    // returns at what time the appointment will end
     public String getEndTime(){
         return endTime;
     }
