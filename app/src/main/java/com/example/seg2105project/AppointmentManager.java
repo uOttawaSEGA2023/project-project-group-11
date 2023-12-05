@@ -51,12 +51,12 @@ public class AppointmentManager {
         emailQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // doctor object corresponding to the email
-                for(DataSnapshot ds: snapshot.getChildren()) {
-                    // upcoming appointments of the doctor
-                    DataSnapshot doctorAppointments = ds.child("upcomingAppointments");
+                // user object corresponding to the email
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    // upcoming appointments of the user
+                    DataSnapshot userAppointments = ds.child("upcomingAppointments");
                     // loop through each appointment until the appointment is found
-                    for(DataSnapshot currentAppointment : doctorAppointments.getChildren()){
+                    for (DataSnapshot currentAppointment : userAppointments.getChildren()) {
                         Patient p = new Patient(currentAppointment.child("patient").child("firstName").getValue().toString(),
                                 currentAppointment.child("patient").child("lastName").getValue().toString(),
                                 currentAppointment.child("patient").child("email").getValue().toString(),
@@ -72,24 +72,23 @@ public class AppointmentManager {
                                 appointment.getDoctor().getAddress(),
                                 currentAppointment.child("doctor").child("employeeNumber").getValue().toString(),
                                 appointment.getDoctor().getSpecialties());
-                        Appointment app = new Appointment(p,d, currentAppointment.child("status").getValue().toString(),
+                        Appointment app = new Appointment(p, d, currentAppointment.child("status").getValue().toString(),
                                 currentAppointment.child("date").getValue().toString(),
                                 currentAppointment.child("startTime").getValue().toString(),
                                 currentAppointment.child("endTime").getValue().toString());
                         // if the appointments in the database match
-                        if(app.equals(appointment)){
-                            if(accept) {
+                        if (app.equals(appointment)) {
+                            if (accept) {
                                 databaseReference.child("users").child(ds.getKey()).
                                         child("upcomingAppointments").child(currentAppointment.getKey())
                                         .child("status")
                                         .setValue(DoctorAppointmentInfoDisplay_Activity.AppointmentStatus.ACCEPTED.getStatusText());
-                                break;
                             } else {
                                 databaseReference.child("users").child(ds.getKey()).
                                         child("upcomingAppointments").child(currentAppointment.getKey())
                                         .removeValue();
-                                break;
                             }
+                            break;
                         }
                     }
                 }
